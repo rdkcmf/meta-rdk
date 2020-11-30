@@ -9,6 +9,8 @@ LIC_FILES_CHKSUM = "file://LICENSE;md5=175792518e4ac015ab6696d16c4f607e"
 DEPENDS = "glib-2.0 cjson"
 DEPENDS_append = " ${@bb.utils.contains('DISTRO_FEATURES', 'safec', ' safec', " ", d)}"
 
+CFLAGS += " -Wall -Werror -Wextra -Wno-sign-compare -Wno-address "
+
 SRC_URI = "${CMF_GIT_ROOT}/rdk/components/generic/dca;protocol=${CMF_GIT_PROTOCOL};branch=${CMF_GIT_BRANCH}"
 
 PV = "${RDK_RELEASE}+git${SRCPV}"
