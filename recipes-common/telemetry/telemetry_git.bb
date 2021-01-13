@@ -12,6 +12,10 @@ PV = "${RDK_RELEASE}+git${SRCPV}"
 SRCREV ?= "${AUTOREV}"
 S = "${WORKDIR}/git"
 
+CFLAGS += " -Wall -Werror -Wextra -Wno-unused-parameter -Wno-pointer-sign -Wno-sign-compare -Wno-enum-compare -Wno-type-limits "
+
+CFLAGS_append_dunfell = " -Wno-stringop-overflow -Wno-format-overflow "
+
 inherit pkgconfig autotools systemd pythonnative
 
 LDFLAGS_append = " \
