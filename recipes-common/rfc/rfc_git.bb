@@ -21,6 +21,8 @@ EXTRA_OEMAKE += "-e MAKEFLAGS="
 
 inherit autotools pkgconfig coverity
 
+CFLAGS += " -Wall -Werror -Wextra "
+
 do_install_append () {
 	install -d ${D}${base_libdir}/rdk
         install -d ${D}${sysconfdir}
