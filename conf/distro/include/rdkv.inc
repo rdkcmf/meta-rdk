@@ -42,7 +42,11 @@ DISTRO_FEATURES_remove = "nfs"
 DISTRO_FEATURES_append = " xcal_device"
 
 DISTRO_FEATURES_append = " lxy"
-DISTRO_FEATURES_remove_rpi = "lxy"
+
+# Flags to control cedm builds
+DISTRO_FEATURES_append_rpi = " enable-cpg"
+#DISTRO_FEATURES_append_rpi = " use-cpg-source" 
+
 DISTRO_FEATURES_append  = " cpg-ecfs"
 DISTRO_FEATURES_remove_rpi = "cpg-ecfs"
 
