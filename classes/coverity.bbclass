@@ -51,7 +51,7 @@ do_generate_coverity_build_shell () {
     
     if [ "$coverity" = "1" ] ;then
         echo "#### Coverity Analysis Enabled : $file"
-    	cov-configure --verbose 4 --config ${WORKDIR}/config/coverity_config.xml --java
+    	/opt/covClient/bin/cov-configure --verbose 4 --config ${WORKDIR}/config/coverity_config.xml --java
     	compiler_options=""
     	extra_option=""
     	compiler_value=`echo ${CC} | cut -f1 -d " "`
@@ -59,7 +59,7 @@ do_generate_coverity_build_shell () {
     	if [ "$compiler_options" != "" ];then
        		extra_option="-- $compiler_options"
     	fi
-        cov-configure --verbose 4 --config ${WORKDIR}/config/coverity_config.xml --comptype gcc --template --compiler $compiler_value
+        /opt/covClient/bin/cov-configure --verbose 4 --config ${WORKDIR}/config/coverity_config.xml --comptype gcc --template --compiler $compiler_value
         return 1
     else
         return 0
@@ -71,11 +71,11 @@ python do_generate_coverity_build()  {
      try:
        bb.build.exec_func('do_generate_coverity_build_shell', d)
        d.setVar('COVERITYFLAG_${PN}','0')
-     except bb.build.FuncFailed:
+     except Exception as e:
        d.setVar('COVERITYFLAG_${PN}','1')
 
      if d.getVar('COVERITYFLAG_${PN}','1') == '1':
-           d.setVar('MAKE','cov-build --verbose 4 --config ${WORKDIR}/config/coverity_config.xml --dir ${TOPDIR}/../build-images/${COVERITY_DIR} make ')
+           d.setVar('MAKE','/opt/covClient/bin/cov-build --verbose 4 --config ${WORKDIR}/config/coverity_config.xml --dir ${TOPDIR}/../build-images/${COVERITY_DIR} make ')
      else:
            d.setVar('MAKE','make')
 }
