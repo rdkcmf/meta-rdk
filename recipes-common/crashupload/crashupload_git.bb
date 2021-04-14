@@ -60,6 +60,7 @@ SYSTEMD_SERVICE_${PN}_append_broadband = " coredump-upload.service \
                                            minidump-on-bootup-upload.service \
                                            minidump-on-bootup-upload.timer \
 "
+RDEPENDS_${PN} += "busybox"
 
 PACKAGE_BEFORE_PN += "${PN}-conf"
 

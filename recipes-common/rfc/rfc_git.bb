@@ -32,6 +32,7 @@ do_install_append () {
 	install -m 0755 ${S}/RFC_Reboot.sh ${D}${sysconfdir}/RFC_Reboot.sh
 }
 
+RDEPENDS_${PN} += "busybox"
 
 FILES_${PN} += "${bindir}/rfctool"
 FILES_${PN} += "${base_libdir}/*"
