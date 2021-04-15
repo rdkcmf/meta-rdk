@@ -42,6 +42,8 @@
 
 #ifdef SAFEC_DUMMY_API
 #include <stdarg.h>
+#include <string.h>
+#include <strings.h>
 typedef int errno_t;
 #define EOK 0
 #define ESNULLP          400        /* null ptr                    */
