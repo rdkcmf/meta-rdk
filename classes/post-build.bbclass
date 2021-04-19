@@ -24,6 +24,8 @@ do_postbuild_shell () {
  for img in $(find tmp/deploy/images/${MACHINE} -name "${MACHINE_IMAGE_NAME}*bin" -newermt "`date -d @$START_TIME`"); do 
   IMAGES="${IMAGES} `basename $img .bin`" 
  done 
+
+ SPACE_USED=$(du -hs .. | cut -f1)
   
  S3_File_In_Bkt="dev_vm_build_analytics/${HOUR_STAMP}/${S3_FILE_NAME}"
  
@@ -37,6 +39,7 @@ do_postbuild_shell () {
  echo "DEV_VM_BUILD_ANALYTICS_Start_Time: ${START_TIME}" >> ${S3_FILE_NAME}
  echo "DEV_VM_BUILD_ANALYTICS_Duration:${DURATION}" >> ${S3_FILE_NAME}
  echo "DEV_VM_BUILD_ANALYTICS_Images:${IMAGES}" >> ${S3_FILE_NAME}
+ echo "DEV_VM_BUILD_ANALYTICS_Space_Used: ${SPACE_USED}" >> ${S3_FILE_NAME}
  echo "*********************" >> ${S3_FILE_NAME}
  echo >> ${S3_FILE_NAME}
  grep "cmd" buildhistory/.git/COMMIT_EDITMSG >> ${S3_FILE_NAME}
@@ -53,7 +56,7 @@ addhandler postbuild_eventhandler
 python postbuild_eventhandler() {
  from bb.event import getName
  if ( getName(e) == "CookerExit" ):
-  print ("POST-BUILD: Running, please wait few seconds...")
+  print ("POST-BUILD: Copying stats to S3, this may take few minutes. Please wait...")
   bb.build.exec_func("do_postbuild_shell", e.data)
 }
 
