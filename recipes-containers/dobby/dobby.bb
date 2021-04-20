@@ -4,8 +4,8 @@ LIC_FILES_CHKSUM = "file://LICENSE;md5=c466d4ab8a68655eb1edf0bf8c1a8fb8"
 
 SRC_URI = "gitsm://github.com/rdkcentral/Dobby"
 
-# 2021-03-29
-SRCREV = "a74d56421941b0f6b365efcf93d8f464f27101e3"
+# 2021-06-09
+SRCREV = "e5772c356dfd7a31dcc892efc9d0b17abef87b85"
 
 DEPENDS = "${@bb.utils.contains('DISTRO_FEATURES', 'systemd', ' systemd ', '', d)} libnl dbus jsoncpp boost yajl python3 "
 RDEPENDS_${PN} = "crun (>= 0.14.1)"
@@ -20,15 +20,7 @@ EXTRA_OECMAKE =  " -DCMAKE_BUILD_TYPE=Debug -DBUILD_REFERENCE=${SRCREV} "
 
 # Enable plugins
 # Logging, networking, ipc, storage and thunder enabled by default for all builds
-PACKAGECONFIG ?= "\
-        logging networking ipc storage thunder \
-        ${@bb.utils.contains('DISTRO_FEATURES', 'build_for_sky', 'legacycomponents gpu localtime rtscheduling httpproxy appservices ionmemory', '', d)} \
-"
-
-# Sky XiOne specific
-EXTRA_OECMAKE_append_skyxione = " -DRDK_PLATFORM=XI1 "
-# Sky Llama specific
-EXTRA_OECMAKE_append_llama = " -DRDK_PLATFORM=LLAMA "
+PACKAGECONFIG ?= "logging networking ipc storage thunder"
 
 # Options for plugins
 # -------------------------------------
@@ -43,7 +35,7 @@ PACKAGECONFIG[localtime]    = "-DPLUGIN_LOCALTIME=ON,-DPLUGIN_LOCALTIME=OFF,"
 PACKAGECONFIG[rtscheduling] = "-DPLUGIN_RTSCHEDULING=ON,-DPLUGIN_RTSCHEDULING=OFF,"
 PACKAGECONFIG[httpproxy]    = "-DPLUGIN_HTTPPROXY=ON,-DPLUGIN_HTTPPROXY=OFF,"
 PACKAGECONFIG[appservices]  = "-DPLUGIN_APPSERVICES=ON,-DPLUGIN_APPSERVICES=OFF,"
-PACKAGECONFIG[thunder]    = "-DPLUGIN_THUNDER=ON,-DPLUGIN_THUNDER=OFF,"
+PACKAGECONFIG[thunder]      = "-DPLUGIN_THUNDER=ON,-DPLUGIN_THUNDER=OFF,"
 PACKAGECONFIG[ionmemory]    = "-DPLUGIN_IONMEMORY=ON,-DPLUGIN_IONMEMORY=OFF,"
 
 # Legacy components (Dobby specs + legacy Sky plugins)
