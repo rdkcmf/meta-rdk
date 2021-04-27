@@ -83,6 +83,8 @@ def remove_duplicate_license(d):
 python create_license_manifest() {
 
     remove_duplicate_license(d)
+    import sys
+    sys.path.append(d.expand('${STAGING_DIR_NATIVE}/${PYTHON_SITEPACKAGES_DIR}/'))
 
     try:
         from reportlab.pdfgen import canvas
