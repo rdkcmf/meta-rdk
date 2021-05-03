@@ -68,6 +68,7 @@ RDEPENDS_packagegroup-rdk-ccsp-broadband = "\
     parodus2ccsp \
     dca \
     telemetry \
+    webconfig-framework \
     \
 "
 RDEPENDS_packagegroup-rdk-ccsp-broadband += "\
