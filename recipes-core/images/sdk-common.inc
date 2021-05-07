@@ -7,6 +7,7 @@ USER_PREFERRED_SDK_INSTALL_DIR = "./RNE-3.0"
 #changes made for populating SDK
 TOOLCHAIN_OUTPUTNAME="${MACHINE}-RNE-SDK-${SDK_VERSION}"
 SDKIMAGE_FEATURES_remove ="dbg-pkgs"
+SDKIMAGE_FEATURES_remove ="src-pkgs"
 POPULATE_SDK_POST_TARGET_COMMAND += 'do_rdk_artifact_customizations; '
 
 TOOLCHAIN_HOST_TASK_append_daisy = "\

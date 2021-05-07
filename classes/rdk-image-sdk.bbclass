@@ -1,7 +1,7 @@
 IMAGE_FEATURES[validitems] += " firebolt release"
 
 #Firebolt SDK updates --- begin
-tar_sdk[prefuncs] += "do_rdk_artifact_customizations "
+#tar_sdk[prefuncs] += "do_rdk_artifact_customizations "
 #Firebolt SDK updates --- end
 
 #This function is included to avoid file name mismatch for release builds
@@ -84,14 +84,12 @@ fakeroot python do_rdk_artifact_customizations() {
 
     logger.close()
 }
-
-def copy_egl_req_files(d,base_dir,logger):
+def replace_egl_header_files(d,base_dir,logger):
     from shutil import copyfile
     import subprocess
 
     from_dir= os.path.join(d.getVar("PKG_CONFIG_SYSROOT_DIR", True), "usr/include/")
     to_dir= os.path.join(base_dir, "usr/include/");
-
     logger.write("Copying EGL headers to standard location \n")
     # Only copy files that already existed. 17.3 SDK has GLES3, 15.3 only has GLES etc
     copy_if_present(os.path.join(to_dir, "api/EGL"), to_dir, "EGL", logger)
@@ -99,6 +97,68 @@ def copy_egl_req_files(d,base_dir,logger):
     copy_if_present(os.path.join(to_dir, "api/GLES2"), to_dir, "GLES2", logger)
     copy_if_present(os.path.join(to_dir, "api/GLES3"), to_dir, "GLES3", logger)
     copy_if_present(os.path.join(to_dir, "api/KHR"), to_dir, "KHR", logger)
+
+def copy_egl_req_files_brcm_dnfl(d,base_dir,logger):
+    from shutil import copyfile
+    import subprocess
+
+    replace_egl_header_files(d,base_dir,logger)
+
+    #now we need to remove X11 references from egl platfomr headers
+    subprocess.call(['sed','-i','/X11\//d',base_dir+"/usr/include/EGL/eglplatform.h"])
+    subprocess.call(['sed','-i','/typedef Display/c typedef void *EGLNativeDisplayType;',base_dir+"/usr/include/EGL/eglplatform.h"])
+    subprocess.call(['sed','-i','/typedef Pixmap/c typedef void *EGLNativePixmapType;',base_dir+"/usr/include/EGL/eglplatform.h"])
+    subprocess.call(['sed','-i','/typedef Window/c typedef void *EGLNativeWindowType;',base_dir+"/usr/include/EGL/eglplatform.h"])
+
+    #dunfell has a sandbox model, so we need to pick files from individual components
+    from_dir= os.path.join(d.getVar("COMPONENTS_DIR", True), d.getVar("MACHINE_ARCH", True))
+    #Copy package configuration of egl also.
+    to_dir= os.path.join(base_dir, "usr/lib/pkgconfig/");
+    comp_dir=os.path.join(from_dir, "broadcom-refsw/usr/lib/pkgconfig/")
+    logger.write("Copying "+ comp_dir + 'egl.pc' +" to "+ to_dir + 'egl.pc\n')
+    copyfile(comp_dir + 'egl.pc', to_dir + 'egl.pc')
+    copyfile(comp_dir + 'glesv2.pc', to_dir + 'glesv2.pc')
+
+    logger.write("Copying "+ from_dir + '../libv3ddriver.so' +" to "+ to_dir + '../libv3ddriver.so\n')
+    copyfile(comp_dir + '../libv3ddriver.so', to_dir + '../libv3ddriver.so')
+
+    #wayland-egl.h is from wayland-egl-bnxs
+    from_dir= os.path.join(d.getVar("COMPONENTS_DIR", True), d.getVar("TUNE_PKGARCH", True))
+    comp_dir=os.path.join(from_dir, "wayland-egl-bnxs/usr/include/")
+    to_dir= os.path.join(base_dir, "usr/include/");
+
+    logger.write("Copying "+ comp_dir + 'wayland-egl.h' +" to "+ to_dir + 'wayland-egl.h\n')
+    copyfile(comp_dir + 'wayland-egl.h', to_dir + 'wayland-egl.h')
+
+    logger.write("Copying "+ comp_dir + '../lib/libwayland-egl.so.0.0.0' +" to "+ to_dir + '../lib/libwayland-egl.so.0.0.0\n')
+    copyfile(comp_dir + '../lib/libwayland-egl.so.0.0.0', to_dir + '../lib/libwayland-egl.so.0.0.0')
+    
+    logger.write("Copying "+comp_dir + '../lib/pkgconfig/wayland-egl.pc '+ to_dir + '../lib/pkgconfig/wayland-egl.pc')
+    copyfile(comp_dir + '../lib/pkgconfig/wayland-egl.pc', to_dir + '../lib/pkgconfig/wayland-egl.pc')
+
+    #Now we need to create symlinks for libEGL.so libGLESV1.so libGLESV2.so libwayland-egl.so libwayland-egl.so.0
+    cur_dir= os.getcwd()
+    os.chdir( to_dir + '../lib/')
+    if not os.path.exists('libEGL.so'):
+        os.symlink('libv3ddriver.so','libEGL.so')
+    if not os.path.exists('libGLESv1.so'):
+        os.symlink('libv3ddriver.so','libGLESv1.so')
+    if not os.path.exists('libGLESv2.so'):
+        os.symlink('libv3ddriver.so','libGLESv2.so')
+    if not os.path.exists('libwayland-egl.so'):
+        os.symlink('libwayland-egl.so.0.0.0','libwayland-egl.so')
+    os.chdir(cur_dir)
+
+
+def copy_egl_req_files_brcm(d,base_dir,logger):
+    from shutil import copyfile
+    import subprocess
+
+    replace_egl_header_files(d,base_dir,logger)
+
+    from_dir= os.path.join(d.getVar("PKG_CONFIG_SYSROOT_DIR", True), "usr/include/")
+    to_dir= os.path.join(base_dir, "usr/include/");
+
 
     #now we need to remove X11 references from egl platfomr headers
     subprocess.call(['sed','-i','/X11\//d',base_dir+"/usr/include/EGL/eglplatform.h"])
@@ -135,6 +195,22 @@ def copy_egl_req_files(d,base_dir,logger):
     copyfile(from_dir + 'egl.pc', to_dir + 'egl.pc')
     logger.write("Copying "+ from_dir + 'wayland-egl.pc' +" to "+ to_dir + 'wayland-egl.pc\n')
     copyfile(from_dir + 'wayland-egl.pc', to_dir + 'wayland-egl.pc')
+
+#For realteck devices
+def copy_egl_req_files_hank(d,base_dir,logger):
+    from shutil import copyfile
+    import subprocess
+
+    replace_egl_header_files(d,base_dir,logger)
+
+    #now we need to remove X11 references from egl platfomr headers
+    subprocess.call(['sed','-i','/X11\//d',base_dir+"/usr/include/EGL/eglplatform.h"])
+    subprocess.call(['sed','-i','/typedef Display/c struct gbm_device;\nstruct gbm_surface;\n\n',base_dir+"/usr/include/EGL/eglplatform.h"])
+    subprocess.call(['sed','-i','/typedef Pixmap/c typedef struct gbm_device * EGLNativeDisplayType;\ntypedef struct gbm_surface * EGLNativeWindowType;\n',base_dir+"/usr/include/EGL/eglplatform.h"])
+    subprocess.call(['sed','-i',
+    '/typedef Window/c typedef void * EGLNativePixmapType;\n\ntypedef EGLNativeWindowType NativeWindowType;\ntypedef EGLNativePixmapType NativePixmapType;\ntypedef EGLNativeDisplayType NativeDisplayType;',
+    base_dir+"/usr/include/EGL/eglplatform.h"])
+
 
 def remove_dead_links (basedir, logger):
     for root,dir,fnames in os.walk(basedir):
@@ -209,6 +285,7 @@ def do_license_based_cleanup(d,rreverse_folder):
     base_dir += d.getVar("SDKTARGETSYSROOT", True)
     logger = open (d.getVar("WORKDIR", True) + '/temp/log.sdk_removedfiles','w')
     machine_overrides = d.getVar("MACHINEOVERRIDES", True)
+    distro_features = d.getVar("DISTRO_FEATURES" , True)
 
     for component in os.listdir(rreverse_folder):
        remove_if_retricted_license(d,base_dir,component,logger)
@@ -217,7 +294,12 @@ def do_license_based_cleanup(d,rreverse_folder):
     do_rootfs_cleanup(base_dir,logger)
 
     if "brcm" in machine_overrides:
-        copy_egl_req_files(d,base_dir,logger)
+        if "dunfell" in distro_features:
+            copy_egl_req_files_brcm_dnfl(d,base_dir,logger)
+        else:
+            copy_egl_req_files_brcm(d,base_dir,logger)
+    elif "hank" in machine_overrides:
+        copy_egl_req_files_hank(d,base_dir,logger)
     #we are forced to remove the library archive files since it contains
     # references to oem libraries, causing build failures
         remove_oem_match_fname(base_dir, ".*\.la$", logger)
@@ -251,7 +333,7 @@ def remove_if_retricted_license(d,base_dir,entry, logger):
 
     license_type = get_token_from_file (d,entry, "LICENSE").upper()
     if any (lic_entry in license_type for lic_entry in restricted_licenses):
-        logger.write("Removing entries from component :: " + entry+ '\n')
+        logger.write("Removing entries from component :: " + entry +'\n')
         remove_all_from_package(d,base_dir,entry,logger)
         return True
     return False
