@@ -58,7 +58,7 @@ DISTRO_FEATURES_append = " safec"
 
 PREFERRED_PROVIDER_cpgu = "cpg-pbt"
 PREFERRED_PROVIDER_cpgc = "cpg-pbt"
-PREFERRED_VERSION_bluez5_dunfell ?= "5.45"
+PREFERRED_VERSION_bluez5_dunfell ?= "5.54"
 
 # Masking recipes for CEDM multicall implementation in RDK-V
 BBMASK .= "|.config-files|.config-service|.cpgu-src|.cpgu-pbt|.cpgc-src|.cpgc-pbt"
