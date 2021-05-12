@@ -107,6 +107,9 @@ BBMASK .= "${FEATURE_WANMANAGER_JSONHAL_MASK}"
 HUBLINUX_MASK ?= "|.meta-rdk-soc-broadcom-broadband/meta-brcm-broadband/recipes-kernel/linux/hublinux_4.19.bb"
 BBMASK .= "${HUBLINUX_MASK}"
 
+# add rdkversion_1.0.bb is not supported for broadband devices.
+BBMASK .= "|./meta-rdk/recipes-common/rdkversion/"
+
 DISTRO_FEATURES_append = " telemetry2_0"
 DISTRO_FEATURES_append = " snmppa"
 

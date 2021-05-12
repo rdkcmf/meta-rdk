@@ -23,6 +23,9 @@ BBMASK .= "|.meta-rdk-comcast/recipes-extended/rdkfwupgrader/rdkfwupgrader.bb"
 # parodus bbappend is supported for video device.
 BBMASK .= "|./meta-rdk-comcast-video/recipes-support/parodus/parodus_%.bbappend"
 
+# add rdkversion_1.0.bb is not supported for Camera devices.
+BBMASK .= "|./meta-rdk/recipes-common/rdkversion/"
+
 DISTRO_FEATURES_remove = "zeroconf"
 
 OPTIMIZE_DEFAULT = "-Os"
