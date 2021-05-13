@@ -40,8 +40,6 @@ layers: meta-linaro, meta-linaro-toolchain
 Patches
 ==========
 
-Sumbit patches to https://gerrit.teamccp.com/
-
 Layer maintainers:
   Nicolas Dechesne <nicolas.dechesne@linaro.org>
   Trevor Woerner <trevor.woerner@linaro.org>
@@ -54,7 +52,7 @@ This layer includes configuration template files in meta-rdk/conf
 folder. The easiest way to work with this layer, is to use the
 associated repo manifest file, and the embedded setup script.
 
-$ repo init https://gerrit.teamccp.com/rdk/yocto_oe/layers/rdkmanifest -b daisy -g rdk
+$ repo init https://<url>/<repository>/rdkmanifest -b daisy -g rdk
 $ repo sync
 $ source meta-rdk/setup-environment
 

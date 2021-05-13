@@ -2,9 +2,6 @@ SUMMARY = "Image with RDK components"
 
 IMAGE_FEATURES += "package-management"
 
-LICENSE = "RDK"
-LIC_FILES_CHKSUM = "file://${COREBASE}/../meta-rdk-restricted/licenses/RDK;md5=ba986f8eaa991d86ab2ab6f837701a5f"
-
 inherit rdk-image
 
 IMAGE_ROOTFS_SIZE = "8192"

@@ -1,7 +1,7 @@
 SUMMARY = "bluetooth-leAppMgr"
 SECTION = "console/utils"
-LICENSE = "RDK"
-LIC_FILES_CHKSUM = "file://${COREBASE}/../meta-rdk-restricted/licenses/RDK;md5=ba986f8eaa991d86ab2ab6f837701a5f"
+LICENSE = "Apache-2.0"
+LIC_FILES_CHKSUM = "file://LICENSE;md5=175792518e4ac015ab6696d16c4f607e"
 
 PV = "${RDK_RELEASE}+git${SRCPV}"
 

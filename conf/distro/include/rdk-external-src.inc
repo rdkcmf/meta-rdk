@@ -6,6 +6,3 @@
 #
 #INHERIT += "externalsrc"
 #SRCTREECOVEREDTASKS ?= "do_unpack do_fetch"
-
-#EXTERNALSRC_pn-rmfgeneric = "${RDK_PROJECT_ROOT_PATH}/mediaframework"
-#EXTERNALSRC_BUILD_pn-rmfgeneric = "${RDK_PROJECT_ROOT_PATH}/mediaframework"

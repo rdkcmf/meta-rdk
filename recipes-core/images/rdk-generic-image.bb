@@ -2,9 +2,6 @@ require rdk-oss-image.bb
 
 SUMMARY = "Image with RDK components"
 
-LICENSE = "RDK"
-LIC_FILES_CHKSUM = "file://${COREBASE}/../meta-rdk-restricted/licenses/RDK;md5=ba986f8eaa991d86ab2ab6f837701a5f"
-
 IMAGE_INSTALL += " \
     packagegroup-rdk-generic \
     "

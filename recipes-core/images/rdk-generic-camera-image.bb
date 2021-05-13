@@ -4,8 +4,6 @@ inherit rdk-image-sdk
 
 IMAGE_FEATURES += "package-management camera"
 
-LICENSE = "CLOSED"
-
 IMAGE_ROOTFS_SIZE = "8192"
 
 IMAGE_INSTALL_append += " \

@@ -26,7 +26,6 @@ RDEPENDS_packagegroup-rdk-media-common = "\
     virtual/gst-plugins-playersinkbin \
     virtual/mfrlib \
     rmfstreamer \
-    storagemanager \
     iarm-set-powerstate \
     iarm-query-powerstate \
     crashupload \

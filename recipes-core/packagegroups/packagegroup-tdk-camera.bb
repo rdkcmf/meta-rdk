@@ -1,6 +1,6 @@
 SUMMARY = "Custom package group for TDK-C"
 
-LICENSE = "CLOSED"
+LICENSE = "MIT"
 
 inherit packagegroup
 
