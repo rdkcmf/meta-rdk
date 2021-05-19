@@ -25,6 +25,7 @@ do_install_append () {
    install ${S}/printaddress.sh ${D}/lib/rdk
    install ${S}/printroute.sh ${D}/lib/rdk
    install ${S}/nlmon.service ${D}/${systemd_unitdir}/system
+   install ${S}/ipmodechange.sh ${D}/lib/rdk
 }
 
 do_install_append_hybrid () {
@@ -40,6 +41,7 @@ FILES_${PN} += "${systemd_unitdir}/system/* \
                /lib/rdk/checkDefaultRoute.sh \
                /lib/rdk/printaddress.sh \
                /lib/rdk/printroute.sh \
+               /lib/rdk/ipmodechange.sh \
                ${sysconfdir}/nlmon.cfg \
                "
 FILES_${PN}_append_client += "/lib/rdk/ipv6addressChange.sh \
