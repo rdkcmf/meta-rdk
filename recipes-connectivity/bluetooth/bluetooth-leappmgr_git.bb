@@ -1,0 +1,43 @@
+SUMMARY = "bluetooth-leAppMgr"
+SECTION = "console/utils"
+LICENSE = "RDK"
+LIC_FILES_CHKSUM = "file://${COREBASE}/../meta-rdk-restricted/licenses/RDK;md5=ba986f8eaa991d86ab2ab6f837701a5f"
+
+PV = "${RDK_RELEASE}+git${SRCPV}"
+
+SRCREV = "${AUTOREV}"
+SRCREV_FORMAT = "bluetooth-leappmgr"
+
+SRC_URI = "${RDK_GENERIC_ROOT_GIT}/bluetooth_leAppMgr/generic;protocol=${RDK_GIT_PROTOCOL};branch=${RDK_GIT_BRANCH}"
+S = "${WORKDIR}/git"
+
+DEPENDS = "bluetooth-mgr cjson"
+
+# RPC Must be Enabled for Video Platforms only; Not for XB platforms. Also iarmbus is dependency for Video Platforms
+DEPENDS_append_client = " iarmbus"
+DEPENDS_append_hybrid = " iarmbus"
+
+DEPENDS += " rdk-logger"
+DEPENDS += " rfc"
+DEPENDS += " iarmbus tr69hostif-headers"
+
+RDEPENDS_${PN}  = " bluetooth-mgr"
+RDEPENDS_${PN} += " cjson"
+RDEPENDS_${PN} += " rdk-logger"
+
+
+inherit autotools pkgconfig systemd coverity
+
+ENABLE_RDK_LOGGER = "--enable-rdk-logger=${@bb.utils.contains('RDEPENDS_${PN}', 'rdk-logger', 'yes', 'no', d)}"
+EXTRA_OECONF += " ${ENABLE_RDK_LOGGER}"
+
+do_install_append() {
+	install -d ${D}${systemd_unitdir}/system ${D}${sysconfdir}
+    install -m 0755 ${S}/conf/startBtrLeAppMgr.sh ${D}${bindir}
+    install -m 0644 ${S}/conf/btrLeAppMgr.service ${D}${systemd_unitdir}/system
+}
+
+SYSTEMD_SERVICE_${PN}  = "btrLeAppMgr.service"
+
+FILES_${PN} += "${systemd_unitdir}/system/btrLeAppMgr.service"
+
