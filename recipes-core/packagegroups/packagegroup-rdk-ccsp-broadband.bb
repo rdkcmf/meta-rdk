@@ -82,6 +82,7 @@ RDEPENDS_packagegroup-rdk-ccsp-broadband += " ${@bb.utils.contains('DISTRO_FEATU
 RDEPENDS_packagegroup-rdk-ccsp-broadband += " ${@bb.utils.contains('DISTRO_FEATURES', 'usppa', "usp-pa", "", d)}"
 
 RDEPENDS_packagegroup-rdk-ccsp-broadband += " ${@bb.utils.contains("DISTRO_FEATURES", "heaptrack", "heaptrack", "", d)}"
+RDEPENDS_packagegroup-rdk-ccsp-broadband += " ${@bb.utils.contains("DISTRO_FEATURES", "gtestapp", "gtest-apps", "", d)}"
 
 DEPENDS += " ccsp-common-library"
 
