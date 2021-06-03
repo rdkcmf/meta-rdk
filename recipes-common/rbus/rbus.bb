@@ -15,6 +15,9 @@ EXTRA_OECMAKE += " ${@bb.utils.contains('DISTRO_FEATURES', 'gtestapp', '-DENABLE
 inherit cmake systemd pkgconfig coverity
 
 DEPENDS = "rbus-core rtmessage"
+
+CFLAGS_append_dunfell = " -Wno-format-truncation "
+
 export RDK_FSROOT_PATH = '${STAGING_DIR_TARGET}'
 
 FILES_${PN}-dev += "${libdir}/cmake"
