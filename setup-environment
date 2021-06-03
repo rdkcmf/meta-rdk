@@ -184,7 +184,7 @@ EOF
     sed -e "s|##RDK_FLAVOR##|${_RDK_FLAVOR}|g" -i conf/local.conf
 fi
 
-rpi='raspberrypi'
+rpi='raspberrypi-rdk-cmc'
 if [[ "$MACHINE" == *"$rpi"* ]]; then
         source ${PWD}/../meta-rdk/rename_srcrev.sh
 fi

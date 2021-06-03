@@ -41,3 +41,17 @@ TOOLCHAIN_HOST_TASK_append_daisy = "\
    "
 TOOLCHAIN_HOST_TASK_append = " nativesdk-bison"
 TOOLCHAIN_TARGET_TASK_append  =" devicesettings-hal-headers rt-headers"
+
+do_populate_sdk_ext_prepend() {
+    builddir = d.getVar('TOPDIR')
+    if os.path.exists(builddir + '/conf/templateconf.cfg'):
+        with open(builddir + '/conf/templateconf.cfg', 'w') as f:
+            f.write('meta/conf\n')
+}
+
+copy_buildsystem_append() {
+        baseoutpath = d.getVar('SDK_OUTPUT') + '/' + d.getVar('SDKPATH')
+        with open(baseoutpath + '/conf/bblayers.conf', 'a') as f:
+            f.write('RDKROOT = "$' + '{TOPDIR}/layers/openembedded-core" \n' )
+}
+
