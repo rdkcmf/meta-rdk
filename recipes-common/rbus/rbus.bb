@@ -14,7 +14,7 @@ EXTRA_OECMAKE += " ${@bb.utils.contains('DISTRO_FEATURES', 'gtestapp', '-DENABLE
 
 inherit cmake systemd pkgconfig coverity
 
-DEPENDS = "rbus-core rtmessage"
+DEPENDS = "rbus-core rtmessage linenoise"
 
 CFLAGS_append_dunfell = " -Wno-format-truncation "
 
