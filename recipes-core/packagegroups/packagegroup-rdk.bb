@@ -15,7 +15,6 @@ RDEPENDS_packagegroup-rdk-generic = "\
     gst-plugins-rdk \
     iarmbus \
     iarmmgrs \
-    servicemanager \
     "
 
 RDEPENDS_packagegroup-rdk-generic_append_qemuall = " sysint"

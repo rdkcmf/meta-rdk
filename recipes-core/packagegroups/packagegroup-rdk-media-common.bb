@@ -19,7 +19,6 @@ RDEPENDS_packagegroup-rdk-media-common = "\
     iarmbus \
     iarmmgrs \
     rdk-logger \
-    servicemanager \
     gst-plugins-rdk \
     rmfgeneric \
     rmfapp \
