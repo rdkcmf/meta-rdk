@@ -39,8 +39,8 @@ if [ -f ${PWD}/../versions.conf ]; then
         sed -z -i 's+SRCREV_pn-rdk/components/generic/iarmmgrs/generic+SRCREV_pn-iarmmgrs-hal-headers+' ${PWD}/../versions.conf
         sed -z -i 's+SRCREV_pn-rdk/components/generic/media_utils/generic+SRCREV_pn-media-utils+' ${PWD}/../versions.conf
         sed -z -i 's+SRCREV_pn-rdk/components/generic/media_utils/generic+SRCREV_pn-media-utils-headers+' ${PWD}/../versions.conf
-        sed -z -i 's+SRCREV_pn-rdk/components/generic/tr69hostif/generic+SRCREV_pn-tr69hostif+' ${PWD}/../versions.conf
-        sed -z -i 's+SRCREV_pn-rdk/components/generic/tr69hostif/generic+SRCREV_pn-tr69hostif-headers+' ${PWD}/../versions.conf
+        sed -z -i 's+SRCREV_pn-rdk/components/thirdparty/dimark/tr69-4.4/devices/raspberrypi+SRCREV_pn-tr69hostif+' ${PWD}/../versions.conf
+        sed -z -i 's+SRCREV_pn-rdk/components/thirdparty/dimark/tr69-4.4/devices/raspberrypi+SRCREV_pn-tr69hostif-headers+' ${PWD}/../versions.conf
         sed -z -i 's+SRCREV_pn-rdk/components/thirdparty/dimark/tr69-4.4/generic+SRCREV_pn-tr69agent+' ${PWD}/../versions.conf
         sed -z -i 's+SRCREV_pn-rdk/components/thirdparty/dimark/tr69-4.4/generic+SRCREV_pn-tr69agent-headers+' ${PWD}/../versions.conf
         sed -z -i 's+SRCREV_pn-rdk/components/generic/audioserver/generic+SRCREV_pn-audioserver+' ${PWD}/../versions.conf
@@ -121,10 +121,14 @@ if [ -f ${PWD}/../versions.conf ]; then
 	sed -z -i 's+SRCREV_pn-rdk/components/cpc/sec-client-rdk/generic+SRCREV_pn-secclient+' ${PWD}/../versions.conf
 	sed -z -i 's+SRCREV_pn-rdk/components/cpc/sec-client-rdk/generic+SRCREV_pn-socprovapi-crypto+' ${PWD}/../versions.conf
 	sed -z -i 's+SRCREV_pn-rdk/components/cpc/sec-client-rdk/generic+SRCREV_pn-socprovapi+' ${PWD}/../versions.conf
+        sed -z -i 's+SRCREV_pn-rdk/components/cpc/sec-client-rdk/generic+SRCREV_pn-secclient+' ${PWD}/../versions.conf
 	sed -z -i 's+SRCREV_pn-rdk/components/cpc/rdk-ca-store/generic+SRCREV_pn-rdk-ca-store+' ${PWD}/../versions.conf
 	sed -z -i 's+SRCREV_pn-rdk/components/cpc/rdk-ca-store/generic+SRCREV_pn-caupdate+' ${PWD}/../versions.conf
         sed -z -i 's+SRCREV_pn-rdk/components/cpc/sec-apis/generic+SRCREV_pn-secapi-common-crypto+' ${PWD}/../versions.conf
         sed -z -i 's+SRCREV_pn-rdk/components/cpc/sec-apis/generic+SRCREV_pn-secapi-common-hw+' ${PWD}/../versions.conf
+	sed -z -i 's+SRCREV_pn-rdk/components/cpc/sec-apis/generic+SRCREV_pn-secapi-common+' ${PWD}/../versions.conf
+	sed -z -i 's+SRCREV_pn-rdk/components/generic/sys_mon_tools/key_simulator/generic+SRCREV_pn-key-simulator+' ${PWD}/../versions.conf
+        sed -z -i 's+SRCREV_pn-rdk/components/generic/sys_mon_tools/key_simulator/generic+SRCREV_pn-sys-resource+' ${PWD}/../versions.conf
 	sed -i 's+SRCREV_pn-rdk/components/generic/crashlog/generic+SRCREV_pn-crashlog+g' ${PWD}/../versions.conf
         sed -i 's+SRCREV_pn-rdk/components/generic/gst-plugins-rdk/soc/raspberry/rpi3/playersinkbin+SRCREV_pn-gst-plugins-playersinkbin-raspberry+g' ${PWD}/../versions.conf
         sed -i 's+SRCREV_pn-rdk/components/generic/podmgr/devices/intel-x86-pc/rdkri+SRCREV_pn-podmgr+g' ${PWD}/../versions.conf
@@ -132,15 +136,14 @@ if [ -f ${PWD}/../versions.conf ]; then
         sed -i 's+SRCREV_pn-rdk/components/generic/gst-plugins-rdk-dvr/generic+SRCREV_pn-gst-plugins-rdk-dvr+g' ${PWD}/../versions.conf
         sed -i 's+SRCREV_pn-rdk/components/generic/xrpSMEngine/generic+SRCREV_pn-xr-sm-engine+g' ${PWD}/../versions.conf
         sed -i 's+SRCREV_pn-rdk/components/generic/libunpriv/generic+SRCREV_pn-libunpriv+g' ${PWD}/../versions.conf
-        sed -i 's+SRCREV_pn-rdk/components/generic/sys_mon_tools/mem_analyser_tools+SRCREV_pn-memstress+g' ${PWD}/../versions.conf
+        sed -i 's+SRCREV_pn-rdk/components/generic/sys_mon_tools/mem_analyser_tools/generic+SRCREV_pn-memstress+g' ${PWD}/../versions.conf
         sed -i 's+SRCREV_pn-rdk/components/generic/telemetry/generic+SRCREV_pn-telemetry+g' ${PWD}/../versions.conf
         sed -i 's+SRCREV_pn-rdk/components/generic/rtcav/generic+SRCREV_pn-rtcav+g' ${PWD}/../versions.conf
         sed -i 's+SRCREV_pn-Comcast/littlesheens.git+SRCREV_pn-littlesheens+g' ${PWD}/../versions.conf
-        sed -i 's+SRCREV_pn-rdk/components/opensource/qt5_1/soc/broadcom/common+ +g' ${PWD}/../versions.conf
+        sed -i 's+SRCREV_pn-rdk/components/opensource/qt5_1/soc/broadcom/common+SRCREV_soc_pn-qtbase+g' ${PWD}/../versions.conf
         sed -i 's+SRCREV_pn-rdk/components/generic/storagemanager/generic+SRCREV_pn-storagemanager+g' ${PWD}/../versions.conf
         sed -i 's+SRCREV_pn-rdk/components/generic/sys_mon_tools/sys_resource/generic+SRCREV_pn-sys-resource +g' ${PWD}/../versions.conf
         sed -i 's+SRCREV_pn-rdk/components/generic/closedcaption/soc/noop/common+SRCREV_pn-closedcaption-hal-noop+g' ${PWD}/../versions.conf
-        sed -i 's+SRCREV_pn-rdk/components/generic/sys_mon_tools/key_simulator/generic+SRCREV_pn-key-simulator+g' ${PWD}/../versions.conf
         sed -i 's+SRCREV_pn-rdk/components/generic/rfc/generic+SRCREV_pn-rfc+g' ${PWD}/../versions.conf
         sed -i 's+SRCREV_pn-rdk/components/generic/control/generic+SRCREV_pn-ctrlm-headers+g' ${PWD}/../versions.conf
         sed -i 's+SRCREV_pn-libtom/libtomcrypt.git+SRCREV_pn-libtomcrypt+g' ${PWD}/../versions.conf
@@ -154,20 +157,19 @@ if [ -f ${PWD}/../versions.conf ]; then
         sed -i 's+SRCREV_pn-rdk/components/generic/crashupload/generic+SRCREV_pn-crashupload+g' ${PWD}/../versions.conf
         sed -i 's+SRCREV_pn-rdk/components/generic/xupnp/generic+SRCREV_pn-xupnp+g' ${PWD}/../versions.conf
         sed -i 's+SRCREV_pn-rdk/components/generic/dtcp/generic+SRCREV_pn-dtcpmgr-noop+g' ${PWD}/../versions.conf
-        sed -i 's+SRCREV_pn-rdk/components/generic/sys_mon_tools/sys_utils/generic+SRCREV_pn-sys-utils+g' ${PWD}/../versions.conf
+        sed -i 's+SRCREV_pn-rdk/components/generic/sys_mon_tools/sys_utils/generic/+SRCREV_pn-sys-utils+g' ${PWD}/../versions.conf
         sed -i 's+SRCREV_pn-rdk/components/generic/mediaframework/soc/raspberrypi/common+SRCREV_pn-rmfhalheaders+g' ${PWD}/../versions.conf
         sed -i 's+SRCREV_pn-rdk/components/generic/rdkbrowser/generic+SRCREV_pn-rdkbrowser+g' ${PWD}/../versions.conf
-        sed -i 's+SRCREV_pn-rdk/components/generic/sysint/devices/raspberrypi+ +g' ${PWD}/../versions.conf
+        sed -i 's+SRCREV_pn-rdk/components/generic/sysint/devices/raspberrypi+SRCREV_soc_pn-sysint+g' ${PWD}/../versions.conf
         sed -i 's+SRCREV_pn-rdk/components/generic/hwselftest/generic+SRCREV_pn-hwselftest+g' ${PWD}/../versions.conf
         sed -i 's+SRCREV_pn-rdk/components/generic/tr69hostif/generic+SRCREV_pn-tr69hostif +g' ${PWD}/../versions.conf
         sed -i 's+SRCREV_pn-rdk/components/generic/rdkbrowser2/generic+SRCREV_pn-rdkbrowser2+g' ${PWD}/../versions.conf
-        sed -i 's+SRCREV_pn-rdk/components/generic/appmanager/generic+SRCREV_pn-appmanager+g' ${PWD}/../versions.conf
         sed -i 's+SRCREV_pn-components/opensource/westeros+SRCREV_pn-westeros+g' ${PWD}/../versions.conf
-        sed -i 's+SRCREV_pn-rdk/components/cpc/socprovisioning/soc/cryptanium/common+ +g' ${PWD}/../versions.conf
+        sed -i 's+SRCREV_pn-rdk/components/cpc/socprovisioning/soc/cryptanium/common+SRCREV_soc_pn-socprovisioning-crypto+g' ${PWD}/../versions.conf
         sed -i 's+SRCREV_pn-rdk/components/generic/sys_mon_tools/analyzers/scripts/host/generic+SRCREV_pn-analyzers-host+g' ${PWD}/../versions.conf
         sed -i 's+SRCREV_pn-rdk/components/generic/dcm/generic+SRCREV_pn-dcmjsonparser+g' ${PWD}/../versions.conf
         sed -i 's+SRCREV_pn-rdk/components/generic/sys_mon_tools/si_cache_parser/generic+SRCREV_pn-si-cache-parser+g' ${PWD}/../versions.conf
-        sed -i 's+SRCREV_pn-rdk/components/generic/rmf_tools/tenableHDCP/soc/broadcom/common+ +g' ${PWD}/../versions.conf
+        sed -i 's+SRCREV_pn-rdk/components/generic/rmf_tools/tenableHDCP/soc/broadcom/common+SRCREV_soc_pn-tenablehdcp+g' ${PWD}/../versions.conf
         sed -i 's+SRCREV_pn-rdk/components/generic/sys_mon_tools/mfr_data/generic+SRCREV_pn-mfr-data+g' ${PWD}/../versions.conf
         sed -i 's+SRCREV_pn-rdk/components/opensource/base64/generic+SRCREV_pn-base64+g' ${PWD}/../versions.conf
         sed -i 's+SRCREV_pn-rdk/components/generic/mocahal/generic+SRCREV_pn-moca-hal+g' ${PWD}/../versions.conf
@@ -176,12 +178,11 @@ if [ -f ${PWD}/../versions.conf ]; then
         sed -i 's+SRCREV_pn-rdk/components/generic/iarmbus/generic+SRCREV_pn-iarmbus+g' ${PWD}/../versions.conf
         sed -i 's+SRCREV_pn-nanomsg/nanomsg.git+SRCREV_pn-nanomsg+g' ${PWD}/../versions.conf
         sed -i 's+SRCREV_pn-rdk/components/generic/breakpad_wrapper/generic+SRCREV_pn-breakpad-wrapper+g' ${PWD}/../versions.conf
-        sed -i 's+SRCREV_pn-rdk/components/generic/media_interface_lib/soc/broadcom/common+ +g' ${PWD}/../versions.conf
         sed -i 's+SRCREV_pn-rdk/components/generic/lxccpid+SRCREV_pn-lxccpid+g' ${PWD}/../versions.conf
         sed -i 's+SRCREV_pn-rdk/components/generic/iarmmgrs/generic+SRCREV_pn-iarmmgrs +g' ${PWD}/../versions.conf
         sed -i 's+SRCREV_pn-rdk/components/cpc/authservice/generic+SRCREV_authservice_pn-authservice+g' ${PWD}/../versions.conf
         sed -i 's+SRCREV_pn-rdk/components/generic/control-testapp/generic+SRCREV_pn-ctrlm-testapp+g' ${PWD}/../versions.conf
-        sed -i 's+SRCREV_pn-rdk/components/thirdparty/vnc/generic+ +g' ${PWD}/../versions.conf
+        sed -i 's+SRCREV_pn-rdk/components/thirdparty/vnc/generic+SRCREV_pn-vnc+g' ${PWD}/../versions.conf
         sed -i 's+SRCREV_pn-rdk/components/generic/hdmicec/soc/raspberrypi/rpi3+SRCREV_pn-hdmicec-hal+g' ${PWD}/../versions.conf
         sed -i 's+SRCREV_pn-rdk/components/cpc/xre/devices/raspberry/rpi3+SRCREV_xreplat_pn-xre-receiver-default +g' ${PWD}/../versions.conf
         sed -i 's+SRCREV_pn-rdk/components/generic/sec-apis/generic+SRCREV_pn-secapi-noop+g' ${PWD}/../versions.conf
@@ -191,11 +192,10 @@ if [ -f ${PWD}/../versions.conf ]; then
         sed -i 's+SRCREV_pn-rdk/components/opensource/jquery/generic+SRCREV_pn-jquery+g' ${PWD}/../versions.conf
         sed -i 's+SRCREV_pn-rdk/components/generic/sec-apis/generic+SRCREV_pn-secapi-noop+g' ${PWD}/../versions.conf
         sed -i 's+SRCREV_pn-rdk/components/generic/sys_mon_tools/iarm_set_powerstate/generic+SRCREV_pn-iarm-set-powerstate+g' ${PWD}/../versions.conf
-        sed -i 's+SRCREV_pn-rdk/components/generic/netmonitor+SRCREV_pn-nlmonitor+g' ${PWD}/../versions.conf
+        sed -i 's+SRCREV_pn-rdk/components/generic/netmonitor/generic+SRCREV_pn-nlmonitor+g' ${PWD}/../versions.conf
         sed -i 's+SRCREV_pn-rdk/components/generic/libSyscallWrapper/generic+SRCREV_pn-libsyswrapper+g' ${PWD}/../versions.conf
         sed -i 's+SRCREV_pn-rdk/components/generic/rmf_tools/tenableHDCP/generic+SRCREV_pn-tenablehdcp+g' ${PWD}/../versions.conf
         sed -i 's+SRCREV_pn-rdk/components/generic/closedcaption/generic+SRCREV_pn-closedcaption+g' ${PWD}/../versions.conf
-        sed -i 's+SRCREV_pn-rdk/components/generic/rdkat/generic+SRCREV_pn-rdkat+g' ${PWD}/../versions.conf
         sed -i 's+SRCREV_pn-rdk/components/generic/servicemanager/generic+SRCREV_pn-servicemanager+g' ${PWD}/../versions.conf
         sed -i 's+SRCREV_pn-rdk/components/generic/sys_mon_tools/mfr_utils/generic+SRCREV_pn-mfr-utils+g' ${PWD}/../versions.conf
         sed -i 's+SRCREV_pn-rdk/components/generic/closedcaption/soc/noop/common+SRCREV_pn-closedcaption-hal-noop+g' ${PWD}/../versions.conf
@@ -220,16 +220,16 @@ if [ -f ${PWD}/../versions.conf ]; then
         sed -i 's+SRCREV_pn-rdk/components/generic/servicemanager/generic+SRCREV_pn-servicemanager+g' ${PWD}/../versions.conf
         sed -i 's+SRCREV_pn-rdk/components/generic/rdkmediaplayer/generic+SRCREV_pn-rdkmediaplayer+g' ${PWD}/../versions.conf
         sed -i 's+SRCREV_pn-zserge/jsmn.git+SRCREV_pn-jsmn+g' ${PWD}/../versions.conf
-        sed -i 's+SRCREV_pn-rdk/components/cpc/appmanager/generic+ +g' ${PWD}/../versions.conf
+        sed -i 's+SRCREV_pn-rdk/components/cpc/appmanager/generic+SRCREV_cpcmgr_pn-appmanager+g' ${PWD}/../versions.conf
         sed -i 's+SRCREV_pn-rdk/components/generic/aamp+SRCREV_pn-aamp+g' ${PWD}/../versions.conf
         sed -i 's+SRCREV_pn-rdk/components/generic/rdm+SRCREV_pn-rdm+g' ${PWD}/../versions.conf
         sed -i 's+SRCREV_pn-rdk/components/cpc/authservice/devices/raspberrypi+SRCREV_authdevice_pn-authservice+g' ${PWD}/../versions.conf
         sed -i 's+SRCREV_pn-rdk/components/generic/sys_mon_tools/hostdataconverter/generic+SRCREV_pn-hostdataconverter+g' ${PWD}/../versions.conf
         sed -i 's+SRCREV_pn-rdk/components/generic/fonts/generic+SRCREV_pn-rdk-fonts+g' ${PWD}/../versions.conf
-        sed -i 's+SRCREV_pn-rdk/components/generic/rdkapps/generic+ +g' ${PWD}/../versions.conf
+        sed -i 's+SRCREV_pn-rdk/components/generic/rdkapps/generic+SRCREV_rdkbrowserapps_pn-rdkbrowser+g' ${PWD}/../versions.conf
         sed -i 's+SRCREV_pn-rdk/components/generic/cpuprocanalyzer+SRCREV_pn-cpuprocanalyzer+g' ${PWD}/../versions.conf
         sed -i 's+SRCREV_pn-rdk/components/generic/dca/generic+SRCREV_pn-dca+g' ${PWD}/../versions.conf
-        sed -i 's+SRCREV_pn-rdk/components/generic/sys_mon_tools/cgroup_memory_utils/generic+cgrouputils+g' ${PWD}/../versions.conf
+        sed -i 's+SRCREV_pn-rdk/components/generic/sys_mon_tools/cgroup_memory_utils/generic+SRCREV_pn-cgrouputils+g' ${PWD}/../versions.conf
         sed -i 's+SRCREV_pn-rdk/components/generic/audiocapturemgr/generic+SRCREV_pn-audiocapturemgr+g' ${PWD}/../versions.conf
         sed -i 's+SRCREV_pn-rdk/components/generic/rdk_logger/generic+SRCREV_pn-rdk-logger+g' ${PWD}/../versions.conf
         sed -i 's+SRCREV_pn-rdk/components/cpc/sec-apis-crypto/generic+SRCREV_pn-secapi-crypto-brcm+g' ${PWD}/../versions.conf
@@ -242,7 +242,7 @@ if [ -f ${PWD}/../versions.conf ]; then
         sed -i 's+SRCREV_pn-rdk/components/thirdparty/dimark/tr69-4.4/generic+SRCREV_pn-tr69agent+g' ${PWD}/../versions.conf
         sed -i 's+SRCREV_pn-rdk/components/generic/sysint/generic+SRCREV_pn-sysint+g' ${PWD}/../versions.conf
         sed -i 's+SRCREV_pn-rdk/components/generic/fog/generic+SRCREV_pn-fog+g' ${PWD}/../versions.conf
-        sed -i 's+SRCREV_pn-rdk/components/cpc/firewall/generic+ +g' ${PWD}/../versions.conf
+        sed -i 's+SRCREV_pn-rdk/components/cpc/firewall/generic+SRCREV_firewall_pn-sysint+g' ${PWD}/../versions.conf
 	sed -i 's+SRCREV_pn-rdk/components/cpc/playready-cdm-rdk/generic+SRCREV_pn-playready-cdm-rdk+g' ${PWD}/../versions.conf
 	sed -i 's+SRCREV_pn-rdk/components/cpc/rdk-OCDM-Playready/generic+SRCREV_pn-wpeframework-ocdm-playready-rdk+g' ${PWD}/../versions.conf
 	sed -i 's+SRCREV_pn-rdk/components/generic/rdkfwupdater+SRCREV_pn-rdkfwupgrader+g' ${PWD}/../versions.conf
@@ -293,6 +293,18 @@ if [ -f ${PWD}/../versions.conf ]; then
 	sed -i 's+SRCREV_pn-rdk/components/generic/ermgr+SRCREV_pn-ermgr+g' ${PWD}/../versions.conf
 	sed -i 's+SRCREV_pn-rdk/components/generic/gstreamer-netflix-platform/generic+SRCREV_pn-rdk-gstreamer-utils+g' ${PWD}/../versions.conf
 	sed -i 's+SRCREV_pn-rdk/components/generic/WebconfigFramework/generic+SRCREV_pn-webconfig-framework+g' ${PWD}/../versions.conf
+	sed -i 's+SRCREV_pn-rdk/components/generic/audiocapturemgr/soc/raspberrypi/common+SRCREV_soc_pn-audiocapturemgr+g' ${PWD}/../versions.conf
+	sed -i 's+SRCREV_pn-rdk/components/generic/bluetooth_leAppMgr/soc/raspberrypi/common+SRCREV_soc_pn-bluetooth-leappmgr+g' ${PWD}/../versions.conf
+	sed -i 's+SRCREV_pn-rdk/components/cpc/bluetooth_leAppMgr+SRCREV_cpc_pn-bluetooth-leappmgr+g' ${PWD}/../versions.conf
+	sed -i 's+SRCREV_pn-rdk/components/generic/bluetooth_mgr/soc/raspberrypi/common+SRCREV_soc_pn-bluetooth-mgr+g' ${PWD}/../versions.conf
+	sed -i 's+SRCREV_pn-rdk/components/generic/devicesettings/devices/raspberrypi/rpi3+SRCREV_pn-devicesettings-hal-raspberrypi+g' ${PWD}/../versions.conf
+	sed -i 's+SRCREV_pn-rdk/rdkb/components/opensource/ccsp/DSLAgent/generic+SRCREV_pn-ccsp-dslagent+g' ${PWD}/../versions.conf
+	sed -i 's+SRCREV_pn-rdk/rdkb/components/opensource/ccsp/VLANAgent/generic+SRCREV_pn-ccsp-vlanagent+g' ${PWD}/../versions.conf
+	sed -i 's+SRCREV_pn-rdk/rdkb/components/opensource/ccsp/XTMAgent/generic+SRCREV_pn-ccsp-xtmagent+g' ${PWD}/../versions.conf
+	sed -i 's+SRCREV_pn-rdkb/components/opensource/ccsp/RebootManager+SRCREV_pn-reboot-manager+g' ${PWD}/../versions.conf
+	sed -i 's+SRCREV_pn-rdk/components/rdkssa/generic+SRCREV_pn-rdk-oss-ssa+g' ${PWD}/../versions.conf
+	sed -i 's+SRCREV_pn-rdk/yocto_oe/manifests/raspberrypi-manifest+SRCREV_pn-manifest+g' ${PWD}/../versions.conf 
+        sed -i 's+SRCREV_pn-rdk/components/generic/media_interface_lib/soc/broadcom/common+SRCREV_pn-media-interface+g' ${PWD}/../versions.conf
 fi
 
 if [ -f ${PWD}/../versions.conf ]; then
@@ -358,7 +370,7 @@ if [ -f ${PWD}/../auto.conf ]; then
      sed -i 's/SRCREV_pn-rdkversion/SRCREV_rdkversion_pn-rdkversion/g' ${PWD}/../auto.conf
      sed -i 's/SRCREV_pn-config-libs/SRCREV_cpg-libs_pn-config-libs/g' ${PWD}/../auto.conf
      sed -i 's/SRCREV_pn-config-service/SRCREV_cpgu_pn-config-service/g' ${PWD}/../auto.conf
-     sed -i 's/SRCREV_pn-ecfs-search/RCREV_ecfsgeneric_pn-ecfs-search/g' ${PWD}/../auto.conf
+     sed -i 's/SRCREV_pn-ecfs-search/SRCREV_ecfsgeneric_pn-ecfs-search/g' ${PWD}/../auto.conf
      sed -i 's/SRCREV_pn-caupdate/SRCREV_caupdate_pn-caupdate/g' ${PWD}/../auto.conf
      sed -i 's/SRCREV_pn-rdk-ca-store/SRCREV_rdk-ca-store_pn-rdk-ca-store/g' ${PWD}/../auto.conf
      sed -i 's/SRCREV_pn-tdksm/SRCREV_tdkadvanced_pn-tdksm/g' ${PWD}/../auto.conf
@@ -380,7 +392,7 @@ if [ -f ${PWD}/../auto.conf ]; then
      sed -i 's/SRCREV_pn-lxyupdate/SRCREV_lxy_pn-lxyupdate/g' ${PWD}/../auto.conf
      sed -i 's/SRCREV_pn-wayland-plugin-default/SRCREV_xreplgs_pn-wayland-plugin-default/g' ${PWD}/../auto.conf
      sed -i 's/SRCREV_pn-cef-eglfs/SRCREV_rdkcef_chromium_pn-cef-eglfs/g' ${PWD}/../auto.conf
-     sed -i 's/SRCREV_pn-socprovisioning/SRCREV_SOCPROVISIONING_TARGET_pn-socprovisioning/g' ${PWD}/../auto.conf
+     sed -i 's/SRCREV_pn-socprovisioning/SRCREV_socprovisioning_pn-socprovisioning/g' ${PWD}/../auto.conf
      sed -i 's/SRCREV_pn-qtwebrtc/SRCREV_qtwebrtc_pn-qtwebrtc/g' ${PWD}/../auto.conf
      sed -i 's/SRCREV_pn-xre-receiver-default /SRCREV_xre_default_xreplat_servicemanager_svcmgrplat_pn-xre-receiver-default/g' ${PWD}/../auto.conf
      sed -i 's/SRCREV_pn-xre-receiver-default-headers/SRCREV_xrereceiverdefaultheaders_pn-xre-receiver-default-headers/g' ${PWD}/../auto.conf
