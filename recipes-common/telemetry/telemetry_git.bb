@@ -1,7 +1,9 @@
 SUMMARY = "This recipe compiles Telemetry"
 SECTION = "console/utils"
 
-LICENSE = "CLOSED"
+LICENSE = "Apache-2.0"
+LIC_FILES_CHKSUM = "file://LICENSE;md5=175792518e4ac015ab6696d16c4f607e"
+
 SRC_URI = "${RDK_GENERIC_ROOT_GIT}/telemetry/generic;protocol=${RDK_GIT_PROTOCOL};branch=${RDK_GIT_BRANCH}"
 
 DEPENDS += "curl cjson glib-2.0 breakpad-wrapper rbus"

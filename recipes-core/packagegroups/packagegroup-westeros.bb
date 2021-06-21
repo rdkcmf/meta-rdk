@@ -1,6 +1,3 @@
-# Copyright (C) 2016 Khem Raj <raj.khem@gmail.com>
-# Released under the MIT license
-
 DESCRIPTION = "Westeros packages"
 
 LICENSE = "MIT"
