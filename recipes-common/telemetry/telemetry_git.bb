@@ -6,8 +6,9 @@ LIC_FILES_CHKSUM = "file://LICENSE;md5=175792518e4ac015ab6696d16c4f607e"
 
 SRC_URI = "${RDK_GENERIC_ROOT_GIT}/telemetry/generic;protocol=${RDK_GIT_PROTOCOL};branch=${RDK_GIT_BRANCH}"
 
-DEPENDS += "curl cjson glib-2.0 breakpad-wrapper rbus"
+DEPENDS += "curl cjson glib-2.0 breakpad-wrapper rbus libsyswrapper"
 DEPENDS += "rdk-logger"
+
 RDEPENDS_${PN} += "curl cjson glib-2.0 rbus"
 
 PV = "${RDK_RELEASE}+git${SRCPV}"
@@ -24,6 +25,7 @@ LDFLAGS_append = " \
         -lbreakpadwrapper \
         -lpthread \
         -lstdc++ \
+        -lsecure_wrapper \
         "
 
 CXXFLAGS += "-DINCLUDE_BREAKPAD"
