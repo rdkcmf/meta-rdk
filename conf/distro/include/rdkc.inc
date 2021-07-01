@@ -26,6 +26,9 @@ BBMASK .= "|./meta-rdk-comcast-video/recipes-support/parodus/parodus_%.bbappend"
 # add rdkversion_1.0.bb is not supported for Camera devices.
 BBMASK .= "|./meta-rdk/recipes-common/rdkversion/"
 
+# add webconfig-framework.bb to bbmask till such time that it supports Camera devices.
+BBMASK .= "|.meta-rdk/recipes-common/webconfig-framework/webconfig-framework.bb"
+
 DISTRO_FEATURES_remove = "zeroconf"
 
 OPTIMIZE_DEFAULT = "-Os"
