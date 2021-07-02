@@ -15,7 +15,7 @@ SRC_URI = "${CMF_GIT_ROOT}/rdk/components/generic/rdk_logger;protocol=${CMF_GIT_
 S = "${WORKDIR}/git"
 
 DEPENDS = "log4c glib-2.0"
-
+DEPENDS_append = " ${@bb.utils.contains('DISTRO_FEATURES', 'safec', ' safec', " ", d)}"
 DEPENDS += "${@bb.utils.contains('DISTRO_FEATURES', 'systemd', 'systemd syslog-helper', '', d)}"
 
 PACKAGECONFIG[systemd-syslog-helper] = "--enable-systemd-syslog-helper,,"
@@ -26,7 +26,14 @@ PROVIDES = "getClockUptime"
 CXXFLAGS_append_hybrid += " -DLOGMILESTONE"
 CXXFLAGS_append_client += " -DLOGMILESTONE"
 
-inherit autotools pkgconfig coverity
+inherit autotools pkgconfig coverity pkgconfig
+
+CFLAGS_append = " ${@bb.utils.contains('DISTRO_FEATURES', 'safec',  ' `pkg-config --cflags libsafec`', '-fPIC', d)}"
+
+CFLAGS_append = " ${@bb.utils.contains('DISTRO_FEATURES', 'safec', '', ' -DSAFEC_DUMMY_API', d)}"
+LDFLAGS_append = " ${@bb.utils.contains('DISTRO_FEATURES', 'safec', ' `pkg-config --libs libsafec`', '', d)}"
+#safec Support
+EXTRA_OECONF += " --enable-safec"
 
 do_configure_append_broadband () {
 		#Use the RDKB Versions of the Files
