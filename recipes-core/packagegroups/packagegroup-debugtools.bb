@@ -15,8 +15,9 @@ RDEPENDS_${PN} = "\
 
 #Debug tools and its dependencies
 DEPENDS = "\
-  lsof \
-  gperftools \
-  binutils \
+  ${@bb.utils.contains('DISTRO_FEATURES','debugtools_disable_gpertools',' ','binutils',d)}  \
+  ${@bb.utils.contains('DISTRO_FEATURES','debugtools_disable_lsof',' ','lsof',d)}  \ 
+  ${@bb.utils.contains('DISTRO_FEATURES','debugtools_disable_gpertools',' ','gperftools',d)} \
+  ${@bb.utils.contains('DISTRO_FEATURES','debugtools_disable_strace',' ','strace',d)}  \
+  ${@bb.utils.contains('DISTRO_FEATURES','debugtools_disable_gdb',' ','gdb',d)}     \
   "
-

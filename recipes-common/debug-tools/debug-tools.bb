@@ -7,6 +7,8 @@ SRC_URI = "file://debug-tools_download.sh"
 do_install_append () {
         install -d ${D}/${sbindir}/
         install -m 0777 ${WORKDIR}/debug-tools_download.sh ${D}${sbindir}/
-
 }
 
+FILES_${PN} = "\
+    ${sbindir}/debug-tools_download.sh \
+"
