@@ -6,8 +6,8 @@ LIC_FILES_CHKSUM = "file://LICENSE;md5=175792518e4ac015ab6696d16c4f607e"
 SRC_URI = "${CMF_GIT_ROOT}/rdk/components/generic/breakpad_wrapper;protocol=${CMF_GIT_PROTOCOL};branch=${CMF_GIT_BRANCH};name=breakpad_wrapper"
 
 DEPENDS_broadband += "breakpad"
-DEPENDS_client += "rfc breakpad"
-DEPENDS_hybrid += "rfc breakpad"
+DEPENDS_client += "breakpad"
+DEPENDS_hybrid += "breakpad"
 
 SRCREV_breakpad_wrapper = "${AUTOREV}"
 PV = "${RDK_RELEASE}+git${SRCPV}"
@@ -21,8 +21,8 @@ CPPFLAGS_append = " \
     "
 
 LDFLAGS_broadband += "-lbreakpad_client -lpthread"
-LDFLAGS_client += "-lbreakpad_client -lrfcapi -lpthread"
-LDFLAGS_hybrid += "-lbreakpad_client -lrfcapi -lpthread"
+LDFLAGS_client += "-lbreakpad_client -lpthread"
+LDFLAGS_hybrid += "-lbreakpad_client -lpthread"
 
 do_install_append () {
     # Config files and scripts
