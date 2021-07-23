@@ -8,6 +8,11 @@ PREFERRED_VERSION_libupnp = "1.6.22"
 PREFERRED_VERSION_jansson = "2.7"
 PREFERRED_VERSION_libnetfilter-conntrack_daisy = "1.0.2"
 
+# Preferred gtest version/provider
+PREFERRED_VERSION_googletest = "1.10.0"
+PREFERRED_PROVIDER_gtest = "googletest"
+PREFERRED_PROVIDER_gmock = "googletest"
+
 PREFERRED_VERSION_php ?= "7.2.%"
 PREFERRED_VERSION_php-native ?= "7.2.%"
 PREFERRED_VERSION_php_dunfell ?= "7.4.%"
