@@ -4,8 +4,8 @@ LIC_FILES_CHKSUM = "file://LICENSE;md5=c466d4ab8a68655eb1edf0bf8c1a8fb8"
 
 SRC_URI = "gitsm://github.com/rdkcentral/Dobby"
 
-# 2021-07-27
-SRCREV = "ee2ca6a060cf6902b0ceba25349a74df07f069b3"
+# 2021-07-28
+SRCREV = "6c23f0dff7a18626056ee4075ee8bb268bd80033"
 
 DEPENDS = "${@bb.utils.contains('DISTRO_FEATURES', 'systemd', ' systemd ', '', d)} libnl dbus jsoncpp boost yajl python3 "
 RDEPENDS_${PN} = "crun (>= 0.14.1)"
