@@ -24,7 +24,6 @@ LDFLAGS_append = " \
         -lbreakpadwrapper \
         -lpthread \
         -lstdc++ \
-        -ldbus-1 \
         "
 
 CXXFLAGS += "-DINCLUDE_BREAKPAD"
