@@ -110,6 +110,7 @@ BBMASK .= "${HUBLINUX_MASK}"
 # add rdkversion_1.0.bb is not supported for broadband devices.
 BBMASK .= "|./meta-rdk/recipes-common/rdkversion/"
 
+DISTRO_FEATURES_append = " rdm-versioning"
 DISTRO_FEATURES_append = " telemetry2_0"
 DISTRO_FEATURES_append = " snmppa"
 
