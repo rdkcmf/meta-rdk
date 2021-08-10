@@ -1,15 +1,6 @@
-# ============================================================================
-# RDK MANAGEMENT, LLC CONFIDENTIAL AND PROPRIETARY
-# ============================================================================
-# This file (and its contents) are the intellectual property of RDK Management, LLC.
-# It may not be used, copied, distributed or otherwise  disclosed in whole or in
-# part without the express written permission of RDK Management, LLC.
-# ============================================================================
-# Copyright (c) 2020 RDK Management, LLC. All rights reserved.
-# ============================================================================
-#
 SUMMARY = "To install the script to download debug-tools"
-LICENSE = "CLOSED"
+LICENSE = "Apache-2.0"
+LIC_FILES_CHKSUM = "file://${COREBASE}/../meta-rdk/licenses/Apache-2.0;md5=3b83ef96387f14655fc854ddc3c6bd57"
 
 SRC_URI = "file://debug-tools_download.sh"
 
