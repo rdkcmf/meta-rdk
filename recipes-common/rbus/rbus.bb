@@ -10,7 +10,7 @@ SRCREV_FORMAT = "base"
 
 S = "${WORKDIR}/git"
 
-EXTRA_OECMAKE += " ${@bb.utils.contains('DISTRO_FEATURES', 'gtestapp', '-DENABLE_CODE_COVERAGE=ON -DENABLE_UNIT_TESTING=ON', '', d)}"
+EXTRA_OECMAKE += " ${@bb.utils.contains('DISTRO_FEATURES', 'gtestapp', '-DENABLE_UNIT_TESTING=ON', '', d)}"
 
 inherit cmake systemd pkgconfig coverity
 
