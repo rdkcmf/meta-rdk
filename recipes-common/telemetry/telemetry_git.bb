@@ -12,7 +12,7 @@ PV = "${RDK_RELEASE}+git${SRCPV}"
 SRCREV ?= "${AUTOREV}"
 S = "${WORKDIR}/git"
 
-inherit pkgconfig autotools systemd pythonnative
+inherit pkgconfig autotools systemd ${@bb.utils.contains('DISTRO_FEATURES', 'dunfell', 'python3native', 'pythonnative', d)}
 
 LDFLAGS_append = " \
         -lbreakpadwrapper \
