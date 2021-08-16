@@ -4,8 +4,8 @@ LIC_FILES_CHKSUM = "file://LICENSE;md5=c466d4ab8a68655eb1edf0bf8c1a8fb8"
 
 SRC_URI = "gitsm://github.com/rdkcentral/Dobby"
 
-# 2021-06-09
-SRCREV = "e5772c356dfd7a31dcc892efc9d0b17abef87b85"
+# 2021-07-27
+SRCREV = "ee2ca6a060cf6902b0ceba25349a74df07f069b3"
 
 DEPENDS = "${@bb.utils.contains('DISTRO_FEATURES', 'systemd', ' systemd ', '', d)} libnl dbus jsoncpp boost yajl python3 "
 RDEPENDS_${PN} = "crun (>= 0.14.1)"
@@ -19,8 +19,8 @@ inherit pkgconfig cmake systemd
 EXTRA_OECMAKE =  " -DCMAKE_BUILD_TYPE=Debug -DBUILD_REFERENCE=${SRCREV} "
 
 # Enable plugins
-# Logging, networking, ipc, storage and thunder enabled by default for all builds
-PACKAGECONFIG ?= "logging networking ipc storage thunder"
+# Logging, networking, ipc, storage, minidump and thunder enabled by default for all builds
+PACKAGECONFIG ?= "logging networking ipc storage minidump thunder"
 
 # Options for plugins
 # -------------------------------------
@@ -29,6 +29,7 @@ PACKAGECONFIG[logging]      = "-DPLUGIN_LOGGING=ON,-DPLUGIN_LOGGING=OFF,"
 PACKAGECONFIG[networking]   = "-DPLUGIN_NETWORKING=ON,-DPLUGIN_NETWORKING=OFF,"
 PACKAGECONFIG[ipc]          = "-DPLUGIN_IPC=ON,-DPLUGIN_IPC=OFF,"
 PACKAGECONFIG[storage]      = "-DPLUGIN_STORAGE=ON,-DPLUGIN_STORAGE=OFF,"
+PACKAGECONFIG[minidump]     = "-DPLUGIN_MINIDUMP=ON,-DPLUGIN_MINIDUMP=OFF,"
 PACKAGECONFIG[testplugin]   = "-DPLUGIN_TESTPLUGIN=ON,-DPLUGIN_TESTPLUGIN=OFF,"
 PACKAGECONFIG[gpu]          = "-DPLUGIN_GPU=ON,-DPLUGIN_GPU=OFF,"
 PACKAGECONFIG[localtime]    = "-DPLUGIN_LOCALTIME=ON,-DPLUGIN_LOCALTIME=OFF,"
