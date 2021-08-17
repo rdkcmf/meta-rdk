@@ -14,11 +14,10 @@ SRC_URI = "git://github.com/rdkcentral/rdkservices.git;protocol=git;branch=main 
   file://0004-Reduce-BrowserConsoleLog.patch;patchdir=../ \
   file://0005-Enable-mixed-content.patch;patchdir=../ \
   file://0006-Introduce-state-aware-memory-observer.patch;patchdir=../ \
-  file://0007-Kill-unresposinve-suspended-web-process-faster.patch;patchdir=../ \
 "
 
-# Tip of the main at Jul 29, 2021
-SRCREV = "836042da4eaaf2ba7afa43f18c0205220356e030"
+# Tip of the main at Sep 22, 2021
+SRCREV = "a36ebf96d80934c61e3d2c50fcee2681ad8fe3a8"
 
 inherit cmake pkgconfig python3native
 

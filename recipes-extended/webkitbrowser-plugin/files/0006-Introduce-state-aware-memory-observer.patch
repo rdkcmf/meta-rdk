@@ -96,7 +96,7 @@ index 00000000..f3587091
 +
 +}  // namespace WPEFramework
 diff --git a/WebKitBrowser/WebKitBrowser.cpp b/WebKitBrowser/WebKitBrowser.cpp
-index 67461e49..9468e0c7 100644
+index 079ce93..5b6206a 100644
 --- a/WebKitBrowser/WebKitBrowser.cpp
 +++ b/WebKitBrowser/WebKitBrowser.cpp
 @@ -18,6 +18,8 @@
@@ -108,28 +108,27 @@ index 67461e49..9468e0c7 100644
  
  namespace WPEFramework {
  
-@@ -60,7 +62,7 @@ namespace Plugin {
-                 _browser->Register(&_notification);
+@@ -61,7 +63,7 @@ namespace Plugin {
+                     _browser->Register(&_notification);
  
-                 const RPC::IRemoteConnection *connection = _service->RemoteConnection(_connectionId);
--                _memory = WPEFramework::WebKitBrowser::MemoryObserver(connection);
-+                _memory = WPEFramework::WebKitBrowser::StateAwareMemoryObserver::Wrap(WPEFramework::WebKitBrowser::MemoryObserver(connection));
-                 ASSERT(_memory != nullptr);
-                 if (connection != nullptr)
-                     connection->Release();
-@@ -282,6 +284,12 @@ namespace Plugin {
+                     const RPC::IRemoteConnection *connection = _service->RemoteConnection(_connectionId);
+-                    _memory = WPEFramework::WebKitBrowser::MemoryObserver(connection);
++                    _memory = WPEFramework::WebKitBrowser::StateAwareMemoryObserver::Wrap(WPEFramework::WebKitBrowser::MemoryObserver(connection));
+                     ASSERT(_memory != nullptr);
+                     if (connection != nullptr) {
+                         connection->Release();
+@@ -297,6 +299,11 @@ namespace Plugin {
          string message(string("{ \"suspended\": ") + (state == PluginHost::IStateControl::SUSPENDED ? _T("true") : _T("false")) + string(" }"));
          _service->Notify(message);
          event_statechange(state == PluginHost::IStateControl::SUSPENDED);
-+
 +        if (_memory) {
 +          PluginHost::IStateControl::INotification* observer(_memory->QueryInterface<PluginHost::IStateControl::INotification>());
 +          if (observer)
-+            observer->StateChange(state);
-+        }
++	            observer->StateChange(state);
++	}
      }
  
      void WebKitBrowser::Deactivated(RPC::IRemoteConnection* connection)
+
 -- 
 2.25.1
-
