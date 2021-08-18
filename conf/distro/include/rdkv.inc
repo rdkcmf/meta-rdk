@@ -56,6 +56,8 @@ DISTRO_FEATURES_remove_rpi = "cpg-ecfs"
 DISTRO_FEATURES_append  = " bind"
 DISTRO_FEATURES_append = " safec"
 
+DISTRO_FEATURES_append = " rdm-versioning"
+
 PREFERRED_PROVIDER_cpgu = "cpg-pbt"
 PREFERRED_PROVIDER_cpgc = "cpg-pbt"
 PREFERRED_VERSION_bluez5_dunfell ?= "5.54"
