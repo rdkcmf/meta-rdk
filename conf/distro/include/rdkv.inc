@@ -48,7 +48,7 @@ DISTRO_FEATURES_append = " lxy"
 
 # Flags to control cedm builds
 DISTRO_FEATURES_append_rpi = " enable-cpg"
-#DISTRO_FEATURES_append_rpi = " use-cpg-source" 
+#DISTRO_FEATURES_append_rpi = " use-cpg-source"
 
 DISTRO_FEATURES_append  = " cpg-ecfs"
 DISTRO_FEATURES_remove_rpi = "cpg-ecfs"
@@ -58,10 +58,9 @@ DISTRO_FEATURES_append = " safec"
 
 DISTRO_FEATURES_append = " rdm-versioning"
 
-PREFERRED_PROVIDER_cpgu = "cpg-pbt"
-PREFERRED_PROVIDER_cpgc = "cpg-pbt"
 PREFERRED_VERSION_bluez5_dunfell ?= "5.54"
 
+DISTRO_FEATURES_append = " tigress"
 # Masking recipes for CEDM multicall implementation in RDK-V
 BBMASK .= "|.config-files|.config-service|.cpgu-src|.cpgu-pbt|.cpgc-src|.cpgc-pbt"
 

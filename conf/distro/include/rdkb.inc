@@ -51,10 +51,7 @@ PREFERRED_VERSION_libmtp = "1.1.5"
 PREFERRED_VERSION_mosquitto_dunfell = "1.6.%"
 PREFERRED_VERSION_gnupg_dunfell = "1.4.7"
 
-PREFERRED_PROVIDER_cpg-libs = "config-libs"
-PREFERRED_PROVIDER_cpgu = "config-service"
-PREFERRED_PROVIDER_cpgc = "config-files"
-
+DISTRO_FEATURES_append = " tigress"
 #Masking cedm multicall implementation in RDK-B
 BBMASK .= "|.cpgu-src|.cpgu-pbt|.cpgc-src|.cpgc-pbt"
 
