@@ -4,10 +4,10 @@ LIC_FILES_CHKSUM = "file://LICENSE;md5=c466d4ab8a68655eb1edf0bf8c1a8fb8"
 
 SRC_URI = "gitsm://github.com/rdkcentral/Dobby"
 
-# 2021-07-28
-SRCREV = "6c23f0dff7a18626056ee4075ee8bb268bd80033"
+# 2021-08-31
+SRCREV = "afcf43722e6ed3d45f126a520cd6f4c16201eecb"
 
-DEPENDS = "${@bb.utils.contains('DISTRO_FEATURES', 'systemd', ' systemd ', '', d)} libnl dbus jsoncpp boost yajl python3 "
+DEPENDS = "${@bb.utils.contains('DISTRO_FEATURES', 'systemd', ' systemd ', '', d)} libnl dbus jsoncpp boost yajl python3 breakpad breakpad-wrapper "
 RDEPENDS_${PN} = "crun (>= 0.14.1)"
 
 PV = "3.0"
