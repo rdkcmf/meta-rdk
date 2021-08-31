@@ -60,3 +60,21 @@ CFLAGS_append = " ${@bb.utils.contains('DISTRO_FEATURES', 'telemetry2_0', '-DENA
 LDFLAGS_append = " ${@bb.utils.contains('DISTRO_FEATURES', 'telemetry2_0', ' -ltelemetry_msgsender ', '', d)} "
 CFLAGS_append = " -DLOGMILESTONE"
 LDFLAG_append = " -lrdkloggers"
+
+PACKAGES += "${@bb.utils.contains('DISTRO_FEATURES', 'gtestapp', '${PN}-gtest', '', d)}"
+
+FILES_${PN}-gtest = "\
+    ${@bb.utils.contains('DISTRO_FEATURES', 'gtestapp', '${bindir}/xupnp_gtest.bin', '', d)} \
+"
+
+FILES_${PN} = "\
+    ${bindir}/xdiscovery \
+    ${bindir}/xcal-device \
+    ${sysconfdir}/* \
+"
+
+DOWNLOAD_APPS="${@bb.utils.contains('DISTRO_FEATURES', 'gtestapp', 'gtestapp-xupnp', '', d)}"
+inherit comcast-package-deploy
+CUSTOM_PKG_EXTNS="gtest"
+SKIP_MAIN_PKG="yes"
+DOWNLOAD_ON_DEMAND="yes"
