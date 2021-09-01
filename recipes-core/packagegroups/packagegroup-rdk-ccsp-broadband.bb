@@ -76,6 +76,8 @@ RDEPENDS_packagegroup-rdk-ccsp-broadband += "\
 "
 RDEPENDS_packagegroup-rdk-ccsp-broadband += " ${@bb.utils.contains('DISTRO_FEATURES', 'aker', 'aker', '', d)}"
 
+RDEPENDS_packagegroup-rdk-ccsp-broadband += " ${@bb.utils.contains('DISTRO_FEATURES', 'webconfig_bin', 'webcfg', '', d)}"
+
 RDEPENDS_packagegroup-rdk-ccsp-broadband += " ${@bb.utils.contains('DISTRO_FEATURES', 'shorts', 'socat stunnel', '' , d)}"
 RDEPENDS_packagegroup-rdk-ccsp-broadband += " ${@bb.utils.contains('DISTRO_FEATURES', 'snmppa', 'ccsp-snmp-pa ccsp-snmp-pa-ccsp', '', d)}"
 RDEPENDS_packagegroup-rdk-ccsp-broadband += " ${@bb.utils.contains('DISTRO_FEATURES', 'usppa', "usp-pa", "", d)}"
