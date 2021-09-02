@@ -8,12 +8,12 @@ PV = "${RDK_RELEASE}"
 SRCREV_base = "${AUTOREV}"
 
 SRCREV_FORMAT = "base"
-DEPENDS = "rtmessage msgpack-c gtest benchmark"
+DEPENDS = "rtmessage msgpack-c"
 
 S = "${WORKDIR}/git"
-export RDK_FSROOT_PATH = '${STAGING_DIR_TARGET}'
 
 EXTRA_OECMAKE += " ${@bb.utils.contains('DISTRO_FEATURES', 'gtestapp', '-DBUILD_RBUS_BENCHMARK_TEST=ON -DBUILD_RBUS_UNIT_TEST=ON -DBUILD_RBUS_SAMPLE_APPS=ON', '', d)}"
+DEPENDS_append = " ${@bb.utils.contains('DISTRO_FEATURES', 'gtestapp', ' gtest benchmark ', ' ', d)}"
 
 CFLAGS_append_hybrid = " -DRBUS_ALWAYS_ON "
 CFLAGS_append_client = " -DRBUS_ALWAYS_ON "
