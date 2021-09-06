@@ -47,7 +47,7 @@ RDEPENDS_packagegroup-rdk-ccsp-broadband = "\
     ${WIFI_AGENT} \
     ccsp-hotspot \
     ccsp-hotspot-kmod \
-    ${@bb.utils.contains('DISTRO_FEATURES', 'bci', '', bb.utils.contains('DISTRO_FEATURES', 'webui_jst', 'jst','', d), d)} \    
+    ${@bb.utils.contains('DISTRO_FEATURES', 'bci', bb.utils.contains('DISTRO_FEATURES', 'bci_webui_jst', 'jst','', d), bb.utils.contains('DISTRO_FEATURES', 'webui_jst', 'jst','', d), d)} \    
     ${@bb.utils.contains("DISTRO_FEATURES", "webui_php", "ccsp-webui-csrf", "", d)} \
     ${@bb.utils.contains("DISTRO_FEATURES", "bci", "ccsp-webui-csrf", "", d)} \
     ${@bb.utils.contains("DISTRO_FEATURES", "bridgeUtilsBin", "hal-bridgeutil", "", d)} \
@@ -73,7 +73,7 @@ RDEPENDS_packagegroup-rdk-ccsp-broadband = "\
 "
 RDEPENDS_packagegroup-rdk-ccsp-broadband += "\
     ${@bb.utils.contains("DISTRO_FEATURES", "mlt", "sys-resource", " ", d)} \
-    ${@bb.utils.contains('DISTRO_FEATURES', 'bci', 'ccsp-webui-bci', bb.utils.contains('DISTRO_FEATURES', 'webui_jst', 'ccsp-webui-jst','ccsp-webui-php', d), d)} \
+    ${@bb.utils.contains('DISTRO_FEATURES', 'bci', bb.utils.contains('DISTRO_FEATURES', 'bci_webui_jst', 'ccsp-webui-bci-jst','ccsp-webui-bci-php', d), bb.utils.contains('DISTRO_FEATURES', 'webui_jst', 'ccsp-webui-jst','ccsp-webui-php', d), d)} \
 "
 RDEPENDS_packagegroup-rdk-ccsp-broadband += " ${@bb.utils.contains('DISTRO_FEATURES', 'aker', 'aker', '', d)}"
 
