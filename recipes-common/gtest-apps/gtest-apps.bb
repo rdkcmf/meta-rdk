@@ -1,16 +1,8 @@
-# ============================================================================
-# RDK MANAGEMENT, LLC CONFIDENTIAL AND PROPRIETARY
-# ============================================================================
-# This file (and its contents) are the intellectual property of RDK Management, LLC.
-# It may not be used, copied, distributed or otherwise  disclosed in whole or in
-# part without the express written permission of RDK Management, LLC.
-# ============================================================================
-# Copyright (c) 2021 RDK Management, LLC. All rights reserved.
-# ============================================================================
-#
 
 SUMMARY = "To install the script to download gtest apps"
-LICENSE = "CLOSED"
+LICENSE = "Apache-2.0"
+
+LIC_FILES_CHKSUM = "file://${WORKDIR}/gtest_apps_download.sh;md5=231785d27cc92b83f6be308c3036fe30"
 
 FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}:"
 SRC_URI = "file://gtest_apps_download.sh"
