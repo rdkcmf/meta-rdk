@@ -108,6 +108,8 @@ FEATURE_WANMANAGER_IPOE_MASK ?= "|.meta-rdk-broadband/recipes-support/ipoe-healt
 BBMASK .= "${FEATURE_WANMANAGER_IPOE_MASK}"
 FEATURE_WANMANAGER_JSONHAL_MASK ?= "|.meta-rdk-broadband/recipes-support/json-hal/json-hal-lib.bb"
 BBMASK .= "${FEATURE_WANMANAGER_JSONHAL_MASK}"
+FEATURE_RDKB_LED_MANAGER ?= "|.meta-rdk-broadband/recipes-ccsp/ccsp/rdk-ledmanager.bb"
+BBMASK .= "${FEATURE_RDKB_LED_MANAGER}"
 
 HUBLINUX_MASK ?= "|.meta-rdk-soc-broadcom-broadband/meta-brcm-broadband/recipes-kernel/linux/hublinux_4.19.bb"
 BBMASK .= "${HUBLINUX_MASK}"
