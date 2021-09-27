@@ -34,6 +34,7 @@ BACKTRACE_LDFLAGS_pn-tr69hostif = " -Wl,--no-as-needed -lbreakpadwrapper -Wl,--a
 BACKTRACE_LDFLAGS_pn-rdkservices = " -Wl,--no-as-needed -lbreakpadwrapper -Wl,--as-needed "
 BACKTRACE_LDFLAGS_pn-webkitbrowser-plugin = " -Wl,--no-as-needed -lbreakpadwrapper -Wl,--as-needed "
 BACKTRACE_LDFLAGS_pn-cobalt-plugin = " -Wl,--no-as-needed -lbreakpadwrapper -Wl,--as-needed "
+BACKTRACE_LDFLAGS_pn-browserlauncher = " -Wl,--no-as-needed -lbreakpadwrapper -Wl,--as-needed "
 BACKTRACE_LDFLAGS_pn-wpeframework-plugin-netflix = " -Wl,--no-as-needed -lbreakpadwrapper -Wl,--as-needed "
 BACKTRACE_LDFLAGS_pn-wpa-supplicant = " -Wl,--no-as-needed -lbreakpadwrapper -Wl,--as-needed "
 BACKTRACE_LDFLAGS_pn-hdmicec = " -Wl,--no-as-needed -lbreakpadwrapper -Wl,--as-needed "
