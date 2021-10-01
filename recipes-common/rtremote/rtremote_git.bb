@@ -9,8 +9,8 @@ PV = "2.x+git${SRCPV}"
 
 S = "${WORKDIR}/git"
 
-SRC_URI = "git://github.com/rdkcentral/rtRemote;branch=master"
-SRCREV = "3db90b4881a2022f6222addbf6506419c4c2c281"
+SRC_URI = "git://github.com/rdkcentral/rtRemote;branch=release"
+SRCREV = "813982a8ff71b597cc75de13ece72138d468419e"
 
 inherit cmake
 
