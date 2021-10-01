@@ -58,13 +58,13 @@ if [ -f ${PWD}/../versions.conf ]; then
         sed -z -i 's+SRCREV_pn-rdk/components/generic/mediaframework/generic+SRCREV_pn-rtrmfplayer+' ${PWD}/../versions.conf
         sed -z -i 's+SRCREV_pn-rdk/components/generic/mediaframework/generic+SRCREV_pn-rmfosal+' ${PWD}/../versions.conf
         sed -z -i 's+SRCREV_pn-rdk/components/generic/mediaframework/generic+SRCREV_pn-sectionfilter-hal-stub+' ${PWD}/../versions.conf
-        sed -z -i 's+SRCREV_pn-rdk/components/generic/mediaframework/generic+SRCREV_pn-runsnmp+' ${PWD}/../versions.conf
+        sed -z -i 's+SRCREV_pn-rdk/components/generic/mediaframework/generic+SRCREV_pn-runsnmp-emu+' ${PWD}/../versions.conf
+	sed -z -i 's+SRCREV_pn-rdk/components/generic/mediaframework/generic+SRCREV_pn-runsnmp+' ${PWD}/../versions.conf
         sed -z -i 's+SRCREV_pn-rdk/components/generic/mediaframework/generic+SRCREV_pn-rmfpodserver+' ${PWD}/../versions.conf
         sed -z -i 's+SRCREV_pn-rdk/components/generic/mediaframework/generic+SRCREV_pn-runpod+' ${PWD}/../versions.conf
         sed -z -i 's+SRCREV_pn-rdk/components/generic/mediaframework/generic+SRCREV_pn-rmfpodmgrheaders+' ${PWD}/../versions.conf
         sed -z -i 's+SRCREV_pn-rdk/components/generic/mediaframework/generic+SRCREV_pn-rmfpodmgr+' ${PWD}/../versions.conf
         sed -z -i 's+SRCREV_pn-rdk/components/generic/mediaframework/generic+SRCREV_pn-rmfhalheaders+' ${PWD}/../versions.conf
-        sed -z -i 's+SRCREV_pn-rdk/components/generic/mediaframework/generic+SRCREV_pn-runsnmp-emu+' ${PWD}/../versions.conf
         sed -z -i 's+SRCREV_pn-rdk/components/generic/dvr/generic+SRCREV_pn-dvrgenericheaders+' ${PWD}/../versions.conf
         sed -z -i 's+SRCREV_pn-rdk/components/generic/dvr/generic+SRCREV_pn-dvrmgr+' ${PWD}/../versions.conf
         sed -z -i 's+SRCREV_pn-rdk/components/generic/appmanager/generic+SRCREV_pn-appmanager+' ${PWD}/../versions.conf
@@ -361,7 +361,7 @@ if [ -f ${PWD}/../auto.conf ]; then
      sed -i 's/SRCREV_pn-rdkresidentapp/SRCREV_generic_pn-rdkresidentapp/g' ${PWD}/../auto.conf
      sed -i 's/SRCREV_pn-ctrlm-xraudio-hal /SRCREV_ctrlm-xraudio-hal_pn-ctrlm-xraudio-hal/g' ${PWD}/../auto.conf     
      sed -i 's/SRCREV_pn-ctrlm-xraudio-hal-headers/SRCREV_ctrlm-xraudio-hal-headers_pn-SRCREV_ctrlm-xraudio-hal-headers/g' ${PWD}/../auto.conf 
-     sed -i 's/SRCREV_pn-tdk-cpc/SRCREV_tdkcpc_pn-tdk-cpc/g' ${PWD}/../auto.conf
+     sed -i 's/SRCREV_pn-tdk-cpc/SRCREV_tdk_tdkcpc_pn-tdk-cpc/g' ${PWD}/../auto.conf
      sed -i 's/SRCREV_pn-config-files/SRCREV_cpgc_pn-config-files/g' ${PWD}/../auto.conf
      sed -i 's/SRCREV_pn-systimemgrinetrface/SRCREV_systemtimemgrifc_pn-systimemgrinetrface/g' ${PWD}/../auto.conf
      sed -i 's/SRCREV_pn-systimemgr /SRCREV_systemtimemgr_pn-systimemgr/g' ${PWD}/../auto.conf
