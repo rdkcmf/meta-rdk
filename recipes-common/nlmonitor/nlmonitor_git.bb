@@ -13,7 +13,11 @@ PV = "${RDK_RELEASE}+git${SRCPV}"
 
 S = "${WORKDIR}/git"
 
-DEPENDS = "libnl"
+CFLAGS += "-DINCLUDE_BREAKPAD"
+CXXFLAGS += "-DINCLUDE_BREAKPAD"
+
+DEPENDS = "libnl breakpad-wrapper"
+BREAKPAD_BIN_append = "nlmon"
 
 inherit autotools pkgconfig systemd coverity
 
