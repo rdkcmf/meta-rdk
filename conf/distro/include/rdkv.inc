@@ -15,6 +15,8 @@ PREFERRED_VERSION_openssl = "1.0.2o"
 PREFERRED_VERSION_openssl_dunfell = "1.1.1d"
 
 PREFERRED_VERSION_dnsmasq = "2.81"
+PREFERRED_VERSION_brotli = "1.0.7"
+PREFERRED_VERSION_brotli-native = "1.0.7"
 
 # Disabling Dunfell version of breakpad for timebeing due to DELIA-48240. Till issue is fixed morty version of breakpad will be used in dunfell builds.
 PREFERRED_VERSION_breakpad_dunfell = "svn"
