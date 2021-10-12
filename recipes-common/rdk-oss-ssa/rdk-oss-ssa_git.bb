@@ -11,8 +11,8 @@ RPROVIDES_${PN} = "rdk-oss-ssa"
 SRCREV_FORMAT = "rdk-oss-ssa"
 S = "${WORKDIR}/git"
 
-DEPENDS = " ecryptfs-utils keyutils"
-
+DEPENDS = " ecryptfs-utils keyutils safec-common-wrapper"
+DEPENDS_append = " ${@bb.utils.contains('DISTRO_FEATURES', 'safec', ' safec', " ", d)}"
 inherit pkgconfig autotools systemd
 
 INCLUDE_DIRS = " \
@@ -22,6 +22,9 @@ INCLUDE_DIRS = " \
 CFLAGS += "${INCLUDE_DIRS} "
 CPPFLAGS += " ${INCLUDE_DIRS} "
 LDFLAGS += " -pthread -ldl"
+CFLAGS_append = " ${@bb.utils.contains('DISTRO_FEATURES', 'safec',  ' `pkg-config --cflags libsafec`', '-fPIC', d)}"
+CFLAGS_append = " ${@bb.utils.contains('DISTRO_FEATURES', 'safec', '', ' -DSAFEC_DUMMY_API', d)}"
+LDFLAGS_append = " ${@bb.utils.contains('DISTRO_FEATURES', 'safec', ' `pkg-config --libs libsafec`', '', d)}"
 
 #By default, RDKSSA Unit Test cases are disabled.
 #Use "RDKSSA_UT_ENABLED=yes" to enable the RDKSSA Unit test cases

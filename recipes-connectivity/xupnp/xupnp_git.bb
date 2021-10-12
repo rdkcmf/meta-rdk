@@ -17,7 +17,6 @@ FILES_${PN} += "${libdir}/"
 
 CFLAGS += " -Wall -Werror -Wextra -Wno-pointer-sign -Wno-sign-compare -Wno-deprecated-declarations -Wno-type-limits -Wno-unused-parameter -Wno-lto-type-mismatch "
 
-CFLAGS_append_dunfell = " -Wno-format-truncation "
 
 DEPENDS = "glib-2.0 gupnp fcgi dbus gnutls rdk-logger libgcrypt libgpg-error "
 
@@ -33,6 +32,12 @@ PACKAGECONFIG[gupnp0.2-dfl] = "--enable-version0.2-dfl,,,"
 PACKAGECONFIG[gupnp-legacy] = "--enable-version0.9,,,"
 PACKAGECONFIG[dbus] = "--enable-dbus,,,"
 PACKAGECONFIG[client] = "--enable-client-xcal-server,,,"
+PACKAGECONFIG[media-renderer] = "--enable-media-renderer,--disable-media-renderer,rbus,rbus"
+
+PACKAGECONFIG_append = " ${@bb.utils.contains('DISTRO_FEATURES', 'dlnasupport', ' media-renderer', '', d)}"
+PROVIDES += "${@bb.utils.contains('DISTRO_FEATURES', 'dlnasupport', '${PN}-rpc', '', d)}"
+FILES_${PN}-rpc = "${@bb.utils.contains('DISTRO_FEATURES', 'dlnasupport', '${libdir}/libmediabrowser.so.*', '', d)}"
+PACKAGE_BEFORE_PN += "${@bb.utils.contains('DISTRO_FEATURES', 'dlnasupport', '${PN}-rpc', '', d)}"
 
 PACKAGECONFIG_append_client = " client"
 
@@ -61,16 +66,9 @@ LDFLAGS_append = " ${@bb.utils.contains('DISTRO_FEATURES', 'telemetry2_0', ' -lt
 CFLAGS_append = " -DLOGMILESTONE"
 LDFLAG_append = " -lrdkloggers"
 
-PACKAGES += "${@bb.utils.contains('DISTRO_FEATURES', 'gtestapp', '${PN}-gtest', '', d)}"
-
+PACKAGES =+ "${@bb.utils.contains('DISTRO_FEATURES', 'gtestapp', '${PN}-gtest', '', d)}"
 FILES_${PN}-gtest = "\
     ${@bb.utils.contains('DISTRO_FEATURES', 'gtestapp', '${bindir}/xupnp_gtest.bin', '', d)} \
-"
-
-FILES_${PN} = "\
-    ${bindir}/xdiscovery \
-    ${bindir}/xcal-device \
-    ${sysconfdir}/* \
 "
 
 DOWNLOAD_APPS="${@bb.utils.contains('DISTRO_FEATURES', 'gtestapp', 'gtestapp-xupnp', '', d)}"

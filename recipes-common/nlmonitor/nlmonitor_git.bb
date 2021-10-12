@@ -19,7 +19,11 @@ CXXFLAGS += "-DINCLUDE_BREAKPAD"
 DEPENDS = "libnl breakpad-wrapper"
 BREAKPAD_BIN_append = "nlmon"
 
-inherit autotools pkgconfig systemd coverity breakpad-logmapper
+inherit autotools pkgconfig systemd coverity breakpad-logmapper syslog-ng-config-gen
+SYSLOG-NG_FILTER = "nlmon"
+SYSLOG-NG_SERVICE_nlmon = "nlmon.service"
+SYSLOG-NG_DESTINATION_nlmon = "nlmon.log"
+SYSLOG-NG_LOGRATE_nlmon = "medium"
 
 do_install_append () {
    install -d ${D}/lib/rdk

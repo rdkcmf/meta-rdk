@@ -26,9 +26,13 @@ RDEPENDS_${PN} += " cjson"
 RDEPENDS_${PN} += " rdk-logger"
 
 
-inherit autotools pkgconfig systemd coverity
+inherit autotools pkgconfig systemd coverity syslog-ng-config-gen
+SYSLOG-NG_FILTER = "btrLeAppMgr"
+SYSLOG-NG_SERVICE_btrLeAppMgr = "btrLeAppMgr.service"
+SYSLOG-NG_DESTINATION_btrLeAppMgr = "btrLeAppMgr.log"
+SYSLOG-NG_LOGRATE_btrLeAppMgr = "medium"
 
-ENABLE_RDK_LOGGER = "--enable-rdk-logger=${@bb.utils.contains('RDEPENDS_${PN}', 'rdk-logger', 'yes', 'no', d)}"
+ENABLE_RDK_LOGGER = "--enable-rdk-logger=${@bb.utils.contains('RDEPENDS_${PN}', '${MLPREFIX}rdk-logger', 'yes', 'no', d)}"
 EXTRA_OECONF += " ${ENABLE_RDK_LOGGER}"
 
 do_install_append() {

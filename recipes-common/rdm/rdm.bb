@@ -9,7 +9,11 @@ SRCREV_rdmgeneric = "${AUTOREV}"
 SRCREV_FORMAT = "rdmgeneric"
 S = "${WORKDIR}/git"
 
-inherit autotools coverity systemd
+inherit autotools coverity systemd syslog-ng-config-gen
+SYSLOG-NG_FILTER = "apps-rdm"
+SYSLOG-NG_SERVICE_apps-rdm = "apps-rdm.service"
+SYSLOG-NG_DESTINATION_apps-rdm = "rdm_status.log"
+SYSLOG-NG_LOGRATE_apps-rdm = "low"
 
 DEPENDS = "curl openssl"
 RDEPENDS_${PN}_append_dunfell = "bash"

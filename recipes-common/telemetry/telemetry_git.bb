@@ -17,7 +17,6 @@ S = "${WORKDIR}/git"
 
 CFLAGS += " -Wall -Werror -Wextra -Wno-unused-parameter -Wno-pointer-sign -Wno-sign-compare -Wno-enum-compare -Wno-type-limits "
 
-CFLAGS_append_dunfell = " -Wno-stringop-overflow -Wno-format-overflow "
 
 inherit pkgconfig autotools systemd pythonnative breakpad-logmapper
 
@@ -42,6 +41,7 @@ do_install_append () {
 
 FILES_${PN} = "\
     ${bindir}/telemetry2_0 \
+    ${bindir}/t2rbusMethodSimulator \
     ${bindir}/telemetry2_0_client \
     ${systemd_unitdir}/system \
 "
@@ -51,7 +51,7 @@ FILES_${PN} += "${base_libdir}/rdk/*"
 FILES_SOLIBSDEV = ""
 INSANE_SKIP_${PN} += "dev-so"
 
-PACKAGES += "${@bb.utils.contains('DISTRO_FEATURES', 'gtestapp', '${PN}-gtest', '', d)}"
+PACKAGES =+ "${@bb.utils.contains('DISTRO_FEATURES', 'gtestapp', '${PN}-gtest', '', d)}"
 
 FILES_${PN}-gtest = "\
     ${@bb.utils.contains('DISTRO_FEATURES', 'gtestapp', '${bindir}/telemetry_gtest.bin', '', d)} \

@@ -61,7 +61,6 @@ RDEPENDS_packagegroup-rdk-ccsp-broadband = "\
     hal-platform \
     hal-vlan \
     hal-wifi \
-    ccsp-logagent \
     breakpad-wrapper \
     xupnp \
     parodus \
@@ -77,6 +76,8 @@ RDEPENDS_packagegroup-rdk-ccsp-broadband += "\
 "
 RDEPENDS_packagegroup-rdk-ccsp-broadband += " ${@bb.utils.contains('DISTRO_FEATURES', 'aker', 'aker', '', d)}"
 
+RDEPENDS_packagegroup-rdk-ccsp-broadband += " ${@bb.utils.contains('DISTRO_FEATURES', 'webconfig_bin', 'webcfg', '', d)}"
+
 RDEPENDS_packagegroup-rdk-ccsp-broadband += " ${@bb.utils.contains('DISTRO_FEATURES', 'shorts', 'socat stunnel', '' , d)}"
 RDEPENDS_packagegroup-rdk-ccsp-broadband += " ${@bb.utils.contains('DISTRO_FEATURES', 'snmppa', 'ccsp-snmp-pa ccsp-snmp-pa-ccsp', '', d)}"
 RDEPENDS_packagegroup-rdk-ccsp-broadband += " ${@bb.utils.contains('DISTRO_FEATURES', 'usppa', "usp-pa", "", d)}"
@@ -89,6 +90,6 @@ RDEPENDS_packagegroup-rdk-ccsp-broadband_remove_tchxb8 = " ccsp-tr069-pa ccsp-tr
 
 DEPENDS += " ccsp-common-library"
 
-WIFI_AGENT ?= "ccsp-wifi-agent"
+WIFI_AGENT ?= "${@bb.utils.contains("DISTRO_FEATURES", "OneWifi", "ccsp-one-wifi", "ccsp-wifi-agent", d)}"
 GWPROVAPP ?= "ccsp-gwprovapp ccsp-gwprovapp-ccsp"
 CM_AGENT ?= "ccsp-cm-agent ccsp-cm-agent-ccsp"
