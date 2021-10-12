@@ -38,6 +38,8 @@ do_install() {
 	install -m 755 ${S}/src/lib/*.py ${D}${datadir}/${BPN}/src/lib/
         install -d ${D}${datadir}/${BPN}/src/conf
         install -m 755 ${S}/src/conf/config.ini ${D}${datadir}/${BPN}/src/conf/config.ini
+	install -d ${D}${datadir}/${BPN}/src/lib/dobby
+        install -m 755 ${S}/src/lib/dobby/*.py ${D}${datadir}/${BPN}/src/lib/dobby/
 
 	#install_lxc_config non_secure lxc_conf_EXAMPLE.xml
 	#install_lxc_config non_secure lxc_conf_EXAMPLE_appendsample.xml
