@@ -107,6 +107,8 @@ FEATURE_WANMANAGER_JSONHAL_MASK ?= "|.meta-rdk-broadband/recipes-support/json-ha
 BBMASK .= "${FEATURE_WANMANAGER_JSONHAL_MASK}"
 FEATURE_RDKB_LED_MANAGER ?= "|.meta-rdk-broadband/recipes-ccsp/ccsp/rdk-ledmanager.bb"
 BBMASK .= "${FEATURE_RDKB_LED_MANAGER}"
+FEATURE_RDKB_NFC_MANAGER ?= "|.meta-rdk-broadband/recipes-ccsp/ccsp/rdk-nfcmanager.bb"
+BBMASK .= "${FEATURE_RDKB_NFC_MANAGER}"
 
 HUBLINUX_MASK ?= "|.meta-rdk-soc-broadcom-broadband/meta-brcm-broadband/recipes-kernel/linux/hublinux_4.19.bb"
 BBMASK .= "${HUBLINUX_MASK}"
