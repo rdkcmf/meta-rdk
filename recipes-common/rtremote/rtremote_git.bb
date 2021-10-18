@@ -1,7 +1,7 @@
 DESCRIPTION = "rtRemote"
 
 LICENSE = "Apache-2.0"
-LIC_FILES_CHKSUM = "file://LICENSE.txt;md5=4a3b4a11957d110d45f91f98a742e0f3"
+LIC_FILES_CHKSUM = "file://LICENSE;md5=cfbe95dd83ee8f2ea75475ecc20723e5"
 
 DEPENDS = " util-linux rt-headers "
 
@@ -10,7 +10,7 @@ PV = "2.x+git${SRCPV}"
 S = "${WORKDIR}/git"
 
 SRC_URI = "git://github.com/rdkcentral/rtRemote;branch=release"
-SRCREV = "813982a8ff71b597cc75de13ece72138d468419e"
+SRCREV = "9c5eeba06521b158f287057759076ab5ac15353d"
 
 inherit cmake
 
