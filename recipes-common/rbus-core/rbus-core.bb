@@ -46,26 +46,9 @@ do_install_append_client() {
    install -m 0644 ${S}/conf/rbus_sessmgr_rdkv.service ${D}${systemd_unitdir}/system/rbus_session_mgr.service
 }
 
-PACKAGES += "${@bb.utils.contains('DISTRO_FEATURES', 'gtestapp', '${PN}-gtest', '', d)}"
+PACKAGES =+ "${@bb.utils.contains('DISTRO_FEATURES', 'gtestapp', '${PN}-gtest', '', d)}"
 FILES_${PN}-gtest = "\
     ${@bb.utils.contains('DISTRO_FEATURES', 'gtestapp', '${bindir}/rbuscore_gtest.bin', '', d)} \
-"
-
-FILES_${PN}  = " \
-    ${libdir}/librbus-core.so* \
-    ${bindir}/sample_client \
-    ${bindir}/rbus_session_mgr \
-    ${bindir}/bin_server \
-    ${bindir}/rbus_sample_wildcard_server \
-    ${bindir}/rbus_sample_event_client \
-    ${bindir}/rbus_sample_event_server \
-    ${bindir}/rbus_test_server \
-    ${bindir}/rbus_sample_wildcard_client \
-    ${bindir}/rbus_benchmark_test_app \
-    ${bindir}/sample_server \
-    ${bindir}/rbus_event_server \
-    ${bindir}/rbus_log_capture.sh \
-    ${bindir}/bin_client \
 "
 
 FILES_${PN} += "${systemd_unitdir}/system/*"

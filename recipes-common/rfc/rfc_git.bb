@@ -37,12 +37,12 @@ do_install_append () {
 RDEPENDS_${PN} += "busybox"
 
 DEPENDS += "${@bb.utils.contains('DISTRO_FEATURES', 'gtestapp', ' gtest gmock', '', d)}"
-PACKAGES += "${@bb.utils.contains('DISTRO_FEATURES', 'gtestapp', '${PN}-gtest', '', d)}"
+PACKAGES =+ "${@bb.utils.contains('DISTRO_FEATURES', 'gtestapp', '${PN}-gtest', '', d)}"
 
 FILES_${PN}-gtest = "\
     ${@bb.utils.contains('DISTRO_FEATURES', 'gtestapp', '${bindir}/rfc_gtest.bin', '', d)} \
 "
-FILES_${PN} = "${bindir}/rfctool"
+FILES_${PN} += "${bindir}/rfctool"
 FILES_${PN} += "${base_libdir}/*"
 FILES_${PN} += "${sysconfdir}/*"
 

@@ -39,18 +39,13 @@ do_install_append () {
     rm -fr ${D}/usr/lib/libtelemetry_msgsender.la 
 }
 
-FILES_${PN} = "\
-    ${bindir}/telemetry2_0 \
-    ${bindir}/telemetry2_0_client \
-    ${systemd_unitdir}/system \
-"
 FILES_${PN} += "${libdir}/*.so*"
 FILES_${PN} += "${base_libdir}/rdk/*"
 
 FILES_SOLIBSDEV = ""
 INSANE_SKIP_${PN} += "dev-so"
 
-PACKAGES += "${@bb.utils.contains('DISTRO_FEATURES', 'gtestapp', '${PN}-gtest', '', d)}"
+PACKAGES =+ "${@bb.utils.contains('DISTRO_FEATURES', 'gtestapp', '${PN}-gtest', '', d)}"
 
 FILES_${PN}-gtest = "\
     ${@bb.utils.contains('DISTRO_FEATURES', 'gtestapp', '${bindir}/telemetry_gtest.bin', '', d)} \

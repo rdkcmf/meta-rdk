@@ -22,37 +22,12 @@ export RDK_FSROOT_PATH = '${STAGING_DIR_TARGET}'
 
 FILES_${PN}-dev += "${libdir}/cmake"
 
-PACKAGES += "${@bb.utils.contains('DISTRO_FEATURES', 'gtestapp', '${PN}-gtest', '', d)}"
+PACKAGES =+ "${@bb.utils.contains('DISTRO_FEATURES', 'gtestapp', '${PN}-gtest', '', d)}"
 
 FILES_${PN}-gtest = "\
     ${@bb.utils.contains('DISTRO_FEATURES', 'gtestapp', '${bindir}/rbus_gtest.bin', '', d)} \
 "
 
-FILES_${PN}  = " \
-    ${libdir}/librbus.so* \
-    ${bindir}/rbusTestMultiConsumer \
-    ${bindir}/rbusTestConsumer \
-    ${bindir}/rbusEventProvider \
-    ${bindir}/rbusValueChangeConsumer \
-    ${bindir}/rbusValueChangeProvider \
-    ${bindir}/rbusGeneralEventProvider \
-    ${bindir}/rbusMethodConsumer \
-    ${bindir}/rbusSampleProvider \
-    ${bindir}/rbusMethodProvider \
-    ${bindir}/rbuscli \
-    ${bindir}/rbusTableConsumer \
-    ${bindir}/rbusGeneralEventConsumer \
-    ${bindir}/rbusSampleConsumer \
-    ${bindir}/rbusRecoveryConsumer \
-    ${bindir}/rbusTestProvider \
-    ${bindir}/rbusTableProvider \
-    ${bindir}/rbusTestValue \
-    ${bindir}/rbusTestMultiProvider \
-    ${bindir}/rbus_test.sh \
-    ${bindir}/rbusEventConsumer \
-    ${bindir}/rbusSampleTableProvider \
-    ${bindir}/rbusTestElementTree \
-"
 FILES_${PN} += "${@bb.utils.contains('DISTRO_FEATURES', 'gtestapp', '${bindir}/rbus_src_gcno.tar', '', d)}"
 
 DOWNLOAD_APPS="${@bb.utils.contains('DISTRO_FEATURES', 'gtestapp', 'gtestapp-rbus', '', d)}"
