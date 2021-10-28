@@ -1,15 +1,15 @@
-From be10decb0ab46bbe936489e556eaf873398a0399 Mon Sep 17 00:00:00 2001
+From 9d20f9ea44782e33edb933970b83661a676a19d9 Mon Sep 17 00:00:00 2001
 From: nganes961 <nambirajan_ganesan@comcast.com>
 Date: Wed, 27 Apr 2022 21:42:12 +0000
 Subject: [PATCH] Launch-Metrics-data-collection
 
 Signed-off-by: nganes961 <nambirajan_ganesan@comcast.com>
 ---
- WebKitBrowser/WebKitImplementation.cpp | 237 +++++++++++++++++++++++--
- 1 file changed, 223 insertions(+), 14 deletions(-)
+ WebKitBrowser/WebKitImplementation.cpp | 219 ++++++++++++++++++++++++-
+ 1 file changed, 214 insertions(+), 5 deletions(-)
 
 diff --git a/WebKitBrowser/WebKitImplementation.cpp b/WebKitBrowser/WebKitImplementation.cpp
-index e5e4cda0..6b28898f 100644
+index a71d166c..c2d6f038 100644
 --- a/WebKitBrowser/WebKitImplementation.cpp
 +++ b/WebKitBrowser/WebKitImplementation.cpp
 @@ -23,6 +23,8 @@
@@ -39,7 +39,7 @@ index e5e4cda0..6b28898f 100644
      class WebKitImplementation : public Core::Thread,
                                   public Exchange::IBrowser,
                                   public Exchange::IWebBrowser,
-@@ -744,6 +757,12 @@ static GSourceFuncs _handlerIntervention =
+@@ -750,6 +763,12 @@ static GSourceFuncs _handlerIntervention =
              , _unresponsiveReplyNum(0)
              , _frameCount(0)
              , _lastDumpTime(g_get_monotonic_time())
@@ -52,7 +52,7 @@ index e5e4cda0..6b28898f 100644
          {
              // Register an @Exit, in case we are killed, with an incorrect ref count !!
              if (atexit(CloseDown) != 0) {
-@@ -1139,6 +1158,7 @@ static GSourceFuncs _handlerIntervention =
+@@ -1145,6 +1164,7 @@ static GSourceFuncs _handlerIntervention =
                          object->_adminLock.Unlock();
  
                          object->SetResponseHTTPStatusCode(-1);
@@ -60,7 +60,7 @@ index e5e4cda0..6b28898f 100644
  #ifdef WEBKIT_GLIB_API
                          webkit_web_view_load_uri(object->_view, object->_URL.c_str());
  #else
-@@ -1147,6 +1167,12 @@ static GSourceFuncs _handlerIntervention =
+@@ -1153,6 +1173,12 @@ static GSourceFuncs _handlerIntervention =
                          WKPageLoadURL(object->_page, shellURL);
                          WKRelease(shellURL);
  #endif
@@ -73,7 +73,7 @@ index e5e4cda0..6b28898f 100644
                          return G_SOURCE_REMOVE;
                      },
                      data,
-@@ -1565,6 +1591,13 @@ static GSourceFuncs _handlerIntervention =
+@@ -1571,6 +1597,13 @@ static GSourceFuncs _handlerIntervention =
                  }
              }
  
@@ -87,7 +87,7 @@ index e5e4cda0..6b28898f 100644
              _adminLock.Unlock();
          }
          void OnLoadFailed()
-@@ -1578,6 +1611,8 @@ static GSourceFuncs _handlerIntervention =
+@@ -1584,6 +1617,8 @@ static GSourceFuncs _handlerIntervention =
                  index++;
              }
  
@@ -96,7 +96,7 @@ index e5e4cda0..6b28898f 100644
              _adminLock.Unlock();
          }
          void OnStateChange(const PluginHost::IStateControl::state newState)
-@@ -1918,6 +1953,150 @@ static GSourceFuncs _handlerIntervention =
+@@ -1932,6 +1967,150 @@ static GSourceFuncs _handlerIntervention =
              return _page;
          }
  #endif
@@ -247,7 +247,7 @@ index e5e4cda0..6b28898f 100644
          BEGIN_INTERFACE_MAP(WebKitImplementation)
          INTERFACE_ENTRY(Exchange::IWebBrowser)
          INTERFACE_ENTRY(Exchange::IBrowser)
-@@ -1992,6 +2171,10 @@ static GSourceFuncs _handlerIntervention =
+@@ -2006,6 +2185,10 @@ static GSourceFuncs _handlerIntervention =
  #endif
                          object->OnStateChange(PluginHost::IStateControl::SUSPENDED);
  
@@ -258,7 +258,7 @@ index e5e4cda0..6b28898f 100644
                          TRACE_GLOBAL(Trace::Information, (_T("Internal Suspend Notification took %d mS."), static_cast<uint32_t>(Core::Time::Now().Ticks() - object->_time)));
  
                          object->CheckWebProcess();
-@@ -2274,6 +2457,10 @@ static GSourceFuncs _handlerIntervention =
+@@ -2297,6 +2480,10 @@ static GSourceFuncs _handlerIntervention =
  
              URL(static_cast<const string>(_URL));
  
@@ -269,7 +269,7 @@ index e5e4cda0..6b28898f 100644
              // Move into the correct state, as requested
              auto* backend = webkit_web_view_backend_get_wpe_backend(webkit_web_view_get_backend(_view));
              _adminLock.Lock();
-@@ -2495,6 +2682,10 @@ static GSourceFuncs _handlerIntervention =
+@@ -2522,6 +2709,10 @@ static GSourceFuncs _handlerIntervention =
  
              URL(static_cast<const string>(_URL));
  
@@ -280,23 +280,14 @@ index e5e4cda0..6b28898f 100644
              // Move into the correct state, as requested
              _adminLock.Lock();
              if ((_state == PluginHost::IStateControl::SUSPENDED) || (_state == PluginHost::IStateControl::UNINITIALIZED)) {
-@@ -2553,6 +2744,26 @@ static GSourceFuncs _handlerIntervention =
+@@ -2639,6 +2830,17 @@ static GSourceFuncs _handlerIntervention =
  #endif
          }
  
 +        pid_t GetWebGetProcessIdentifier() {
 +#ifdef WEBKIT_GLIB_API
 +            if (_webprocessPID == -1) {
-+              // FIXME: need a webkit_ API to query process id
-+              _webprocessPID = ([]() -> pid_t {
-+                auto children = Core::ProcessInfo::Iterator(Core::ProcessInfo().Id());
-+                while (children.Next()) {
-+                  if (children.Current().Name() == "WPEWebProcess") {
-+                    return children.Current().Id();
-+                  }
-+                }
-+                return -1;
-+              })();
++              _webprocessPID = webkit_web_view_get_web_process_identifier(_view);
 +            }
 +            return _webprocessPID;
 +#else
@@ -307,7 +298,7 @@ index e5e4cda0..6b28898f 100644
          void DidReceiveWebProcessResponsivenessReply(bool isWebProcessResponsive)
          {
              if (_config.WatchDogHangThresholdInSeconds.Value() == 0 || _config.WatchDogCheckTimeoutInSeconds.Value() == 0)
-@@ -2570,24 +2781,11 @@ static GSourceFuncs _handlerIntervention =
+@@ -2656,15 +2858,11 @@ static GSourceFuncs _handlerIntervention =
              if (isWebProcessResponsive && _unresponsiveReplyNum == 0)
                  return;
  
@@ -315,16 +306,7 @@ index e5e4cda0..6b28898f 100644
  #ifdef WEBKIT_GLIB_API
              std::string activeURL(webkit_web_view_get_uri(_view));
 -            if (_webprocessPID == -1) {
--              // FIXME: need a webkit_ API to query process id
--              _webprocessPID = ([]() -> pid_t {
--                auto children = Core::ProcessInfo::Iterator(Core::ProcessInfo().Id());
--                while (children.Next()) {
--                  if (children.Current().Name() == "WPEWebProcess") {
--                    return children.Current().Id();
--                  }
--                }
--                return -1;
--              })();
+-              _webprocessPID = webkit_web_view_get_web_process_identifier(_view);
 -            }
 -            pid_t webprocessPID = _webprocessPID;
  #else
@@ -333,7 +315,7 @@ index e5e4cda0..6b28898f 100644
  #endif
  
              if (isWebProcessResponsive) {
-@@ -2702,6 +2900,17 @@ static GSourceFuncs _handlerIntervention =
+@@ -2779,6 +2977,17 @@ static GSourceFuncs _handlerIntervention =
          uint32_t _unresponsiveReplyNum;
          unsigned _frameCount;
          gint64 _lastDumpTime;
@@ -352,5 +334,5 @@ index e5e4cda0..6b28898f 100644
  
      SERVICE_REGISTRATION(WebKitImplementation, 1, 0);
 -- 
-2.17.1
+2.25.1
 

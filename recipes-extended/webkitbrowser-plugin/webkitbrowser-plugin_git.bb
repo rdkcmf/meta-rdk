@@ -7,7 +7,7 @@ PV = "3.0+git${SRCPV}"
 
 S = "${WORKDIR}/git/WebKitBrowser"
 
-SRC_URI = "git://github.com/rdkcentral/rdkservices.git;protocol=git;branch=main \
+SRC_URI = "git://github.com/rdkcentral/rdkservices.git;protocol=git;branch=main\
   file://0001-RDKTV-177-Configure-wpeframework-plugin-startup-orde.patch;patchdir=../ \
   file://0002-Use-SYSLOG-instead-of-TRACE.patch;patchdir=../ \
   file://0003-Increase-browser-creation-timeout.patch;patchdir=../ \
@@ -17,14 +17,14 @@ SRC_URI = "git://github.com/rdkcentral/rdkservices.git;protocol=git;branch=main 
   file://0007-Launch-Metrics-data-collection.patch;patchdir=../ \
 "
 
-# Tip of the main at Apr 18, 2022
-SRCREV = "2ed9dbc6689d2725fff6bc9917f18d3f251646a4"
+# Tip of the main at Sep 02, 2022
+SRCREV = "993d7645ec2bafac091a5cca236274041d45f6eb"
 
 inherit cmake pkgconfig python3native
 
 TOOLCHAIN = "gcc"
 
-DEPENDS += "wpeframework wpeframework-tools-native ${WPEWEBKIT}"
+DEPENDS += "wpeframework wpeframework-tools-native ${WPEWEBKIT} libsoup-2.4"
 
 PACKAGECONFIG ??= "residentapp searchanddiscoveryapp htmlapp lightningapp aampjsbindings badgerbridge"
 
