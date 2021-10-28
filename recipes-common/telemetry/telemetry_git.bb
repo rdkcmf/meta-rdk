@@ -39,6 +39,12 @@ do_install_append () {
     rm -fr ${D}/usr/lib/libtelemetry_msgsender.la 
 }
 
+FILES_${PN} = "\
+    ${bindir}/telemetry2_0 \
+    ${bindir}/t2rbusMethodSimulator \
+    ${bindir}/telemetry2_0_client \
+    ${systemd_unitdir}/system \
+"
 FILES_${PN} += "${libdir}/*.so*"
 FILES_${PN} += "${base_libdir}/rdk/*"
 
