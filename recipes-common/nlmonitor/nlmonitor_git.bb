@@ -19,7 +19,7 @@ CXXFLAGS += "-DINCLUDE_BREAKPAD"
 DEPENDS = "libnl breakpad-wrapper"
 BREAKPAD_BIN_append = "nlmon"
 
-inherit autotools pkgconfig systemd coverity
+inherit autotools pkgconfig systemd coverity breakpad-logmapper
 
 do_install_append () {
    install -d ${D}/lib/rdk
@@ -51,3 +51,7 @@ FILES_${PN} += "${systemd_unitdir}/system/* \
 FILES_${PN}_append_client += "/lib/rdk/ipv6addressChange.sh \
                              "
 SYSTEMD_SERVICE_${PN} = "nlmon.service"
+
+# Breakpad processname and logfile mapping
+BREAKPAD_LOGMAPPER_PROCLIST = "nlmon"
+BREAKPAD_LOGMAPPER_LOGLIST = "nlmon.log"
