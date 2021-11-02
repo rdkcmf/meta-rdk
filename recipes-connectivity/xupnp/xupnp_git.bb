@@ -17,7 +17,6 @@ FILES_${PN} += "${libdir}/"
 
 CFLAGS += " -Wall -Werror -Wextra -Wno-pointer-sign -Wno-sign-compare -Wno-deprecated-declarations -Wno-type-limits -Wno-unused-parameter -Wno-lto-type-mismatch "
 
-CFLAGS_append_dunfell = " -Wno-format-truncation "
 
 DEPENDS = "glib-2.0 gupnp fcgi dbus gnutls rdk-logger libgcrypt libgpg-error "
 
