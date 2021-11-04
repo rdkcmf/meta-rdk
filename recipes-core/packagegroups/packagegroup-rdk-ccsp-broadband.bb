@@ -61,7 +61,6 @@ RDEPENDS_packagegroup-rdk-ccsp-broadband = "\
     hal-platform \
     hal-vlan \
     hal-wifi \
-    ccsp-logagent \
     breakpad-wrapper \
     xupnp \
     parodus \
