@@ -12,11 +12,10 @@ Signed-off-by: Eugene Mutavchi <Ievgen_Mutavchi@comcast.com>
  2 files changed, 86 insertions(+), 1 deletion(-)
  create mode 100644 WebKitBrowser/StateAwareMemoryObserver.h
 
-diff --git a/WebKitBrowser/StateAwareMemoryObserver.h b/WebKitBrowser/StateAwareMemoryObserver.h
-new file mode 100644
-index 00000000..f3587091
+Index: git/WebKitBrowser/StateAwareMemoryObserver.h
+===================================================================
 --- /dev/null
-+++ b/WebKitBrowser/StateAwareMemoryObserver.h
++++ git/WebKitBrowser/StateAwareMemoryObserver.h
 @@ -0,0 +1,77 @@
 +#pragma once
 +
@@ -95,10 +94,10 @@ index 00000000..f3587091
 +}  // namespace WebKitBrowser
 +
 +}  // namespace WPEFramework
-diff --git a/WebKitBrowser/WebKitBrowser.cpp b/WebKitBrowser/WebKitBrowser.cpp
-index 079ce93..5b6206a 100644
---- a/WebKitBrowser/WebKitBrowser.cpp
-+++ b/WebKitBrowser/WebKitBrowser.cpp
+Index: git/WebKitBrowser/WebKitBrowser.cpp
+===================================================================
+--- git.orig/WebKitBrowser/WebKitBrowser.cpp
++++ git/WebKitBrowser/WebKitBrowser.cpp
 @@ -18,6 +18,8 @@
   */
  
@@ -106,9 +105,9 @@ index 079ce93..5b6206a 100644
 +#include "StateAwareMemoryObserver.h"
 +
  
- namespace WPEFramework {
- 
-@@ -61,7 +63,7 @@ namespace Plugin {
+ #undef TRACE
+ #define TRACE SYSLOG
+@@ -64,7 +66,7 @@ namespace Plugin {
                      _browser->Register(&_notification);
  
                      const RPC::IRemoteConnection *connection = _service->RemoteConnection(_connectionId);
@@ -117,7 +116,25 @@ index 079ce93..5b6206a 100644
                      ASSERT(_memory != nullptr);
                      if (connection != nullptr) {
                          connection->Release();
-@@ -297,6 +299,11 @@ namespace Plugin {
+@@ -117,8 +119,6 @@ namespace Plugin {
+         // Make sure we get no longer get any notifications, we are deactivating..
+         _service->Unregister(&_notification);
+         _browser->Unregister(&_notification);
+-        _memory->Release();
+-        _application->Release();
+         Exchange::JWebBrowser::Unregister(*this);
+         UnregisterAll();
+ 
+@@ -144,6 +144,8 @@ namespace Plugin {
+                 connection->Release();
+             }
+         }
++        _application->Release();
++        _memory->Release();
+ 
+         _service = nullptr;
+         _browser = nullptr;
+@@ -300,6 +302,11 @@ namespace Plugin {
          string message(string("{ \"suspended\": ") + (state == PluginHost::IStateControl::SUSPENDED ? _T("true") : _T("false")) + string(" }"));
          _service->Notify(message);
          event_statechange(state == PluginHost::IStateControl::SUSPENDED);
@@ -129,6 +146,3 @@ index 079ce93..5b6206a 100644
      }
  
      void WebKitBrowser::Deactivated(RPC::IRemoteConnection* connection)
-
--- 
-2.25.1
