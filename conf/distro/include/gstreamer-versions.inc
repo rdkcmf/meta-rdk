@@ -7,8 +7,11 @@ DISTRO_FEATURES_append = " gstreamer1"
 #GST_VERSION = "1.4.4"
 #ORC_VERSION = "0.4.18"
 
-GST_VERSION ?= "1.10.4"
-ORC_VERSION = "0.4.26"
+#GST_VERSION ?= "1.10.4"
+#ORC_VERSION = "0.4.26"
+
+GST_VERSION ?= " ${@bb.utils.contains('DISTRO_FEATURES', 'gstreamer1_18', '1.18.5', '1.10.4', d)}"
+ORC_VERSION = " ${@bb.utils.contains('DISTRO_FEATURES', 'gstreamer1_18', '0.4.31', '0.4.26', d)}"
 
 PREFERRED_VERSION_gstreamer1.0 ??= "${GST_VERSION}"
 PREFERRED_VERSION_gstreamer1.0-libav ??= "${GST_VERSION}"
