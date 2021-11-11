@@ -16,7 +16,6 @@ inherit cmake systemd pkgconfig coverity
 
 DEPENDS = "rbus-core rtmessage linenoise"
 
-CFLAGS_append_dunfell = " -Wno-format-truncation "
 
 export RDK_FSROOT_PATH = '${STAGING_DIR_TARGET}'
 
