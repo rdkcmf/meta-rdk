@@ -2,25 +2,21 @@ SUMMARY = "Dobby Container Manager"
 LICENSE = "Apache-2.0"
 LIC_FILES_CHKSUM = "file://LICENSE;md5=c466d4ab8a68655eb1edf0bf8c1a8fb8"
 
-SRC_URI = "gitsm://github.com/rdkcentral/Dobby"
-
-# 2021-10-13
-SRCREV = "4db05ab1cd584cd37474d489a7381a002f830850"
+include dobby.inc
 
 DEPENDS = "${@bb.utils.contains('DISTRO_FEATURES', 'systemd', ' systemd ', '', d)} libnl dbus jsoncpp boost yajl python3 breakpad breakpad-wrapper "
-RDEPENDS_${PN} = "crun (>= 0.14.1)"
+RDEPENDS_${PN} = "crun (>= 0.14.1) dobby-thunderplugin"
 
-PV = "3.0"
 S = "${WORKDIR}/git"
 
 inherit pkgconfig cmake systemd
 
 # Always build debug version for now
-EXTRA_OECMAKE =  " -DCMAKE_BUILD_TYPE=Debug -DBUILD_REFERENCE=${SRCREV} "
+EXTRA_OECMAKE =  " -DCMAKE_BUILD_TYPE=Debug -DBUILD_REFERENCE=${SRCREV}"
 
 # Enable plugins
-# Logging, networking, ipc, storage, minidump and thunder enabled by default for all builds
-PACKAGECONFIG ?= "logging networking ipc storage minidump thunder"
+# Logging, networking, ipc, storage, minidump enabled by default for all builds
+PACKAGECONFIG ?= "logging networking ipc storage minidump"
 
 # Options for plugins
 # -------------------------------------
@@ -38,6 +34,7 @@ PACKAGECONFIG[httpproxy]    = "-DPLUGIN_HTTPPROXY=ON,-DPLUGIN_HTTPPROXY=OFF,"
 PACKAGECONFIG[appservices]  = "-DPLUGIN_APPSERVICES=ON,-DPLUGIN_APPSERVICES=OFF,"
 PACKAGECONFIG[thunder]      = "-DPLUGIN_THUNDER=ON,-DPLUGIN_THUNDER=OFF,"
 PACKAGECONFIG[ionmemory]    = "-DPLUGIN_IONMEMORY=ON,-DPLUGIN_IONMEMORY=OFF,"
+PACKAGECONFIG[devicemapper] = "-DPLUGIN_DEVICEMAPPER=ON,-DPLUGIN_DEVICEMAPPER=OFF,"
 
 # Legacy components (Dobby specs + legacy Sky plugins)
 PACKAGECONFIG[legacycomponents] = "-DLEGACY_COMPONENTS=ON,-DLEGACY_COMPONENTS=OFF,ctemplate,"
