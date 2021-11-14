@@ -29,6 +29,10 @@ BBMASK .= "|./meta-rdk/recipes-common/rdkversion/"
 # add webconfig-framework.bb to bbmask till such time that it supports Camera devices.
 BBMASK .= "|.meta-rdk/recipes-common/webconfig-framework/webconfig-framework.bb"
 
+BBMASK .= "|.openembedded-core/meta/recipes-multimedia/gstreamer"
+
+BBMASK .= "|.meta-rdk-ext/recipes-multimedia/gstreamer"
+
 DISTRO_FEATURES_remove = "zeroconf"
 
 OPTIMIZE_DEFAULT = "-Os"
