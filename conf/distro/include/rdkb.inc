@@ -118,6 +118,10 @@ DISTRO_FEATURES_append = " rdm-versioning"
 DISTRO_FEATURES_append = " telemetry2_0"
 DISTRO_FEATURES_append = " snmppa"
 
+# add new breakpad framework for RDKB
+DISTRO_FEATURES_append  = " logbacktrace"
+require conf/distro/include/rdkb_backtrace_log.inc
+
 DISTRO_FEATURES_append_dunfell = " heaptrack"
 
 DISTRO_FEATURES_remove = "alsa"
