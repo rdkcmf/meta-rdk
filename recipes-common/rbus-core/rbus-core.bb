@@ -18,7 +18,11 @@ DEPENDS_append = " ${@bb.utils.contains('DISTRO_FEATURES', 'gtestapp', ' gtest b
 CFLAGS_append_hybrid = " -DRBUS_ALWAYS_ON "
 CFLAGS_append_client = " -DRBUS_ALWAYS_ON "
 
-inherit cmake pkgconfig coverity systemd 
+inherit cmake pkgconfig coverity systemd syslog-ng-config-gen
+SYSLOG-NG_FILTER_client = "rbus"
+SYSLOG-NG_SERVICE_rbus_client = "rbus.service"
+SYSLOG-NG_DESTINATION_rbus_client = "rtrouted.log"
+SYSLOG-NG_LOGRATE_rbus_client = "medium"
 
 FILES_${PN}-dev += "${libdir}/cmake"
 

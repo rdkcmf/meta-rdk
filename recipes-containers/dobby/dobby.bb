@@ -9,7 +9,11 @@ RDEPENDS_${PN} = "crun (>= 0.14.1) dobby-thunderplugin"
 
 S = "${WORKDIR}/git"
 
-inherit pkgconfig cmake systemd
+inherit pkgconfig cmake systemd syslog-ng-config-gen
+SYSLOG-NG_FILTER = "dobby"
+SYSLOG-NG_SERVICE_dobby = "dobby.service"
+SYSLOG-NG_DESTINATION_dobby = "dobby.log"
+SYSLOG-NG_LOGRATE_dobby = "medium"
 
 # Always build debug version for now
 EXTRA_OECMAKE =  " -DCMAKE_BUILD_TYPE=Debug -DBUILD_REFERENCE=${SRCREV}"

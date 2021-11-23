@@ -37,7 +37,11 @@ RDEPENDS_${PN} += " audiocapturemgr"
 RDEPENDS_${PN} += " rdk-logger"
 
 
-inherit autotools pkgconfig systemd coverity
+inherit autotools pkgconfig systemd coverity syslog-ng-config-gen
+SYSLOG-NG_FILTER = "btmgr"
+SYSLOG-NG_SERVICE_btmgr = "btmgr.service"
+SYSLOG-NG_DESTINATION_btmgr = "btmgrlog.txt"
+SYSLOG-NG_LOGRATE_btmgr = "very-high"
 
 ENABLE_AC_RMF = "--enable-ac_rmf=${@bb.utils.contains('RDEPENDS_${PN}', 'virtual/media-utils', 'yes', 'no', d)}"
 ENABLE_ACM = "--enable-acm=${@bb.utils.contains('RDEPENDS_${PN}', 'audiocapturemgr', 'yes', 'no', d)}"
