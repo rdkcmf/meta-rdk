@@ -19,6 +19,7 @@ inherit cmake coverity
 FILES_${PN}-dev = "${includedir}/"
 FILES_${PN} += "${libdir}/"
 FILES_${PN} += "${bindir}/"
+FILES_${PN}-dev += "${libdir}/cmake"
 
 CFLAGS += " -Wall -Werror -Wextra -Wno-unused-parameter "
 
