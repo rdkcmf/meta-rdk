@@ -32,7 +32,7 @@ BBMASK .= "|meta-rdk-comcast-video/recipes-extended/halsnmp/halsnmp-emu_git.bb"
 BBMASK .= "|.meta-rdk-comcast/recipes-common/nvm-sqlite/nvm-sqlite.bb"
 
 # add rdkfwupgrader.bb to bbmask till such time that it supports video devices.
-BBMASK .= "|.meta-rdk-comcast/recipes-extended/rdkfwupgrader/rdkfwupgrader.bb"
+# BBMASK .= "|.meta-rdk-comcast/recipes-extended/rdkfwupgrader/rdkfwupgrader.bb"
 
 # add webconfig-framework.bb to bbmask till such time that it supports Video devices.
 BBMASK .= "|.meta-rdk/recipes-common/webconfig-framework/webconfig-framework.bb"
