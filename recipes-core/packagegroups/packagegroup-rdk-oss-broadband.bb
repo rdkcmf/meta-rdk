@@ -65,6 +65,7 @@ RDEPENDS_packagegroup-rdk-oss-broadband = "\
     smcroute \
     libsyswrapper \
     ${@bb.utils.contains("DISTRO_FEATURES", "safec", "safec", "" , d)} \
+    ${@bb.utils.contains("DISTRO_FEATURES", "rdkb_cellular_manager", "libqmi", "" , d)} \
     "
 DEPENDS += " libsyswrapper"
 
