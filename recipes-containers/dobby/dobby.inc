@@ -1,5 +1,4 @@
-SRC_URI = "gitsm://github.com/rdkcentral/Dobby;branch=release/v3.1"
+SRC_URI = "gitsm://github.com/rdkcentral/Dobby;branch=release/v3.2"
 
-PV = "3.1.2+git${SRCPV}"
-# Tag v3.1.2
-SRCREV = "b508a4a1cf683c3ead5b34dff78ee695c29877fd"
+PV = "3.2.0+git${SRCPV}"
+SRCREV = "4b53ebc4ee61b854434305b532262a3a16ff7dd1"
