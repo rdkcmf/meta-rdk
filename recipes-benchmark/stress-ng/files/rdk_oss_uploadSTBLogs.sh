@@ -185,6 +185,7 @@ uploadLogOnReboot()
             retval=$(HttpLogUpload $LOG_FILE)
             if [ $retval -ne 0 ];then
                 uploadLog "HTTP log upload failed"
+		exit 0
             fi
         fi
     else

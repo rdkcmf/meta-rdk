@@ -8,7 +8,7 @@ LOG_PATH="/opt/logs"
 STRESS_NG_LOG_PATH="$LOG_PATH/stress-ng_logs"
 LOG_FILE="$STRESS_NG_LOG_PATH/rdk-oss-perf-stats.log"
 STRESS_NG_WORKSPACE="$RW_DISK_LOCATION/stress-ng"
-ENABLE_PERF="--perf"
+ENABLE_OPTIONS="--times --metrics --perf"
 
 TEMP_PATH="--temp-path $STRESS_NG_WORKSPACE"
 
@@ -23,12 +23,23 @@ tftp_server="logs.xcal.tv"
 
 ## End Global variables
 
+boot_time=600
+read -d. seconds < /proc/uptime
+if [ $seconds -lt $boot_time ]; then
+echo "Waiting for $(( $boot_time - $seconds )) secs to start the stress-NG testcases"
+sleep $(( $boot_time - $seconds ))
+fi
+
+if [ -f /etc/stress-ng.conf ];then
+     . /etc/stress-ng.conf
+fi
 
 log(){
    echo "`date` :`basename $0`: $*"    >> $LOG_FILE
 }
 
 tearDown() {
+    sh /lib/rdk/capture-proc-metrics.sh end
     echo "Tear down test resources"
     rm -rf $STRESS_NG_WORKSPACE
     log "End of stress NG tests"
@@ -67,29 +78,32 @@ execAndRedirectOut(){
 cpuStressTest(){
     #Load Avg:69
     test="cpu"
-    execAndRedirectOut stress-ng --all 4 --class cpu --exclude atomic,zlib,wcs,tree,radixsort,ioport,heapsort,crypt,pkey,numa,mergesort,judy -t 1m --times --metrics $ENABLE_PERF $YAML_OPTION$test$TEST_COUNT.yaml
+    execAndRedirectOut stress-ng --all $CPU_INSTANCE --class cpu --exclude atomic,zlib,wcs,tree,radixsort,ioport,heapsort,crypt,pkey,numa,mergesort,judy -t $CPU_TIME  $ENABLE_OPTIONS $YAML_OPTION$test$TEST_COUNT.yaml
+    sh /lib/rdk/capture-proc-metrics.sh $test
 }
 
 cpuLongRunTest(){
 
    # Run cpu stressors on all online CPUs working through all the available CPU stressors for 5m
     test="cpu"
-    execAndRedirectOut stress-ng $TEMP_PATH --cpu 0 --cpu-method all -t 5m --times --metrics $YAML_OPTION$test$TEST_COUNT.yaml
+    execAndRedirectOut stress-ng $TEMP_PATH --cpu 0 --cpu-method all -t 5m $ENABLE_OPTIONS $YAML_OPTION$test$TEST_COUNT.yaml
+    sh /lib/rdk/capture-proc-metrics.sh $test
 }
 
 diskIOTests(){
     test="io"
     # start N workers continually writing with commit buffer cache to disk, reading and removing temporary
-    execAndRedirectOut stress-ng $TEMP_PATH --io 2 --timeout 10s --metrics --times $ENABLE_PERF $YAML_OPTION$test$TEST_COUNT.yaml
     #load avg of 30
-    execAndRedirectOut stress-ng --class io --all 4 --exclude aiol,io-uring,rawdev,readahead -t 1m --times --metrics $ENABLE_PERF $YAML_OPTION$test$TEST_COUNT.yaml
+    execAndRedirectOut stress-ng --class io --all $IO_INSTANCE --exclude aiol,io-uring,rawdev,readahead -t $IO_TIME  $ENABLE_OPTIONS $YAML_OPTION$test$TEST_COUNT.yaml
     #stress-ng --iomix 1 -t 20 -v
+    sh /lib/rdk/capture-proc-metrics.sh $test
 }
 
 schedulerTests() {
     test="scheduler"
     #load average: 193.86 120.35 53.12.incase of seq execution around 12
-    execAndRedirectOut stress-ng --sequential 4 --class scheduler -t 1m --exclude netlink-task --times --metrics $YAML_OPTION$test$TEST_COUNT.yaml
+    execAndRedirectOut stress-ng --sequential $SCHEDULER_INSTANCE --class scheduler -t $SCHEDULER_TIME --exclude netlink-task $ENABLE_OPTIONS $YAML_OPTION$test$TEST_COUNT.yaml
+    sh /lib/rdk/capture-proc-metrics.sh $test
 }
 memStressTest(){
     test="memory"
@@ -109,6 +123,7 @@ memStressTest(){
 
     # Shared memory tests has some problems
     # execAndRedirectOut stress-ng --shm --shm-bytes 100% -v -t 5s
+    sh /lib/rdk/capture-proc-metrics.sh $test
 }
 
 thermalZoneTests() {
@@ -121,19 +136,22 @@ thermalZoneTests() {
 pageFaultTests(){
     test="os"
         #load average:  46.79 18.09 14.62
-    execAndRedirectOut stress-ng --fault 4 --switch 4 --loop 4 --klog 4  --ptrace 4 --pty 4  --sendfile 4 --seccomp 4 --resources 4 --revio 4 --rmap 4  --perf -t 1m --times --metrics $YAML_OPTION$test$TEST_COUNT.yaml
+    execAndRedirectOut stress-ng --fault $OS_INSTANCE --switch $OS_INSTANCE --loop $OS_INSTANCE --klog $OS_INSTANCE  --ptrace $OS_INSTANCE --pty $OS_INSTANCE  --sendfile $OS_INSTANCE --seccomp $OS_INSTANCE --resources $OS_INSTANCE --revio $OS_INSTANCE --rmap $OS_INSTANCE  -t $OS_TIME $ENABLE_OPTIONS $YAML_OPTION$test$TEST_COUNT.yaml
+    sh /lib/rdk/capture-proc-metrics.sh $test
 }
 
 timerTests(){
     test="timer"
     #load average: 13.72 16.99 27.67
-    execAndRedirectOut stress-ng --timer 4 --timer-freq 1000000 --rtc 4 --clock 4 --itimer 4 --timerfd 4 --metrics -t 1m --times $YAML_OPTION$test$TEST_COUNT.yaml
+    execAndRedirectOut stress-ng --timer $TIMER_INSTANCE --timer-freq $TIMER_FREQ --rtc $TIMER_INSTANCE --clock $TIMER_INSTANCE --itimer $TIMER_INSTANCE  --timerfd $TIMER_INSATNCE  -t $TIMER_TIME $ENABLE_OPTIONS $YAML_OPTION$test$TEST_COUNT.yaml
+    sh /lib/rdk/capture-proc-metrics.sh $test
 }
 
 networkTests(){
     test="network"
     #sock testcase has some issue
-    execAndRedirectOut stress-ng --sequential 1 --class network --exclude dccp,sctp,sock -t 10s --metrics --times $YAML_OPTION$test$TEST_COUNT.yaml
+    execAndRedirectOut stress-ng --sequential $NETWORK_INSTANCE --class network --exclude dccp,sctp,sock -t $NETWORK_TIME $ENABLE_OPTIONS $YAML_OPTION$test$TEST_COUNT.yaml
+    sh /lib/rdk/capture-proc-metrics.sh $test
 }
 
 runAllTests(){
@@ -152,37 +170,41 @@ memoryPressureTest() {
    #load average: 5.26 5.97 3.34
    execAndRedirectOut stress-ng --bigheap 1 --bigheap-growth 4K -t 4s --times $YAML_OPTION$test$TEST_COUNT.yaml
    #stress-ng --brk 2 --stack 2 --bigheap 2
-   
+   sh /lib/rdk/capture-proc-metrics.sh $test
 }
 
 pipeTests() {
    test="pipe"
    #load avg of 139
-   execAndRedirectOut stress-ng --class pipe --all 4 --times -t 30s --metrics $YAML_OPTION$test$TEST_COUNT.yaml
+   execAndRedirectOut stress-ng --class pipe --all $PIPE_INSTANCE -t $PIPE_TIME $ENABLE_OPTIONS $YAML_OPTION$test$TEST_COUNT.yaml
+   sh /lib/rdk/capture-proc-metrics.sh $test
 }
 
 fileTests() {
    test="file"
    #load avg of 150
-   execAndRedirectOut stress-ng --sequential 1 --class filesystem --exclude binderfs,chattr,fiemap,xattr,iomix -t 30s --times --metrics  $YAML_OPTION$test$TEST_COUNT.yaml
+   execAndRedirectOut stress-ng --sequential $FILE_INSTANCE --class filesystem --exclude binderfs,chattr,fiemap,xattr,iomix -t $FILE_TIME $ENABLE_OPTIONS $YAML_OPTION$test$TEST_COUNT.yaml
+   sh /lib/rdk/capture-proc-metrics.sh $test
 }
 ipcTests() {
     test="ipc"
     #ipcTests already covered in Scheculer Testcase
-    execAndRedirectOut stress-ng --mq 4 --shm 4 --sem 4 -t 20s --times --metrics $YAML_OPTION$test$TEST_COUNT.yaml
+    execAndRedirectOut stress-ng --mq $IPC_INSTANCE --shm $IPC_INSTANCE --sem $IPC_INSTANCE -t $IPC_TIME $ENABLE_PERF $YAML_OPTION$test$TEST_COUNT.yaml
+    sh /lib/rdk/capture-proc-metrics.sh $test
 }
 signalTests() {
     test="signal"
 #load average: 70.21, 21.60, 14.11
 #sigabrt causing coredump
-    execAndRedirectOut stress-ng --sigfd 4 --sigfpe 4 --sigchld 4 --sigio 4 --sigpending 4 --sigsegv 4 --sigsuspend 4 --sigq 4  --sigtrap 4 -t 20s --times --metrics $YAML_OPTION$test$TEST_COUNT.yaml
+    execAndRedirectOut stress-ng --sigfd $SIGNAL_INSTANCE --sigfpe $SIGNAL_INSTANCE --sigchld $SIGNAL_INSTANCE --sigio $SIGNAL_INSTANCE --sigpending $SIGNAL_INSTANCE --sigsegv $SIGNAL_INSTANCE --sigsuspend $SIGNAL_INSTANCE --sigq $SIGNAL_INSTANCE  --sigtrap $SIGNAL_INSTANCE -t $SIGNAL_TIME $ENABLE_OPTIONS $YAML_OPTION$test$TEST_COUNT.yaml
+    sh /lib/rdk/capture-proc-metrics.sh $test
 }
 systemcallTests() {
     test="syscall"
     #exercise process creation/Termination
         # load average: 23.45 14.50 12.89
-        # wait reboots the system in some cases 
-    execAndRedirectOut stress-ng --fork 8 --open 8 --close 8 --seek 8  --kill 8 -t 20s --metrics --times  $YAML_OPTION$test$TEST_COUNT.yaml
+    execAndRedirectOut stress-ng --fork $SYSCALL_INSTANCE --open $SYSCALL_INSTANCE --close $SYSCALL_INSTANCE --seek $SYSCALL_INSTANCE --wait $SYSCALL_INSTANCE --kill $SYSCALL_INSTANCE -t $SYSCALL_TIME $ENABLE_OPTIONS  $YAML_OPTION$test$TEST_COUNT.yaml
+    sh /lib/rdk/capture-proc-metrics.sh $test
 }
 
 getStressExeSize() {
@@ -191,14 +213,15 @@ getStressExeSize() {
 }
 
 init(){
-   rm -rf $LOG_PATH/* 
+   rm -rf $LOG_PATH/*  
    mkdir -p /opt/stress-ng
    mkdir -p $LOG_PATH/stress-ng_logs
    echo '' > $LOG_FILE
    rm -f $STRESS_NG_LOG_PATH/metrics_*
    getStressExeSize
    log "Start of stress NG tests"
-   
+   sh /lib/rdk/capture-proc-metrics.sh start
+
    memStressTest
    #memoryPressureTest  bigheap causing reboot
    sleep 60

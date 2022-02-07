@@ -14,8 +14,11 @@ RDEPENDS_${PN} = "udev"
 
 do_install() {
 	install -d ${D}${base_libdir}/systemd/system
-	install -m 0644 ${WORKDIR}/*.service ${D}${base_libdir}/systemd/system
 
+if ${@bb.utils.contains('DISTRO_FEATURES', 'benchmark_enable', 'false', 'true', d)}; then
+
+	install -m 0644 ${WORKDIR}/*.service ${D}${base_libdir}/systemd/system
+fi
 	install -d ${D}${sysconfdir}/udev/rules.d
 	install -m 0644 ${WORKDIR}/network.rules ${D}${sysconfdir}/udev/rules.d/network.rules
 }
