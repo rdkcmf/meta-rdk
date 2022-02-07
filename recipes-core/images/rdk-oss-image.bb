@@ -4,7 +4,7 @@ IMAGE_FEATURES += "package-management"
 
 LICENSE = "MIT"
 
-inherit core-image populate_sdk
+inherit core-image populate_sdk rdk-image
 
 IMAGE_ROOTFS_SIZE = "8192"
 
@@ -24,10 +24,21 @@ IMAGE_INSTALL += "packagegroup-rdk-oss"
 # it's generally a good idea to remove <build>/tmp when switching back 
 # and forth.
 # IMAGE_INSTALL += "packagegroup-rdk-qt4e"
-IMAGE_INSTALL += "packagegroup-qt5-toolchain-target"
-IMAGE_INSTALL += "packagegroup-rdk-qt5"
 
 # for now, let's add 'debug stuff' in our images, we can revisit that later
 # and create release vs debug builds.
-IMAGE_INSTALL += "packagegroup-rdk-debug"
-IMAGE_INSTALL += "packagegroup-rdk-debug-extra"
+
+IMAGE_INSTALL +="${@bb.utils.contains("DISTRO_FEATURES", "benchmark_enable", "packagegroup-rdk-debug-extra \
+                                                             network-zero-conf \
+                                                             network-hotplug \
+                                                             dnsmasq \
+                                                             gdbm \
+                                                             perf \ 
+                                                             stress-ng \
+                                                             binutils \
+                                                             sysint-min \
+                                                             ca-certificates \
+                                                             rdk-ca-store","packagegroup-rdk-debug \
+                                                                            packagegroup-rdk-debug-extra",d)}"
+                                                             
+                  

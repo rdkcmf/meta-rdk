@@ -15,13 +15,6 @@ RDEPENDS_packagegroup-rdk-debug-extra = "\
     alsa-utils-amixer \
     alsa-utils-aplay \
     ldd \
-    gst-meta-audio \
-    gst-meta-base \
-    gst-meta-video \
-    gst-meta-debug \
-    gst-ffmpeg \
-    gst-plugins-base \
-    gst-plugins-good \
     qtbase-examples \
     systemd-analyze \
     "
