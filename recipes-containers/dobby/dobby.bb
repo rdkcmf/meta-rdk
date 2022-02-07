@@ -9,11 +9,9 @@ RDEPENDS_${PN} = "crun (>= 0.14.1) dobby-thunderplugin"
 
 S = "${WORKDIR}/git"
 
-inherit pkgconfig cmake systemd syslog-ng-config-gen
-SYSLOG-NG_FILTER = "dobby"
-SYSLOG-NG_SERVICE_dobby = "dobby.service"
-SYSLOG-NG_DESTINATION_dobby = "dobby.log"
-SYSLOG-NG_LOGRATE_dobby = "medium"
+inherit pkgconfig cmake systemd
+#dobby logs storage file is decided using device.properties. syslog-ng-config-gen framework decide the log file.
+
 
 # Always build debug version for now
 EXTRA_OECMAKE =  " -DCMAKE_BUILD_TYPE=Debug -DBUILD_REFERENCE=${SRCREV}"
