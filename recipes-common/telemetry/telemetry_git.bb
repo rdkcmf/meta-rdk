@@ -6,7 +6,7 @@ LIC_FILES_CHKSUM = "file://LICENSE;md5=175792518e4ac015ab6696d16c4f607e"
 
 SRC_URI = "${RDK_GENERIC_ROOT_GIT}/telemetry/generic;protocol=${RDK_GIT_PROTOCOL};branch=${RDK_GIT_BRANCH}"
 
-DEPENDS += "curl cjson glib-2.0 breakpad-wrapper rbus libsyswrapper"
+DEPENDS += "curl cjson glib-2.0 breakpad-wrapper rbus libsyswrapper libunpriv"
 DEPENDS += "rdk-logger"
 
 RDEPENDS_${PN} += "curl cjson glib-2.0 rbus"
@@ -20,12 +20,17 @@ CFLAGS += " -Wall -Werror -Wextra -Wno-unused-parameter -Wno-pointer-sign -Wno-s
 
 inherit pkgconfig autotools systemd pythonnative breakpad-logmapper
 
+CFLAGS += " -DDROP_ROOT_PRIV "
+
 LDFLAGS_append = " \
         -lbreakpadwrapper \
         -lpthread \
         -lstdc++ \
         -lsecure_wrapper \
         "
+LDFLAGS_append = " \
+        -lprivilege \
+      "
 
 CXXFLAGS += "-DINCLUDE_BREAKPAD"
 
