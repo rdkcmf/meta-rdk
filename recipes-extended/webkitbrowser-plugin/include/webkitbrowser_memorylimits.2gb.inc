@@ -1,0 +1,8 @@
+WEBKITBROWSER_MSEBUFFERS = "audio:6m,video:90m,text:1m"
+WEBKITBROWSER_MEMORYPRESSURE = "databaseprocess:50m,networkprocess:50m,webprocess:512m,rpcprocess:50m"
+RESIDENT_APP_MEMORYPRESSURE = "databaseprocess:50m,networkprocess:50m,webprocess:200m,rpcprocess:50m"
+SEARCH_AND_DISCOVERY_APP_MEMORYPRESSURE = "databaseprocess:50m,networkprocess:50m,webprocess:400m,rpcprocess:50m"
+HTML_APP_MEMORYPRESSURE = "databaseprocess:50m,networkprocess:50m,webprocess:400m,rpcprocess:50m"
+LIGHTNING_APP_MEMORYPRESSURE = "databaseprocess:50m,networkprocess:50m,webprocess:400m,rpcprocess:50m"
+WEBKITBROWSER_MEMORYPROFILE = "1024m"
+WEBKITBROWSER_DISKCACHE = "128m"
