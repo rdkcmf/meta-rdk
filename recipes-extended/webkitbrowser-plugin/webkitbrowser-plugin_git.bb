@@ -8,7 +8,7 @@ PV = "3.0+git${SRCPV}"
 S = "${WORKDIR}/git/WebKitBrowser"
 
 SRC_URI = "git://github.com/rdkcentral/rdkservices.git;protocol=git;branch=main \
-  file://0001-Inject-badger-script-source-for-Pluto.patch;patchdir=../ \
+  file://0001-RDKTV-177-Configure-wpeframework-plugin-startup-orde.patch;patchdir=../ \
   file://0002-Use-SYSLOG-instead-of-TRACE.patch;patchdir=../ \
   file://0003-Increase-browser-creation-timeout.patch;patchdir=../ \
   file://0004-Reduce-BrowserConsoleLog.patch;patchdir=../ \
@@ -17,8 +17,8 @@ SRC_URI = "git://github.com/rdkcentral/rdkservices.git;protocol=git;branch=main 
   file://0007-Launch-Metrics-data-collection.patch;patchdir=../ \
 "
 
-# Tip of the main at Mar 31, 2022
-SRCREV = "6375b9bc7cdf0b57a94b5c4adbba3e2f82015792"
+# Tip of the main at Apr 12, 2022
+SRCREV = "6d0dec5b980fce830b944abdfc0c8665c0aa6620"
 
 inherit cmake pkgconfig python3native
 
@@ -65,6 +65,7 @@ EXTRA_OECMAKE += " \
     -DPLUGIN_RESIDENT_APP_CLIENTIDENTIFIER="${RESIDENT_APP_CLIENTIDENTIFIER}" \
     -DPLUGIN_RESIDENT_APP_AUTOSTART="${RESIDENT_APP_AUTOSTART}" \
     -DPLUGIN_RESIDENT_APP_STARTURL="${RESIDENT_APP_STARTURL}" \
+    -DPLUGIN_RESIDENT_APP_STARTUPORDER="${RESIDENT_APP_STARTUPORDER}" \
     -DPLUGIN_SEARCH_AND_DISCOVERY_APP_CLIENTIDENTIFIER="${SEARCH_AND_DISCOVERY_APP_CLIENTIDENTIFIER}" \
     -DPLUGIN_WEBKITBROWSER_CLIENTIDENTIFIER="${WEBKITBROWSER_CLIENTIDENTIFIER}" \
     -DPLUGIN_HTML_APP_CLIENTIDENTIFIER="${HTML_APP_CLIENTIDENTIFIER}" \

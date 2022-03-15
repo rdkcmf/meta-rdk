@@ -7,11 +7,11 @@ Subject: [PATCH] Reduce BrowserConsoleLog
  WebKitBrowser/WebKitImplementation.cpp | 11 +++++++++--
  1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/WebKitBrowser/WebKitImplementation.cpp b/WebKitBrowser/WebKitImplementation.cpp
-index 68769d0..6f6151f 100644
---- a/WebKitBrowser/WebKitImplementation.cpp
-+++ b/WebKitBrowser/WebKitImplementation.cpp
-@@ -70,6 +70,8 @@ WK_EXPORT WKProcessID WKPageGetProcessIdentifier(WKPageRef page);
+Index: git/WebKitBrowser/WebKitImplementation.cpp
+===================================================================
+--- git.orig/WebKitBrowser/WebKitImplementation.cpp
++++ git/WebKitBrowser/WebKitImplementation.cpp
+@@ -71,6 +71,8 @@ WK_EXPORT WKProcessID WKPageGetProcessId
  namespace WPEFramework {
  namespace Plugin {
  
@@ -20,7 +20,7 @@ index 68769d0..6f6151f 100644
  #ifndef WEBKIT_GLIB_API
      static void onDidReceiveSynchronousMessageFromInjectedBundle(WKContextRef context, WKStringRef messageName,
          WKTypeRef messageBodyObj, WKTypeRef* returnData, const void* clientInfo);
-@@ -227,8 +229,12 @@ namespace Plugin {
+@@ -230,8 +232,12 @@ namespace Plugin {
          nullptr, // runBeforeUnloadConfirmPanel
          nullptr, // fullscreenMayReturnToInline
          // willAddDetailedMessageToConsole
@@ -35,7 +35,7 @@ index 68769d0..6f6151f 100644
          },
      };
  
-@@ -1439,6 +1445,7 @@ static GSourceFuncs _handlerIntervention =
+@@ -1651,6 +1657,7 @@ static GSourceFuncs _handlerIntervention
  
          uint32_t Configure(PluginHost::IShell* service) override
          {
