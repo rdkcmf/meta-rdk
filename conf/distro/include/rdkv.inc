@@ -61,6 +61,7 @@ DISTRO_FEATURES_append = " safec"
 DISTRO_FEATURES_append = " rdm-versioning"
 
 PREFERRED_VERSION_bluez5_dunfell ?= "5.54"
+DISTRO_FEATURES_append_dunfell = " logendpoints"
 
 DISTRO_FEATURES_append = " tigress"
 # Masking recipes for CEDM multicall implementation in RDK-V
