@@ -16,8 +16,8 @@ SRC_URI = "git://github.com/rdkcentral/rdkservices.git;protocol=git;branch=main 
   file://0006-Introduce-state-aware-memory-observer.patch;patchdir=../ \
 "
 
-# Tip of the main at Sep 22, 2021
-SRCREV = "a36ebf96d80934c61e3d2c50fcee2681ad8fe3a8"
+# Tip of the main at Mar 31, 2022
+SRCREV = "6375b9bc7cdf0b57a94b5c4adbba3e2f82015792"
 
 inherit cmake pkgconfig python3native
 
