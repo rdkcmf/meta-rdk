@@ -267,7 +267,6 @@ if [ -f ${PWD}/../versions.conf ]; then
 	sed -i 's+SRCREV_pn-rdk/component/cpc/xre-automation-dac15/xre-automation/devices/intel-x86-pc/rdkemulator +SRCREV_pn-fbdump-util+g' ${PWD}/../versions.conf
 	sed -i 's+SRCREV_pn-rdk/components/cpc/netflix5_1/generic+SRCREV_pn-netflix+g' ${PWD}/../versions.conf
 	sed -i 's+SRCREV_pn-rdk/components/generic/sdvagent/generic+SRCREV_pn-sdvagent+g' ${PWD}/../versions.conf
-	sed -i 's+SRCREV_pn-rdk/components/cpc/netzyn/generic+SRCREV_pn-netzyn+g' ${PWD}/../versions.conf
 	sed -i 's+SRCREV_pn-rdk/components/cpc/rdkservices/generic+SRCREV_pn-rdkservices-comcast+g' ${PWD}/../versions.conf
 	sed -i 's+SRCREV_pn-rdk/components/cpc/xdial/generic+SRCREV_pn-xdial+g' ${PWD}/../versions.conf
 	sed -i 's+SRCREV_pn-rdk/component/cpc/mediaframework/devices/intel-x86-pc/halsnmp+SRCREV_pn-halsnmp-emu+g' ${PWD}/../versions.conf
@@ -377,7 +376,6 @@ if [ -f ${PWD}/../auto.conf ]; then
      sed -i 's/SRCREV_pn-tdkadvanced/SRCREV_tdkadvanced_pn-tdkadvanced/g' ${PWD}/../auto.conf
      sed -i 's/SRCREV_pn-mfr-data/SRCREV_mfr-data_pn-mfr-data/g' ${PWD}/../auto.conf
      sed -i 's/SRCREV_pn-ctrlm-main/SRCREV_ctrlm-main-cpc_pn-ctrlm-main/g' ${PWD}/../auto.conf
-     sed -i 's/SRCREV_pn-netzyn/SRCREV_netzyn_pn-netzyn/g' ${PWD}/../auto.conf
      sed -i 's/SRCREV_pn-lostandfound/SRCREV_lafgeneric_pn-lostandfound/g' ${PWD}/../auto.conf
      sed -i 's/SRCREV_pn-widevinecdmi/SRCREV_widevine-cdm-rdk_pn-widevinecdmi/g' ${PWD}/../auto.conf
      sed -i 's/SRCREV_pn-playreadycdmi/SRCREV_playready_pn-playreadycdmi/g' ${PWD}/../auto.conf
