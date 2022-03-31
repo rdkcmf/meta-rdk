@@ -14,6 +14,7 @@ SRC_URI = "git://github.com/rdkcentral/rdkservices.git;protocol=git;branch=main 
   file://0004-Reduce-BrowserConsoleLog.patch;patchdir=../ \
   file://0005-Enable-mixed-content.patch;patchdir=../ \
   file://0006-Introduce-state-aware-memory-observer.patch;patchdir=../ \
+  file://0007-Launch-Metrics-data-collection.patch;patchdir=../ \
 "
 
 # Tip of the main at Mar 31, 2022
