@@ -17,8 +17,8 @@ SRC_URI = "git://github.com/rdkcentral/rdkservices.git;protocol=git;branch=main 
   file://0007-Launch-Metrics-data-collection.patch;patchdir=../ \
 "
 
-# Tip of the main at Apr 12, 2022
-SRCREV = "6d0dec5b980fce830b944abdfc0c8665c0aa6620"
+# Tip of the main at Apr 18, 2022
+SRCREV = "2ed9dbc6689d2725fff6bc9917f18d3f251646a4"
 
 inherit cmake pkgconfig python3native
 
