@@ -30,6 +30,7 @@ BACKTRACE_DEPENDS_pn-pwr-state-monitor = " breakpad-wrapper"
 BACKTRACE_DEPENDS_pn-authservice = " breakpad-wrapper"
 BACKTRACE_DEPENDS_pn-aml-audio-service = " breakpad-wrapper"
 BACKTRACE_DEPENDS_pn-asbluetoothrcu  = " breakpad-wrapper"
+BACKTRACE_DEPENDS_pn-dnsmasq = " breakpad-wrapper"
 
 BACKTRACE_LDFLAGS_pn-iarmbus = " -Wl,--no-as-needed -lbreakpadwrapper -Wl,--as-needed "
 BACKTRACE_LDFLAGS_pn-iarmmgrs = " -lbreakpadwrapper "
@@ -59,6 +60,7 @@ BACKTRACE_LDFLAGS_pn-pwr-state-monitor = " -Wl,--no-as-needed -lbreakpadwrapper 
 BACKTRACE_LDFLAGS_pn-authservice = " -Wl,--no-as-needed -lbreakpadwrapper -Wl,--as-needed "
 BACKTRACE_LDFLAGS_pn-aml-audio-service = " -Wl,--no-as-needed -lbreakpadwrapper -Wl,--as-needed "
 BACKTRACE_LDFLAGS_pn-asbluetoothrcu  = " -Wl,--no-as-needed -lbreakpadwrapper -Wl,--as-needed "
+BACKTRACE_LDFLAGS_pn-dnsmasq = " -Wl,--no-as-needed -lbreakpadwrapper -Wl,--as-needed "
 
 BACKTRACE_DEPENDS_pn-busybox = " crashlog"
 BACKTRACE_DEPENDS_pn-lighttpd = " crashlog"
