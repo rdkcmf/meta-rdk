@@ -1,18 +1,15 @@
-From 59718b491140bdea2640c803c9a8409e40e4b7d6 Mon Sep 17 00:00:00 2001
+From be10decb0ab46bbe936489e556eaf873398a0399 Mon Sep 17 00:00:00 2001
 From: nganes961 <nambirajan_ganesan@comcast.com>
-Date: Thu, 31 Mar 2022 16:53:51 +0000
-Subject: [PATCH] Launch metrics
+Date: Wed, 27 Apr 2022 21:42:12 +0000
+Subject: [PATCH] Launch-Metrics-data-collection
 
-Source: Comcast
-License: GPLV2
-Upstream-Status: [Comcast specific]
 Signed-off-by: nganes961 <nambirajan_ganesan@comcast.com>
 ---
- WebKitBrowser/WebKitImplementation.cpp | 196 +++++++++++++++++++++++++
- 1 file changed, 196 insertions(+)
+ WebKitBrowser/WebKitImplementation.cpp | 237 +++++++++++++++++++++++--
+ 1 file changed, 223 insertions(+), 14 deletions(-)
 
 diff --git a/WebKitBrowser/WebKitImplementation.cpp b/WebKitBrowser/WebKitImplementation.cpp
-index 948e0ea8..be9a8d73 100644
+index e5e4cda0..6b28898f 100644
 --- a/WebKitBrowser/WebKitImplementation.cpp
 +++ b/WebKitBrowser/WebKitImplementation.cpp
 @@ -23,6 +23,8 @@
@@ -24,7 +21,7 @@ index 948e0ea8..be9a8d73 100644
  
  #include "Module.h"
  
-@@ -351,6 +353,17 @@ static GSourceFuncs _handlerIntervention =
+@@ -354,6 +356,17 @@ static GSourceFuncs _handlerIntervention =
          }
      }
  
@@ -42,7 +39,7 @@ index 948e0ea8..be9a8d73 100644
      class WebKitImplementation : public Core::Thread,
                                   public Exchange::IBrowser,
                                   public Exchange::IWebBrowser,
-@@ -738,6 +751,12 @@ static GSourceFuncs _handlerIntervention =
+@@ -744,6 +757,12 @@ static GSourceFuncs _handlerIntervention =
              , _unresponsiveReplyNum(0)
              , _frameCount(0)
              , _lastDumpTime(g_get_monotonic_time())
@@ -55,7 +52,7 @@ index 948e0ea8..be9a8d73 100644
          {
              // Register an @Exit, in case we are killed, with an incorrect ref count !!
              if (atexit(CloseDown) != 0) {
-@@ -1078,6 +1097,7 @@ static GSourceFuncs _handlerIntervention =
+@@ -1139,6 +1158,7 @@ static GSourceFuncs _handlerIntervention =
                          object->_adminLock.Unlock();
  
                          object->SetResponseHTTPStatusCode(-1);
@@ -63,7 +60,7 @@ index 948e0ea8..be9a8d73 100644
  #ifdef WEBKIT_GLIB_API
                          webkit_web_view_load_uri(object->_view, object->_URL.c_str());
  #else
-@@ -1086,6 +1106,12 @@ static GSourceFuncs _handlerIntervention =
+@@ -1147,6 +1167,12 @@ static GSourceFuncs _handlerIntervention =
                          WKPageLoadURL(object->_page, shellURL);
                          WKRelease(shellURL);
  #endif
@@ -76,7 +73,7 @@ index 948e0ea8..be9a8d73 100644
                          return G_SOURCE_REMOVE;
                      },
                      data,
-@@ -1500,6 +1526,13 @@ static GSourceFuncs _handlerIntervention =
+@@ -1565,6 +1591,13 @@ static GSourceFuncs _handlerIntervention =
                  }
              }
  
@@ -90,7 +87,7 @@ index 948e0ea8..be9a8d73 100644
              _adminLock.Unlock();
          }
          void OnLoadFailed()
-@@ -1513,6 +1546,8 @@ static GSourceFuncs _handlerIntervention =
+@@ -1578,6 +1611,8 @@ static GSourceFuncs _handlerIntervention =
                  index++;
              }
  
@@ -99,7 +96,7 @@ index 948e0ea8..be9a8d73 100644
              _adminLock.Unlock();
          }
          void OnStateChange(const PluginHost::IStateControl::state newState)
-@@ -1841,6 +1876,124 @@ static GSourceFuncs _handlerIntervention =
+@@ -1918,6 +1953,150 @@ static GSourceFuncs _handlerIntervention =
              return _page;
          }
  #endif
@@ -138,6 +135,7 @@ index 948e0ea8..be9a8d73 100644
 +                                 std::to_string(info.loads[2] / LA_SCALE));
 +                metrics.Set("NProc", std::to_string(NPROC_ONLN));
 +            };
++
 +            auto parseRssFromStatmLine = [&](const std::string &statmLine, uint32_t &inBytes)
 +            {
 +                std::vector<std::string> items = splitString(statmLine, ' ');
@@ -169,6 +167,21 @@ index 948e0ea8..be9a8d73 100644
 +                return true;
 +            };
 +
++            auto getHostName = [&] () -> std::string
++            {
++                std::size_t startIdx = _URL.find("://");
++                if(startIdx == std::string::npos)
++                    return _URL;
++                else {
++                    startIdx += 3; // skip "://"
++                    size_t endIdx = _URL.find("/",startIdx);
++                    if(endIdx == std::string::npos)
++                        return _URL.substr(startIdx);
++                    else
++                        return _URL.substr(startIdx, endIdx - startIdx);
++                }
++            };
++
 +            auto addProcessInfo = [&](JsonObject &metrics)
 +            {
 +
@@ -182,7 +195,7 @@ index 948e0ea8..be9a8d73 100644
 +
 +                metrics.Set("ProcessRSS", std::to_string(rssInBytes));
 +                metrics.Set("ProcessPID", std::to_string(webprocessPID));
-+                metrics.Set("AppName", _URL.c_str());
++                metrics.Set("AppName", getHostName());
 +                metrics.Set("webProcessStatmLine", statmLine);
 +            };
 +
@@ -217,6 +230,16 @@ index 948e0ea8..be9a8d73 100644
 +            _launchMetrics.ToString(str);
 +            SYSLOG(Logging::Notification, (_T( "Launch Metrics: %s "), str.c_str()));
 +
++            SYSLOG(Logging::Notification, (_T( "Launch Metrics: (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"), \
++                _launchMetrics["LaunchState"].String().c_str(), _launchMetrics["AppType"].String().c_str(), \
++                _launchMetrics["MemTotal"].String().c_str(), _launchMetrics["MemFree"].String().c_str(), \
++                _launchMetrics["MemSwapped"].String().c_str(), _launchMetrics["Uptime"].String().c_str(), \
++                _launchMetrics["LoadAvg"].String().c_str(), _launchMetrics["NProc"].String().c_str(), \
++                _launchMetrics["ProcessRSS"].String().c_str(), _launchMetrics["ProcessPID"].String().c_str(), \
++                _launchMetrics["AppName"].String().c_str(), _launchMetrics["webProcessStatmLine"].String().c_str(), \
++                _launchMetrics["webProcessIdleTime"].String().c_str(), _launchMetrics["LaunchTime"].String().c_str(), \
++                _launchMetrics["AppLoadSuccess"].String().c_str(), _launchMetrics["webPageLoadNum"].String().c_str()));
++
 +            _pageLoadStart = -1;
 +            _didLogLaunchMetrics = true;
 +        }
@@ -224,7 +247,7 @@ index 948e0ea8..be9a8d73 100644
          BEGIN_INTERFACE_MAP(WebKitImplementation)
          INTERFACE_ENTRY(Exchange::IWebBrowser)
          INTERFACE_ENTRY(Exchange::IBrowser)
-@@ -1916,6 +2069,10 @@ static GSourceFuncs _handlerIntervention =
+@@ -1992,6 +2171,10 @@ static GSourceFuncs _handlerIntervention =
  #endif
                          object->OnStateChange(PluginHost::IStateControl::SUSPENDED);
  
@@ -235,7 +258,7 @@ index 948e0ea8..be9a8d73 100644
                          TRACE_GLOBAL(Trace::Information, (_T("Internal Suspend Notification took %d mS."), static_cast<uint32_t>(Core::Time::Now().Ticks() - object->_time)));
  
                          object->CheckWebProcess();
-@@ -2148,6 +2305,10 @@ static GSourceFuncs _handlerIntervention =
+@@ -2274,6 +2457,10 @@ static GSourceFuncs _handlerIntervention =
  
              URL(static_cast<const string>(_URL));
  
@@ -246,7 +269,7 @@ index 948e0ea8..be9a8d73 100644
              // Move into the correct state, as requested
              auto* backend = webkit_web_view_backend_get_wpe_backend(webkit_web_view_get_backend(_view));
              _adminLock.Lock();
-@@ -2365,6 +2526,10 @@ static GSourceFuncs _handlerIntervention =
+@@ -2495,6 +2682,10 @@ static GSourceFuncs _handlerIntervention =
  
              URL(static_cast<const string>(_URL));
  
@@ -257,8 +280,8 @@ index 948e0ea8..be9a8d73 100644
              // Move into the correct state, as requested
              _adminLock.Lock();
              if ((_state == PluginHost::IStateControl::SUSPENDED) || (_state == PluginHost::IStateControl::UNINITIALIZED)) {
-@@ -2417,6 +2582,26 @@ static GSourceFuncs _handlerIntervention =
-                 });
+@@ -2553,6 +2744,26 @@ static GSourceFuncs _handlerIntervention =
+ #endif
          }
  
 +        pid_t GetWebGetProcessIdentifier() {
@@ -284,7 +307,33 @@ index 948e0ea8..be9a8d73 100644
          void DidReceiveWebProcessResponsivenessReply(bool isWebProcessResponsive)
          {
              if (_config.WatchDogHangThresholdInSeconds.Value() == 0 || _config.WatchDogCheckTimeoutInSeconds.Value() == 0)
-@@ -2542,6 +2727,17 @@ static GSourceFuncs _handlerIntervention =
+@@ -2570,24 +2781,11 @@ static GSourceFuncs _handlerIntervention =
+             if (isWebProcessResponsive && _unresponsiveReplyNum == 0)
+                 return;
+ 
++            pid_t webprocessPID = GetWebGetProcessIdentifier();
+ #ifdef WEBKIT_GLIB_API
+             std::string activeURL(webkit_web_view_get_uri(_view));
+-            if (_webprocessPID == -1) {
+-              // FIXME: need a webkit_ API to query process id
+-              _webprocessPID = ([]() -> pid_t {
+-                auto children = Core::ProcessInfo::Iterator(Core::ProcessInfo().Id());
+-                while (children.Next()) {
+-                  if (children.Current().Name() == "WPEWebProcess") {
+-                    return children.Current().Id();
+-                  }
+-                }
+-                return -1;
+-              })();
+-            }
+-            pid_t webprocessPID = _webprocessPID;
+ #else
+             std::string activeURL = GetPageActiveURL(GetPage());
+-            pid_t webprocessPID = WKPageGetProcessIdentifier(GetPage());
+ #endif
+ 
+             if (isWebProcessResponsive) {
+@@ -2702,6 +2900,17 @@ static GSourceFuncs _handlerIntervention =
          uint32_t _unresponsiveReplyNum;
          unsigned _frameCount;
          gint64 _lastDumpTime;
