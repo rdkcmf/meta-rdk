@@ -6,7 +6,6 @@ SRC_URI = " \
            file://network@.service \
            file://udhcpc@.service \
            file://network.rules \
-           file://cherry-interface-detection.rules \
            file://lan-iface@.service \
           "
 
@@ -19,7 +18,6 @@ do_install() {
 
 	install -d ${D}${sysconfdir}/udev/rules.d
 	install -m 0644 ${WORKDIR}/network.rules ${D}${sysconfdir}/udev/rules.d/network.rules
-        install -m 0644 ${WORKDIR}/cherry-interface-detection.rules ${D}${sysconfdir}/udev/rules.d/cherry-interface-detection.rules
 }
 
 inherit systemd
