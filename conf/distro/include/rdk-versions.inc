@@ -24,6 +24,11 @@ CMF_RDKB_CCSP_ROOT_GIT ?= "${CMF_RDKB_COMPONENTS_ROOT_GIT}/opensource/ccsp"
 CMF_GIT_BRANCH ?= "rdk-next"
 CMF_GIT_MASTER_BRANCH ?= "master"
 
+CMF_GITHUB_ROOT ?= "git://github.com/rdkcentral"
+CMF_GITHUB_MAIN_BRANCH ?= "main"
+CMF_GITHUB_MASTER_BRANCH ?= "master"
+CMF_GITHUB_STABLE2_BRANCH ?= "stable2"
+
 SRCREV_pn-devicesettings ?= "${AUTOREV}"
 SRCREV_pn-devicesettings-hal-headers ?= "${SRCREV_pn-devicesettings}"
 SRCREV_pn-devicesettings-hal-noop ?= "${AUTOREV}"
