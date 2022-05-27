@@ -34,7 +34,7 @@ BBMASK .= "|.meta-rdk-comcast/recipes-common/nvm-sqlite/nvm-sqlite.bb"
 # BBMASK .= "|.meta-rdk-comcast/recipes-extended/rdkfwupgrader/rdkfwupgrader.bb"
 
 # add webconfig-framework.bb to bbmask till such time that it supports Video devices.
-BBMASK .= "|.meta-rdk/recipes-common/webconfig-framework/webconfig-framework.bb"
+# BBMASK .= "|.meta-rdk/recipes-common/webconfig-framework/webconfig-framework.bb"
 
 DISTRO_FEATURES_append = " playreadycdmi_cryptanium"
 DISTRO_FEATURES_append = " widevine_hardware"
