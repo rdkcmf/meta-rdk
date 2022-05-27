@@ -4,5 +4,6 @@ RESIDENT_APP_MEMORYPRESSURE = "databaseprocess:50m,networkprocess:50m,webprocess
 SEARCH_AND_DISCOVERY_APP_MEMORYPRESSURE = "databaseprocess:50m,networkprocess:50m,webprocess:400m,rpcprocess:50m"
 HTML_APP_MEMORYPRESSURE = "databaseprocess:50m,networkprocess:50m,webprocess:400m,rpcprocess:50m"
 LIGHTNING_APP_MEMORYPRESSURE = "databaseprocess:50m,networkprocess:50m,webprocess:400m,rpcprocess:50m"
+JSPP_MEMORYPRESSURE = "databaseprocess:50m,networkprocess:50m,webprocess:400m,rpcprocess:50m"
 WEBKITBROWSER_MEMORYPROFILE = "1024m"
 WEBKITBROWSER_DISKCACHE = "64m"
