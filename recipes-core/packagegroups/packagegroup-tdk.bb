@@ -13,6 +13,8 @@ PACKAGES = "\
 RDEPENDS_packagegroup-tdk = "\
   tdk \
   ${@bb.utils.contains('DISTRO_FEATURES', 'enable_firebolt_compliance_tdk', 'waymetric', '', d)} \
+  ${@bb.utils.contains('DISTRO_FEATURES', 'enable_firebolt_compliance_tdk', 'gstreamer1.0-plugins-good-level', '', d)} \
+  ${@bb.utils.contains('DISTRO_FEATURES', 'enable_firebolt_compliance_tdk', 'gstreamer1.0-plugins-bad-debugutilsbad', '', d)} \
   "
 
 #Removed sysstat as it is not being used from TDK now.

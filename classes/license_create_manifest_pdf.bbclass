@@ -101,8 +101,7 @@ def license_create_pdf(d):
     ClosedOpenSourceLicenses = "Adobe MIT MIT-style BSD-3-Clause GFDL-1.2 GFDL-1.3"
 
     #Proprietary Licenses
-    ProprietaryLicenses = "Broadcom CableLabs CLOSED Comcast RDK SeaChange PioneerDigital GreenPeak \
-    Proprietary Netzyn"
+    ProprietaryLicenses = "Broadcom CableLabs CLOSED Comcast RDK SeaChange PioneerDigital GreenPeak"
 
 
     license_text_dir = os.path.join(d.expand('${LICENSE_DIRECTORY}/${IMAGE_NAME}'), 'licensetext')
@@ -211,8 +210,7 @@ def license_create_txt(d):
     ClosedOpenSourceLicenses = "Adobe MIT MIT-style BSD-3-Clause GFDL-1.2 GFDL-1.3 PD"
 
     #Proprietary Licenses
-    ProprietaryLicenses = "Broadcom CableLabs CLOSED Comcast RDK SeaChange PioneerDigital GreenPeak \
-    Proprietary Netzyn"
+    ProprietaryLicenses = "Broadcom CableLabs CLOSED Comcast RDK SeaChange PioneerDigital GreenPeak"
 
     license_text_dir = os.path.join(d.expand('${LICENSE_DIRECTORY}/${IMAGE_NAME}'), 'licensetext')
     license_manifest_txt = os.path.join(license_text_dir, 'license_manifest.txt')
@@ -240,7 +238,7 @@ create_custom_license_manifest() {
     ClosedOpenSourceLicenses="Adobe MIT MIT-style BSD-3-Clause GFDL-1.2 GFDL-1.3"
 
     #Proprietary Licenses
-    ProprietaryLicenses="Broadcom CableLabs CLOSED Comcast RDK SeaChange PioneerDigital GreenPeak Proprietary Netzyn"
+    ProprietaryLicenses="Broadcom CableLabs CLOSED Comcast RDK SeaChange PioneerDigital GreenPeak"
 
     INSTALLED_PKGS=`cat ${LICENSE_DIRECTORY}/${IMAGE_NAME}/package.manifest`
     LICENSE_MANIFEST="${LICENSE_DIRECTORY}/${IMAGE_NAME}_license.manifest"

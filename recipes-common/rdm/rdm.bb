@@ -39,6 +39,8 @@ do_install_append () {
         install -D -m644 ${WORKDIR}/apps-rdm.service ${D}${systemd_unitdir}/system/apps-rdm.service
         install -D -m644 ${WORKDIR}/apps_rdm.path ${D}${systemd_unitdir}/system/apps_rdm.path
         install -D -m644 ${WORKDIR}/apps-prerdm.service ${D}${systemd_unitdir}/system/apps-prerdm.service
+
+        rm -f ${D}${sysconfdir}/rdm/kmsVerify.sh
 }
 
 SYSTEMD_SERVICE_${PN} += "apps-rdm.service"

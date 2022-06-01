@@ -125,16 +125,16 @@ Index: git/WebKitBrowser/WebKitBrowser.cpp
          Exchange::JWebBrowser::Unregister(*this);
          UnregisterAll();
  
-@@ -144,6 +144,8 @@ namespace Plugin {
-                 connection->Release();
-             }
+@@ -149,6 +149,8 @@ namespace Plugin {
+             connection->Terminate();
+             connection->Release();
          }
 +        _application->Release();
 +        _memory->Release();
  
          _service = nullptr;
          _browser = nullptr;
-@@ -300,6 +302,11 @@ namespace Plugin {
+@@ -305,6 +307,11 @@ namespace Plugin {
          string message(string("{ \"suspended\": ") + (state == PluginHost::IStateControl::SUSPENDED ? _T("true") : _T("false")) + string(" }"));
          _service->Notify(message);
          event_statechange(state == PluginHost::IStateControl::SUSPENDED);
