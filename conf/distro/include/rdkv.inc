@@ -1,4 +1,4 @@
-
+PARALLEL_MAKE_append = " -l ${@int(os.sysconf(os.sysconf_names['SC_NPROCESSORS_ONLN'])) * 150/100}"
 PREFERRED_VERSION_jansson = "2.7"
 
 PREFERRED_VERSION_icu ?= "64.1"
