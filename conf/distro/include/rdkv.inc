@@ -14,7 +14,6 @@ PREFERRED_VERSION_curl-native_dunfell ?= "7.69.1"
 PREFERRED_VERSION_openssl = "1.0.2o"
 PREFERRED_VERSION_openssl_dunfell = "1.1.1d"
 
-PREFERRED_VERSION_dnsmasq = "2.81"
 PREFERRED_VERSION_brotli = "1.0.7"
 PREFERRED_VERSION_brotli-native = "1.0.7"
 
