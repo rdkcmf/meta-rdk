@@ -49,6 +49,7 @@ DISTRO_FEATURES_append = " xcal_device"
 DISTRO_FEATURES_append = " lxy"
 
 # Flags to control cedm builds
+DISTRO_FEATURES_remove_rpi = "fkpskdf"
 DISTRO_FEATURES_append_rpi = " enable-cpg"
 #DISTRO_FEATURES_append_rpi = " use-cpg-source"
 
