@@ -36,20 +36,37 @@ do_install_append () {
         install -m755 ${WORKDIR}/apps_rdm.sh ${D}/${bindir}/
         install -m755 ${WORKDIR}/apps_prerdm.sh ${D}/${bindir}/
         install -m755 ${WORKDIR}/rdm_apps_rfc_check.sh ${D}/${bindir}/
-        install -D -m644 ${WORKDIR}/apps-rdm.service ${D}${systemd_unitdir}/system/apps-rdm.service
-        install -D -m644 ${WORKDIR}/apps_rdm.path ${D}${systemd_unitdir}/system/apps_rdm.path
-        install -D -m644 ${WORKDIR}/apps-prerdm.service ${D}${systemd_unitdir}/system/apps-prerdm.service
 
         rm -f ${D}${sysconfdir}/rdm/kmsVerify.sh
 }
 
-SYSTEMD_SERVICE_${PN} += "apps-rdm.service"
-SYSTEMD_SERVICE_${PN} += "apps_rdm.path"
-SYSTEMD_SERVICE_${PN} += "apps-prerdm.service"
+do_install_append_hybrid () {
+        install -D -m644 ${WORKDIR}/apps-rdm.service ${D}${systemd_unitdir}/system/apps-rdm.service
+        install -D -m644 ${WORKDIR}/apps_rdm.path ${D}${systemd_unitdir}/system/apps_rdm.path
+        install -D -m644 ${WORKDIR}/apps-prerdm.service ${D}${systemd_unitdir}/system/apps-prerdm.service
+}
 
-FILES_${PN} += "${systemd_unitdir}/system/apps-rdm.service"
-FILES_${PN} += "${systemd_unitdir}/system/apps_rdm.path"
-FILES_${PN} += "${systemd_unitdir}/system/apps-prerdm.service"
+do_install_append_client () {
+        install -D -m644 ${WORKDIR}/apps-rdm.service ${D}${systemd_unitdir}/system/apps-rdm.service
+        install -D -m644 ${WORKDIR}/apps_rdm.path ${D}${systemd_unitdir}/system/apps_rdm.path
+        install -D -m644 ${WORKDIR}/apps-prerdm.service ${D}${systemd_unitdir}/system/apps-prerdm.service
+}
+
+SYSTEMD_SERVICE_${PN}_append_hybrid = " apps-rdm.service"
+SYSTEMD_SERVICE_${PN}_append_hybrid = " apps_rdm.path"
+SYSTEMD_SERVICE_${PN}_append_hybrid = " apps-prerdm.service"
+
+SYSTEMD_SERVICE_${PN}_append_client = " apps-rdm.service"
+SYSTEMD_SERVICE_${PN}_append_client = " apps_rdm.path"
+SYSTEMD_SERVICE_${PN}_append_client = " apps-prerdm.service"
+
+FILES_${PN}_append_hybrid = " ${systemd_unitdir}/system/apps-rdm.service"
+FILES_${PN}_append_hybrid = " ${systemd_unitdir}/system/apps_rdm.path"
+FILES_${PN}_append_hybrid = " ${systemd_unitdir}/system/apps-prerdm.service"
+
+FILES_${PN}_append_client = " ${systemd_unitdir}/system/apps-rdm.service"
+FILES_${PN}_append_client = " ${systemd_unitdir}/system/apps_rdm.path"
+FILES_${PN}_append_client = " ${systemd_unitdir}/system/apps-prerdm.service"
 
 FILES_${PN} += " \
                 /etc/rdm/* \
