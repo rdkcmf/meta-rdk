@@ -49,8 +49,8 @@ do_configure_prepend() {
 }
 
 do_install () {
-   install -d ${D}/usr/lib
-   cp -a ${S}/librtRemote* ${D}/usr/lib
+   install -d ${D}/${libdir}
+   cp -a ${S}/librtRemote* ${D}/${libdir}
 
    mkdir -p ${D}${includedir}/pxcore
    install -m 0644 ${S}/include/rtRemote.h ${D}${includedir}/pxcore/

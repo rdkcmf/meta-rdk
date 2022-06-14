@@ -40,7 +40,7 @@ do_install_append () {
     install -d ${D}${systemd_unitdir}/system
     install -m 644 ${S}/include/telemetry_busmessage_sender.h ${D}/usr/include/
     install -m 644 ${S}/include/telemetry2_0.h ${D}/usr/include/
-    install -m 0755 ${S}/source/commonlib/t2Shared_api.sh ${D}${base_libdir}/rdk
+    install -m 0755 ${S}/source/commonlib/t2Shared_api.sh ${D}/lib/rdk
     rm -fr ${D}/usr/lib/libtelemetry_msgsender.la 
 }
 
@@ -51,7 +51,7 @@ FILES_${PN} = "\
     ${systemd_unitdir}/system \
 "
 FILES_${PN} += "${libdir}/*.so*"
-FILES_${PN} += "${base_libdir}/rdk/*"
+FILES_${PN} += "/lib/rdk/*"
 
 FILES_SOLIBSDEV = ""
 INSANE_SKIP_${PN} += "dev-so"

@@ -9,18 +9,18 @@ SRC_URI = " \
            file://lan-iface@.service \
           "
 
-FILES_${PN} = "${sysconfdir}/udev/rules.d/* ${base_libdir}/systemd/system/*"
+FILES_${PN} = "${sysconfdir}/udev/rules.d/* ${systemd_unitdir}/system/*"
+
 RDEPENDS_${PN} = "udev"
 
 do_install() {
-	install -d ${D}${base_libdir}/systemd/system
+    install -d ${D}${systemd_unitdir}/system
 
-if ${@bb.utils.contains('DISTRO_FEATURES', 'benchmark_enable', 'false', 'true', d)}; then
-
-	install -m 0644 ${WORKDIR}/*.service ${D}${base_libdir}/systemd/system
-fi
-	install -d ${D}${sysconfdir}/udev/rules.d
-	install -m 0644 ${WORKDIR}/network.rules ${D}${sysconfdir}/udev/rules.d/network.rules
+    if ${@bb.utils.contains('DISTRO_FEATURES', 'benchmark_enable', 'false', 'true', d)}; then  
+        install -m 0644 ${WORKDIR}/*.service ${D}${systemd_unitdir}/system
+    fi
+    install -d ${D}${sysconfdir}/udev/rules.d
+    install -m 0644 ${WORKDIR}/network.rules ${D}${sysconfdir}/udev/rules.d/network.rules
 }
 
 inherit systemd
