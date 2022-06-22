@@ -14,6 +14,7 @@ PREFERRED_VERSION_curl-native_dunfell ?= "7.69.1"
 PREFERRED_VERSION_openssl = "1.0.2o"
 PREFERRED_VERSION_openssl_dunfell = "1.1.1d"
 
+PREFERRED_VERSION_dnsmasq = "2.81"
 PREFERRED_VERSION_brotli = "1.0.7"
 PREFERRED_VERSION_brotli-native = "1.0.7"
 
@@ -31,7 +32,7 @@ BBMASK .= "|meta-rdk-comcast-video/recipes-extended/halsnmp/halsnmp-emu_git.bb"
 BBMASK .= "|.meta-rdk-comcast/recipes-common/nvm-sqlite/nvm-sqlite.bb"
 
 # add rdkfwupgrader.bb to bbmask till such time that it supports video devices.
-# BBMASK .= "|.meta-rdk-comcast/recipes-extended/rdkfwupgrader/rdkfwupgrader.bb"
+BBMASK .= "|.meta-rdk-comcast/recipes-extended/rdkfwupgrader/rdkfwupgrader.bb"
 
 # add webconfig-framework.bb to bbmask till such time that it supports Video devices.
 BBMASK .= "|.meta-rdk/recipes-common/webconfig-framework/webconfig-framework.bb"
@@ -60,7 +61,6 @@ DISTRO_FEATURES_append = " safec"
 DISTRO_FEATURES_append = " rdm-versioning"
 
 PREFERRED_VERSION_bluez5_dunfell ?= "5.54"
-DISTRO_FEATURES_append_dunfell = " logendpoints"
 
 DISTRO_FEATURES_append = " tigress"
 # Masking recipes for CEDM multicall implementation in RDK-V

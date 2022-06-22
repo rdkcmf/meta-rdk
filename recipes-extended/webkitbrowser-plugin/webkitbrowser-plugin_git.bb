@@ -8,17 +8,16 @@ PV = "3.0+git${SRCPV}"
 S = "${WORKDIR}/git/WebKitBrowser"
 
 SRC_URI = "git://github.com/rdkcentral/rdkservices.git;protocol=git;branch=main \
-  file://0001-RDKTV-177-Configure-wpeframework-plugin-startup-orde.patch;patchdir=../ \
+  file://0001-Inject-badger-script-source-for-Pluto.patch;patchdir=../ \
   file://0002-Use-SYSLOG-instead-of-TRACE.patch;patchdir=../ \
   file://0003-Increase-browser-creation-timeout.patch;patchdir=../ \
   file://0004-Reduce-BrowserConsoleLog.patch;patchdir=../ \
   file://0005-Enable-mixed-content.patch;patchdir=../ \
   file://0006-Introduce-state-aware-memory-observer.patch;patchdir=../ \
-  file://0007-Launch-Metrics-data-collection.patch;patchdir=../ \
 "
 
-# Tip of the main at Apr 18, 2022
-SRCREV = "2ed9dbc6689d2725fff6bc9917f18d3f251646a4"
+# Tip of the main at Sep 22, 2021
+SRCREV = "a36ebf96d80934c61e3d2c50fcee2681ad8fe3a8"
 
 inherit cmake pkgconfig python3native
 
@@ -65,7 +64,6 @@ EXTRA_OECMAKE += " \
     -DPLUGIN_RESIDENT_APP_CLIENTIDENTIFIER="${RESIDENT_APP_CLIENTIDENTIFIER}" \
     -DPLUGIN_RESIDENT_APP_AUTOSTART="${RESIDENT_APP_AUTOSTART}" \
     -DPLUGIN_RESIDENT_APP_STARTURL="${RESIDENT_APP_STARTURL}" \
-    -DPLUGIN_RESIDENT_APP_STARTUPORDER="${RESIDENT_APP_STARTUPORDER}" \
     -DPLUGIN_SEARCH_AND_DISCOVERY_APP_CLIENTIDENTIFIER="${SEARCH_AND_DISCOVERY_APP_CLIENTIDENTIFIER}" \
     -DPLUGIN_WEBKITBROWSER_CLIENTIDENTIFIER="${WEBKITBROWSER_CLIENTIDENTIFIER}" \
     -DPLUGIN_HTML_APP_CLIENTIDENTIFIER="${HTML_APP_CLIENTIDENTIFIER}" \
@@ -93,10 +91,6 @@ EXTRA_OECMAKE += " \
     -DPLUGIN_RESIDENT_APP_PERSISTENTPATHPOSTFIX="${RESIDENT_APP_PERSISTENTPATHPOSTFIX}" \
     -DPLUGIN_SEARCH_AND_DISCOVERY_APP_PERSISTENTPATHPOSTFIX="${SEARCH_AND_DISCOVERY_APP_PERSISTENTPATHPOSTFIX}" \
     -DPLUGIN_WEBKITBROWSER_PERSISTENTPATHPOSTFIX="${WEBKITBROWSER_PERSISTENTPATHPOSTFIX}" \
-    -DPLUGIN_SEARCH_AND_DISCOVERY_APP_MEMORYPRESSURE="${SEARCH_AND_DISCOVERY_APP_MEMORYPRESSURE}" \
-    -DPLUGIN_RESIDENT_APP_MEMORYPRESSURE="${RESIDENT_APP_MEMORYPRESSURE}" \
-    -DPLUGIN_HTML_APP_MEMORYPRESSURE="${HTML_APP_MEMORYPRESSURE}" \
-    -DPLUGIN_LIGHTNING_APP_MEMORYPRESSURE="${LIGHTNING_APP_MEMORYPRESSURE}" \
 "
 
 FILES_SOLIBSDEV = ""

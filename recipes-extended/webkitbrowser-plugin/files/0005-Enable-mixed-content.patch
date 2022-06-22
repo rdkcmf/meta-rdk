@@ -7,28 +7,17 @@ Subject: [PATCH] Enable mixed content
  WebKitBrowser/WebKitImplementation.cpp | 5 +++--
  1 file changed, 3 insertions(+), 2 deletions(-)
 
-Index: git/WebKitBrowser/WebKitImplementation.cpp
-===================================================================
---- git.orig/WebKitBrowser/WebKitImplementation.cpp
-+++ git/WebKitBrowser/WebKitImplementation.cpp
-@@ -2229,8 +2229,8 @@ static GSourceFuncs _handlerIntervention
-             bool enableWebSecurity = _config.Secure.Value();
-             g_object_set(G_OBJECT(preferences),
-                      "enable-websecurity", enableWebSecurity,
--                     "allow-running-of-insecure-content", !enableWebSecurity,
--                     "allow-display-of-insecure-content", !enableWebSecurity, nullptr);
-+                     "allow-running-of-insecure-content", true,
-+                     "allow-display-of-insecure-content", true, nullptr);
- 
-             _view = WEBKIT_WEB_VIEW(g_object_new(WEBKIT_TYPE_WEB_VIEW,
-                 "backend", webkit_web_view_backend_new(wpe_view_backend_create(), nullptr, nullptr),
-@@ -2383,8 +2383,9 @@ static GSourceFuncs _handlerIntervention
+diff --git a/WebKitBrowser/WebKitImplementation.cpp b/WebKitBrowser/WebKitImplementation.cpp
+index 68769d00..cfd1d93a 100644
+--- a/WebKitBrowser/WebKitImplementation.cpp
++++ b/WebKitBrowser/WebKitImplementation.cpp
+@@ -2098,8 +2098,9 @@ static GSourceFuncs _handlerIntervention =
  
              // Allow mixed content.
              bool allowMixedContent = _config.Secure.Value();
 -            WKPreferencesSetAllowRunningOfInsecureContent(preferences, !allowMixedContent);
 -            WKPreferencesSetAllowDisplayOfInsecureContent(preferences, !allowMixedContent);
-+            // Temporary enabled until APV migrated to HTTPS
++	    // Temporary enabled until APV migrated to HTTPS
 +            WKPreferencesSetAllowRunningOfInsecureContent(preferences, true);
 +            WKPreferencesSetAllowDisplayOfInsecureContent(preferences, true);
  
