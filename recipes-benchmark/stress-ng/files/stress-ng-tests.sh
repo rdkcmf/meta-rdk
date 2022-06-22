@@ -78,7 +78,14 @@ execAndRedirectOut(){
 cpuStressTest(){
     #Load Avg:69
     test="cpu"
-    execAndRedirectOut stress-ng --all $CPU_INSTANCE --class cpu --exclude atomic,zlib,wcs,tree,radixsort,ioport,heapsort,crypt,pkey,numa,mergesort,judy -t $CPU_TIME  $ENABLE_OPTIONS $YAML_OPTION$test$TEST_COUNT.yaml
+    if [ "$DEVICE_NAME" == "XiOne-SCB" ]; then 
+    execAndRedirectOut stress-ng --all $CPU_INSTANCE --class cpu --exclude atomic,zlib,wcs,tree,radixsort,ioport,heapsort,crypt,pkey,numa,mergesort,judy,ipsec_mb,rdrand,tsc,opcode -t $CPU_TIME  $ENABLE_OPTIONS $YAML_OPTION$test$TEST_COUNT.yaml
+    elif [ "$DEVICE_NAME" == "XiOne" ]; then
+    execAndRedirectOut stress-ng --all $CPU_INSTANCE --class cpu --exclude atomic,zlib,wcs,tree,radixsort,ioport,heapsort,crypt,pkey,numa,mergesort,judy,ipsec_mb,rdrand,tsc,opcode,stream,skiplist,tsearch,vcemath -t $CPU_TIME  $ENABLE_OPTIONS $YAML_OPTION$test$TEST_COUNT.yaml
+    else
+    execAndRedirectOut stress-ng --all $CPU_INSTANCE --class cpu --exclude atomic,zlib,wcs,tree,radixsort,ioport,heapsort,crypt,pkey,numa,mergesort,judy,opcode -t $CPU_TIME  $ENABLE_OPTIONS $YAML_OPTION$test$TEST_COUNT.yaml
+    fi
+    execAndRedirectOut stress-ng --opcode 0 --opcode-method inc -t $CPU_TIME  $ENABLE_OPTIONS $YAML_OPTION$test$TEST_COUNT.yaml
     sh /lib/rdk/capture-proc-metrics.sh $test
 }
 
@@ -102,8 +109,15 @@ diskIOTests(){
 schedulerTests() {
     test="scheduler"
     #load average: 193.86 120.35 53.12.incase of seq execution around 12
-    execAndRedirectOut stress-ng --sequential $SCHEDULER_INSTANCE --class scheduler -t $SCHEDULER_TIME --exclude netlink-task $ENABLE_OPTIONS $YAML_OPTION$test$TEST_COUNT.yaml
+    #In Axi6 clone forks the processes more than the limit which casues the crash
+    #TBD:skyxione scheduler case causes reboot.
+    if [ "$DEVICE_NAME" != "XiOne" ]; then
+    execAndRedirectOut stress-ng --sequential $SCHEDULER_INSTANCE --class scheduler -t $SCHEDULER_TIME --exclude netlink-task,vforkmany,clone,sem-sysv,schedpolicy,session,hrtimers $ENABLE_OPTIONS $YAML_OPTION$test$TEST_COUNT.yaml
+    execAndRedirectOut stress-ng --vforkmany 1 --vforkmany-ops 1000 -t 20s $ENABLE_OPTIONS $YAML_OPTION$test$TEST_COUNT.yaml
+    execAndRedirectOut stress-ng --vfork 1 -t 20s $ENABLE_OPTIONS $YAML_OPTION$test$TEST_COUNT.yaml
+    execAndRedirectOut stress-ng --clone 1 -t 20s $ENABLE_OPTIONS $YAML_OPTION$test$TEST_COUNT.yaml
     sh /lib/rdk/capture-proc-metrics.sh $test
+    fi
 }
 memStressTest(){
     test="memory"
@@ -136,14 +150,21 @@ thermalZoneTests() {
 pageFaultTests(){
     test="os"
         #load average:  46.79 18.09 14.62
+    if [ "$DEVICE_NAME" == "XiOne" ]; then 
+    #in Xione, 1) TBD: we see Loop Testcase cause uninterruptible sleep state.Multiple instances of loop TC will stuck in removing the loop device
+    #          2) seccomp Testcase is not supported
+    execAndRedirectOut stress-ng --fault $OS_INSTANCE --switch $OS_INSTANCE  --klog $OS_INSTANCE  --ptrace $OS_INSTANCE --pty $OS_INSTANCE  --sendfile $OS_INSTANCE  --resources $OS_INSTANCE --revio $OS_INSTANCE --rmap $OS_INSTANCE  -t $OS_TIME $ENABLE_OPTIONS $YAML_OPTION$test$TEST_COUNT.yaml
+    execAndRedirectOut stress-ng --loop 1 -t 30s $ENABLE_OPTIONS $YAML_OPTION$test$TEST_COUNT.yaml
+    else
     execAndRedirectOut stress-ng --fault $OS_INSTANCE --switch $OS_INSTANCE --loop $OS_INSTANCE --klog $OS_INSTANCE  --ptrace $OS_INSTANCE --pty $OS_INSTANCE  --sendfile $OS_INSTANCE --seccomp $OS_INSTANCE --resources $OS_INSTANCE --revio $OS_INSTANCE --rmap $OS_INSTANCE  -t $OS_TIME $ENABLE_OPTIONS $YAML_OPTION$test$TEST_COUNT.yaml
+    fi
     sh /lib/rdk/capture-proc-metrics.sh $test
 }
 
 timerTests(){
     test="timer"
     #load average: 13.72 16.99 27.67
-    execAndRedirectOut stress-ng --timer $TIMER_INSTANCE --timer-freq $TIMER_FREQ --rtc $TIMER_INSTANCE --clock $TIMER_INSTANCE --itimer $TIMER_INSTANCE  --timerfd $TIMER_INSATNCE  -t $TIMER_TIME $ENABLE_OPTIONS $YAML_OPTION$test$TEST_COUNT.yaml
+    execAndRedirectOut stress-ng --timer $TIMER_INSTANCE --timer-freq $TIMER_FREQ --rtc $TIMER_INSTANCE --clock $TIMER_INSTANCE --itimer $TIMER_INSTANCE  --timerfd $TIMER_INSTANCE  -t $TIMER_TIME $ENABLE_OPTIONS $YAML_OPTION$test$TEST_COUNT.yaml
     sh /lib/rdk/capture-proc-metrics.sh $test
 }
 
@@ -165,10 +186,13 @@ memoryPressureTest() {
     test="memory"
    #load average: 31.05 26.55 18.00
    execAndRedirectOut stress-ng --brk 30 --brk-notouch --verbose --metrics -t 30s –-times $YAML_OPTION$test$TEST_COUNT.yaml
+   sleep 5
    #load average: 
    execAndRedirectOut stress-ng --shm 10 --shm-objs 4 --shm-bytes 5% --times --metrics -t 30s $YAML_OPTION$test$TEST_COUNT.yaml
+   sleep 5
    #load average: 5.26 5.97 3.34
    execAndRedirectOut stress-ng --bigheap 1 --bigheap-growth 4K -t 4s --times $YAML_OPTION$test$TEST_COUNT.yaml
+   sleep 5
    #stress-ng --brk 2 --stack 2 --bigheap 2
    sh /lib/rdk/capture-proc-metrics.sh $test
 }
@@ -183,7 +207,12 @@ pipeTests() {
 fileTests() {
    test="file"
    #load avg of 150
+   if [ "$DEVICE_NAME" == "XiOne" ]; then 
+   #xione does not support copy-file and fanotify stressor
+   execAndRedirectOut stress-ng --sequential $FILE_INSTANCE --class filesystem --exclude binderfs,chattr,fiemap,xattr,iomix,copy-file,fanotify,procfs -t $FILE_TIME $ENABLE_OPTIONS $YAML_OPTION$test$TEST_COUNT.yaml
+   else
    execAndRedirectOut stress-ng --sequential $FILE_INSTANCE --class filesystem --exclude binderfs,chattr,fiemap,xattr,iomix -t $FILE_TIME $ENABLE_OPTIONS $YAML_OPTION$test$TEST_COUNT.yaml
+   fi
    sh /lib/rdk/capture-proc-metrics.sh $test
 }
 ipcTests() {
@@ -257,8 +286,8 @@ init(){
    pipeTests
    sleep 60
 
-   #schedulerTests
-   #sleep 60
+   schedulerTests
+   sleep 60
 
    diskIOTests
    sleep 60

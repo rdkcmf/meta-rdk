@@ -38,7 +38,14 @@ IMAGE_INSTALL +="${@bb.utils.contains("DISTRO_FEATURES", "benchmark_enable", "pa
                                                              binutils \
                                                              sysint-min \
                                                              ca-certificates \
+                                                             lttng-modules \
+                                                             lttng-tools \
+                                                             lttng-ust \
+                                                             babeltrace \
+                                                             liburcu \
                                                              rdk-ca-store","packagegroup-rdk-debug \
                                                                             packagegroup-rdk-debug-extra",d)}"
-                                                             
-                  
+
+IMAGE_INSTALL +="${@bb.utils.contains("DISTRO_FEATURES","benchmark_dbg_enable","gdb\
+                                                                                stress-ng-dbg\
+                                                                                stress-ng-dev","",d)}"          
