@@ -42,5 +42,8 @@ TOOLCHAIN_HOST_TASK_append_daisy = "\
 TOOLCHAIN_HOST_TASK_append = " nativesdk-bison"
 TOOLCHAIN_TARGET_TASK_append  =" devicesettings-hal-headers rt-headers"
 
+#Rust SDK
+TOOLCHAIN_HOST_TASK_append = " ${@'packagegroup-rust-cross-canadian-${MACHINE}' if os.path.isfile('${RDKROOT}/meta-rust/conf/layer.conf') else ''}"
+
 #eSDK changes
 include  ${@bb.utils.contains('DISTRO_FEATURES', 'enable_esdk', 'rdk-esdk-override.inc', 'xxx.inc', d)}
