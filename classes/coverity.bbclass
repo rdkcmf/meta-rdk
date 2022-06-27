@@ -2,7 +2,8 @@
 # Apart from inheriting this class, you need to set COVERITY_REQUIRED needed
 
 export COVERITY_DIR := "${@d.getVar('COVERITY_DIR', True)}"
-
+BLACK_LIST_FILE="coverity_blacklist.txt"
+COMPILER_VALUE_FILE="compiler_name.txt"
 get_coverity_vars() {
     coverity_blacklist_env="${@d.getVar('COVERITY_BLACKLIST_PATH', True)}" 
     coverity_cmplist_env="${@d.getVar('COVERITY_COMPONENT_BUILD', True)}"
@@ -49,6 +50,10 @@ do_generate_coverity_build_shell () {
       fi
     fi
     
+    if [ "$coverity" = "0" ] ;then
+    	echo "##### Coverity Blacklist Path : $file" >> ${BLACK_LIST_FILE}
+    fi
+    
     if [ "$coverity" = "1" ] ;then
         echo "#### Coverity Analysis Enabled : $file"
     	/opt/covClient/bin/cov-configure --verbose 4 --config ${WORKDIR}/config/coverity_config.xml --java
@@ -56,6 +61,7 @@ do_generate_coverity_build_shell () {
     	extra_option=""
     	compiler_value=`echo ${CC} | cut -f1 -d " "`
 	compiler_options=`echo ${CC} | cut -f2- -d " " | sed -e 's/^none//g' | sed 's/^gcc//g'` 
+        echo "##### Compiler Value : $compiler_value" >> ${COMPILER_VALUE_FILE}
     	if [ "$compiler_options" != "" ];then
        		extra_option="-- $compiler_options"
     	fi
@@ -93,5 +99,5 @@ COVERITY_BLACKLIST_PATH += "bbu-kdriver | docsis-headers | docsis | broadcom-ref
 
 # Ignore problematic components
 COVERITY_BLACKLIST_PATH += "avro-c | graphite2 | zilker | wdmp-c | ctrlm-testapp | pxcore-libnode | wpeframework  | mkimage"
-COVERITY_BLACKLIST_PATH += "netflix-src | qtbase | syslog-helper | linux-meson | mediarite"
+COVERITY_BLACKLIST_PATH += "netflix-src | dtcpmgr | qtbase | syslog-helper | linux-meson | mediarite | quilt-native"
 
