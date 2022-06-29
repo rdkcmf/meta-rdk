@@ -37,16 +37,20 @@ RDEPENDS_${PN} += " audiocapturemgr"
 RDEPENDS_${PN} += " rdk-logger"
 
 
-inherit autotools pkgconfig systemd coverity
+inherit autotools pkgconfig systemd coverity syslog-ng-config-gen
+SYSLOG-NG_FILTER = "btmgr"
+SYSLOG-NG_SERVICE_btmgr = "btmgr.service"
+SYSLOG-NG_DESTINATION_btmgr = "btmgrlog.txt"
+SYSLOG-NG_LOGRATE_btmgr = "very-high"
 
-ENABLE_AC_RMF = "--enable-ac_rmf=${@bb.utils.contains('RDEPENDS_${PN}', 'virtual/media-utils', 'yes', 'no', d)}"
-ENABLE_ACM = "--enable-acm=${@bb.utils.contains('RDEPENDS_${PN}', 'audiocapturemgr', 'yes', 'no', d)}"
+ENABLE_AC_RMF = "--enable-ac_rmf=${@bb.utils.contains('RDEPENDS_${PN}', 'virtual/${MLPREFIX}media-utils', 'yes', 'no', d)}"
+ENABLE_ACM = "--enable-acm=${@bb.utils.contains('RDEPENDS_${PN}', '${MLPREFIX}audiocapturemgr', 'yes', 'no', d)}"
 EXTRA_OECONF += " ${ENABLE_ACM} ${ENABLE_AC_RMF}"
 
-CFLAGS_append =" ${@bb.utils.contains('RDEPENDS_${PN}', 'audiocapturemgr', ' -I${STAGING_INCDIR}/audiocapturemgr', " ", d)}"
-CFLAGS_append =" ${@bb.utils.contains('RDEPENDS_${PN}', 'virtual/media-utils', ' -I${STAGING_INCDIR}/media-utils -I${STAGING_INCDIR}/media-utils/audioCapture', " ", d)}"
+CFLAGS_append =" ${@bb.utils.contains('RDEPENDS_${PN}', '${MLPREFIX}audiocapturemgr', ' -I${STAGING_INCDIR}/audiocapturemgr', " ", d)}"
+CFLAGS_append =" ${@bb.utils.contains('RDEPENDS_${PN}', 'virtual/${MLPREFIX}media-utils', ' -I${STAGING_INCDIR}/media-utils -I${STAGING_INCDIR}/media-utils/audioCapture', " ", d)}"
 
-ENABLE_RDK_LOGGER = "--enable-rdk-logger=${@bb.utils.contains('RDEPENDS_${PN}', 'rdk-logger', 'yes', 'no', d)}"
+ENABLE_RDK_LOGGER = "--enable-rdk-logger=${@bb.utils.contains('RDEPENDS_${PN}', '${MLPREFIX}rdk-logger', 'yes', 'no', d)}"
 EXTRA_OECONF += " ${ENABLE_RDK_LOGGER}"
 
 EXTRA_OECONF_append = " ${@bb.utils.contains('DISTRO_FEATURES', 'systemd', '--enable-systemd-notify', '', d)}"

@@ -48,6 +48,16 @@ python create_version_file() {
     t = time.strptime(stamp, '%Y%m%d%H%M%S')
     build_time = time.strftime('"%Y-%m-%d %H:%M:%S"', t)
     gen_time = time.strftime('Generated on %a %b %d  %H:%M:%S UTC %Y', t)
+    extra_versions_path = d.getVar("EXTRA_VERSIONS_PATH", True)
+    extra_version_files = []
+    for (dirpath, dirnames, filenames) in os.walk(extra_versions_path):
+        extra_version_files.extend(sorted(filenames))
+        break
+    extra_versions = []
+    for filename in extra_version_files:
+        with open(os.path.join(extra_versions_path, filename)) as fd:
+            for line in fd.readlines():
+                extra_versions.append(line)
     with open(version_file, 'w') as fw:
         fw.write('imagename:{0}\n'.format(image_name))
         fw.write('BRANCH={0}\n'.format(branch))
@@ -55,6 +65,8 @@ python create_version_file() {
         fw.write('VERSION={0}\n'.format(release_version))
         fw.write('SPIN={0}\n'.format(release_spin))
         fw.write('BUILD_TIME={0}\n'.format(build_time))
+        for version_string in extra_versions:
+            fw.write("{0}\n".format(version_string.strip('\n')))
         fw.write('{0}\n'.format(gen_time))
     build_config = os.path.join(d.getVar("TOPDIR", True), 'build-images.txt')
     taskdata = d.getVar("BB_TASKDEPDATA", True)

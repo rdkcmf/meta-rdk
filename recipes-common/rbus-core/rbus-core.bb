@@ -8,17 +8,21 @@ PV = "${RDK_RELEASE}"
 SRCREV_base = "${AUTOREV}"
 
 SRCREV_FORMAT = "base"
-DEPENDS = "rtmessage msgpack-c gtest benchmark"
+DEPENDS = "rtmessage msgpack-c"
 
 S = "${WORKDIR}/git"
-export RDK_FSROOT_PATH = '${STAGING_DIR_TARGET}'
 
 EXTRA_OECMAKE += " ${@bb.utils.contains('DISTRO_FEATURES', 'gtestapp', '-DBUILD_RBUS_BENCHMARK_TEST=ON -DBUILD_RBUS_UNIT_TEST=ON -DBUILD_RBUS_SAMPLE_APPS=ON', '', d)}"
+DEPENDS_append = " ${@bb.utils.contains('DISTRO_FEATURES', 'gtestapp', ' gtest benchmark ', ' ', d)}"
 
 CFLAGS_append_hybrid = " -DRBUS_ALWAYS_ON "
 CFLAGS_append_client = " -DRBUS_ALWAYS_ON "
 
-inherit cmake pkgconfig coverity systemd 
+inherit cmake pkgconfig coverity systemd syslog-ng-config-gen
+SYSLOG-NG_FILTER = "rbus"
+SYSLOG-NG_SERVICE_rbus = "rbus.service"
+SYSLOG-NG_DESTINATION_rbus = "rtrouted.log"
+SYSLOG-NG_LOGRATE_rbus = "medium"
 
 FILES_${PN}-dev += "${libdir}/cmake"
 
@@ -46,9 +50,20 @@ do_install_append_client() {
    install -m 0644 ${S}/conf/rbus_sessmgr_rdkv.service ${D}${systemd_unitdir}/system/rbus_session_mgr.service
 }
 
+PACKAGES =+ "${@bb.utils.contains('DISTRO_FEATURES', 'gtestapp', '${PN}-gtest', '', d)}"
+FILES_${PN}-gtest = "\
+    ${@bb.utils.contains('DISTRO_FEATURES', 'gtestapp', '${bindir}/rbuscore_gtest.bin', '', d)} \
+"
+
 FILES_${PN} += "${systemd_unitdir}/system/*"
 SYSTEMD_SERVICE_${PN} = "rbus.service"
 SYSTEMD_SERVICE_${PN}_append = " rbus_session_mgr.service "
 SYSTEMD_SERVICE_${PN}_append_broadband  = " rbus_log.service "
 SYSTEMD_SERVICE_${PN}_append_broadband  = " rbus_monitor.service "
 SYSTEMD_SERVICE_${PN}_append_broadband  = " rbus_monitor.path "
+
+DOWNLOAD_APPS="${@bb.utils.contains('DISTRO_FEATURES', 'gtestapp', 'gtestapp-rbuscore', '', d)}"
+inherit comcast-package-deploy
+CUSTOM_PKG_EXTNS="gtest"
+SKIP_MAIN_PKG="yes"
+DOWNLOAD_ON_DEMAND="yes"

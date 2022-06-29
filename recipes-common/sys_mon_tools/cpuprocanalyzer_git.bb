@@ -9,7 +9,11 @@ S = "${WORKDIR}/git"
 DEPENDS = "rdk-logger cimplog"
 RDEPENDS_${PN} = "rdk-logger"
 
-inherit autotools pkgconfig systemd coverity
+inherit autotools pkgconfig systemd coverity syslog-ng-config-gen
+SYSLOG-NG_FILTER = "cpuprocanalyzer"
+SYSLOG-NG_SERVICE_cpuprocanalyzer = "cpuprocanalyzer.service"
+SYSLOG-NG_DESTINATION_cpuprocanalyzer = "cpuprocanalyzer.log"
+SYSLOG-NG_LOGRATE_cpuprocanalyzer = "low"
 
 do_install_append() {
         install -d ${D}${systemd_unitdir}/system ${D}${sysconfdir}

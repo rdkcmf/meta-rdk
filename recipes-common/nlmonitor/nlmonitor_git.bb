@@ -13,9 +13,17 @@ PV = "${RDK_RELEASE}+git${SRCPV}"
 
 S = "${WORKDIR}/git"
 
-DEPENDS = "libnl"
+CFLAGS += "-DINCLUDE_BREAKPAD"
+CXXFLAGS += "-DINCLUDE_BREAKPAD"
 
-inherit autotools pkgconfig systemd coverity
+DEPENDS = "libnl breakpad-wrapper"
+BREAKPAD_BIN_append = "nlmon"
+
+inherit autotools pkgconfig systemd coverity breakpad-logmapper syslog-ng-config-gen
+SYSLOG-NG_FILTER = "nlmon"
+SYSLOG-NG_SERVICE_nlmon = "nlmon.service"
+SYSLOG-NG_DESTINATION_nlmon = "nlmon.log"
+SYSLOG-NG_LOGRATE_nlmon = "medium"
 
 do_install_append () {
    install -d ${D}/lib/rdk
@@ -47,3 +55,7 @@ FILES_${PN} += "${systemd_unitdir}/system/* \
 FILES_${PN}_append_client += "/lib/rdk/ipv6addressChange.sh \
                              "
 SYSTEMD_SERVICE_${PN} = "nlmon.service"
+
+# Breakpad processname and logfile mapping
+BREAKPAD_LOGMAPPER_PROCLIST = "nlmon"
+BREAKPAD_LOGMAPPER_LOGLIST = "nlmon.log"

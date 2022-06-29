@@ -47,7 +47,7 @@ RDEPENDS_packagegroup-rdk-ccsp-broadband = "\
     ${WIFI_AGENT} \
     ccsp-hotspot \
     ccsp-hotspot-kmod \
-    ${@bb.utils.contains('DISTRO_FEATURES', 'bci', '', bb.utils.contains('DISTRO_FEATURES', 'webui_jst', 'jst','', d), d)} \    
+    ${@bb.utils.contains('DISTRO_FEATURES', 'bci', bb.utils.contains('DISTRO_FEATURES', 'bci_webui_jst', 'jst','', d), bb.utils.contains('DISTRO_FEATURES', 'webui_jst', 'jst','', d), d)} \    
     ${@bb.utils.contains("DISTRO_FEATURES", "webui_php", "ccsp-webui-csrf", "", d)} \
     ${@bb.utils.contains("DISTRO_FEATURES", "bci", "ccsp-webui-csrf", "", d)} \
     ${@bb.utils.contains("DISTRO_FEATURES", "bridgeUtilsBin", "hal-bridgeutil", "", d)} \
@@ -61,7 +61,6 @@ RDEPENDS_packagegroup-rdk-ccsp-broadband = "\
     hal-platform \
     hal-vlan \
     hal-wifi \
-    ccsp-logagent \
     breakpad-wrapper \
     xupnp \
     parodus \
@@ -73,15 +72,21 @@ RDEPENDS_packagegroup-rdk-ccsp-broadband = "\
 "
 RDEPENDS_packagegroup-rdk-ccsp-broadband += "\
     ${@bb.utils.contains("DISTRO_FEATURES", "mlt", "sys-resource", " ", d)} \
-    ${@bb.utils.contains('DISTRO_FEATURES', 'bci', 'ccsp-webui-bci', bb.utils.contains('DISTRO_FEATURES', 'webui_jst', 'ccsp-webui-jst','ccsp-webui-php', d), d)} \
+    ${@bb.utils.contains('DISTRO_FEATURES', 'bci', bb.utils.contains('DISTRO_FEATURES', 'bci_webui_jst', 'ccsp-webui-bci-jst','ccsp-webui-bci-php', d), bb.utils.contains('DISTRO_FEATURES', 'webui_jst', 'ccsp-webui-jst','ccsp-webui-php', d), d)} \
 "
 RDEPENDS_packagegroup-rdk-ccsp-broadband += " ${@bb.utils.contains('DISTRO_FEATURES', 'aker', 'aker', '', d)}"
+
+RDEPENDS_packagegroup-rdk-ccsp-broadband += " ${@bb.utils.contains('DISTRO_FEATURES', 'webconfig_bin', 'webcfg', '', d)}"
 
 RDEPENDS_packagegroup-rdk-ccsp-broadband += " ${@bb.utils.contains('DISTRO_FEATURES', 'shorts', 'socat stunnel', '' , d)}"
 RDEPENDS_packagegroup-rdk-ccsp-broadband += " ${@bb.utils.contains('DISTRO_FEATURES', 'snmppa', 'ccsp-snmp-pa ccsp-snmp-pa-ccsp', '', d)}"
 RDEPENDS_packagegroup-rdk-ccsp-broadband += " ${@bb.utils.contains('DISTRO_FEATURES', 'usppa', "usp-pa", "", d)}"
 
 RDEPENDS_packagegroup-rdk-ccsp-broadband += " ${@bb.utils.contains("DISTRO_FEATURES", "heaptrack", "heaptrack", "", d)}"
+RDEPENDS_packagegroup-rdk-ccsp-broadband += " ${@bb.utils.contains("DISTRO_FEATURES", "gtestapp", "gtest-apps", "", d)}"
+
+#Remove support for TR-069 from XB8 (RDKB-32781)
+RDEPENDS_packagegroup-rdk-ccsp-broadband_remove_tchxb8 = " ccsp-tr069-pa ccsp-tr069-pa-ccsp"
 
 DEPENDS += " ccsp-common-library"
 

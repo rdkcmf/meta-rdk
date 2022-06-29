@@ -2,25 +2,23 @@ SUMMARY = "Dobby Container Manager"
 LICENSE = "Apache-2.0"
 LIC_FILES_CHKSUM = "file://LICENSE;md5=c466d4ab8a68655eb1edf0bf8c1a8fb8"
 
-SRC_URI = "gitsm://github.com/rdkcentral/Dobby"
+include dobby.inc
 
-# 2021-06-09
-SRCREV = "e5772c356dfd7a31dcc892efc9d0b17abef87b85"
+DEPENDS = "${@bb.utils.contains('DISTRO_FEATURES', 'systemd', ' systemd ', '', d)} libnl dbus jsoncpp boost yajl python3 breakpad breakpad-wrapper "
+RDEPENDS_${PN} = "crun (>= 0.14.1) dobby-thunderplugin"
 
-DEPENDS = "${@bb.utils.contains('DISTRO_FEATURES', 'systemd', ' systemd ', '', d)} libnl dbus jsoncpp boost yajl python3 "
-RDEPENDS_${PN} = "crun (>= 0.14.1)"
-
-PV = "3.0"
 S = "${WORKDIR}/git"
 
 inherit pkgconfig cmake systemd
+#dobby logs storage file is decided using device.properties. syslog-ng-config-gen framework decide the log file.
+
 
 # Always build debug version for now
-EXTRA_OECMAKE =  " -DCMAKE_BUILD_TYPE=Debug -DBUILD_REFERENCE=${SRCREV} "
+EXTRA_OECMAKE =  " -DCMAKE_BUILD_TYPE=Debug -DBUILD_REFERENCE=${SRCREV}"
 
 # Enable plugins
-# Logging, networking, ipc, storage and thunder enabled by default for all builds
-PACKAGECONFIG ?= "logging networking ipc storage thunder"
+# Logging, networking, ipc, storage, minidump enabled by default for all builds
+PACKAGECONFIG ?= "logging networking ipc storage minidump"
 
 # Options for plugins
 # -------------------------------------
@@ -29,6 +27,7 @@ PACKAGECONFIG[logging]      = "-DPLUGIN_LOGGING=ON,-DPLUGIN_LOGGING=OFF,"
 PACKAGECONFIG[networking]   = "-DPLUGIN_NETWORKING=ON,-DPLUGIN_NETWORKING=OFF,"
 PACKAGECONFIG[ipc]          = "-DPLUGIN_IPC=ON,-DPLUGIN_IPC=OFF,"
 PACKAGECONFIG[storage]      = "-DPLUGIN_STORAGE=ON,-DPLUGIN_STORAGE=OFF,"
+PACKAGECONFIG[minidump]     = "-DPLUGIN_MINIDUMP=ON,-DPLUGIN_MINIDUMP=OFF,"
 PACKAGECONFIG[testplugin]   = "-DPLUGIN_TESTPLUGIN=ON,-DPLUGIN_TESTPLUGIN=OFF,"
 PACKAGECONFIG[gpu]          = "-DPLUGIN_GPU=ON,-DPLUGIN_GPU=OFF,"
 PACKAGECONFIG[localtime]    = "-DPLUGIN_LOCALTIME=ON,-DPLUGIN_LOCALTIME=OFF,"
@@ -37,6 +36,7 @@ PACKAGECONFIG[httpproxy]    = "-DPLUGIN_HTTPPROXY=ON,-DPLUGIN_HTTPPROXY=OFF,"
 PACKAGECONFIG[appservices]  = "-DPLUGIN_APPSERVICES=ON,-DPLUGIN_APPSERVICES=OFF,"
 PACKAGECONFIG[thunder]      = "-DPLUGIN_THUNDER=ON,-DPLUGIN_THUNDER=OFF,"
 PACKAGECONFIG[ionmemory]    = "-DPLUGIN_IONMEMORY=ON,-DPLUGIN_IONMEMORY=OFF,"
+PACKAGECONFIG[devicemapper] = "-DPLUGIN_DEVICEMAPPER=ON,-DPLUGIN_DEVICEMAPPER=OFF,"
 
 # Legacy components (Dobby specs + legacy Sky plugins)
 PACKAGECONFIG[legacycomponents] = "-DLEGACY_COMPONENTS=ON,-DLEGACY_COMPONENTS=OFF,ctemplate,"

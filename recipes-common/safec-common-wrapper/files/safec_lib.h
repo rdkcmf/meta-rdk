@@ -30,6 +30,25 @@
 #define MEMCPY_S_NOCLOBBER(dst,dmax,src,len)   ((src != NULL) ? (len <= dmax ?  memcpy_s(dst,dmax,src,len) : ESNOSPC):ESNULLP)
 #endif
 
+#define STRCPY_S(dest,size,source)                      \
+        { \
+        errno_t rc=-1; \
+        rc=strcpy_s(dest, size, source);                \
+        if(rc!=EOK)                                     \
+        {                                               \
+             RDK_SAFECLIB_ERR(rc);  \
+        }\
+}
+#define MEMCPY_S(dest,dsize,source,ssize)                      \
+        {                                                  \
+        errno_t safec_rc=-1; \
+        safec_rc=memcpy_s(dest, dsize, source, ssize);                \
+        if(safec_rc!=EOK)                                     \
+        {                                               \
+             RDK_SAFECLIB_ERR(safec_rc);  \
+        }\
+}
+
 /*
  * SAFECLIB Error Handling Logging APIs
  */
@@ -79,6 +98,25 @@ typedef int errno_t;
 #define strtok_s(dest, dmax, delim, ptr) strtok_r(dest, delim, ptr)
 
 #define sprintf_s( dst, max, fmt, ... ) (parseFormat(dst, max, fmt, ##__VA_ARGS__) == 0) ? -ESNULLP : sprintf( dst, fmt, ##__VA_ARGS__)
+
+#define STRCPY_S(dest,size,source)                      \
+	{ \
+	errno_t rc=-1; \
+        rc=strcpy_s(dest, size, source);                \
+        if(rc!=EOK)                                     \
+        {                                               \
+             RDK_SAFECLIB_ERR(rc);  \
+        }\
+}
+#define MEMCPY_S(dest,dsize,source,ssize)                      \
+	{                                                  \
+	errno_t safec_rc=-1; \
+        safec_rc=memcpy_s(dest, dsize, source, ssize);                \
+        if(safec_rc!=EOK)                                     \
+        {                                               \
+             RDK_SAFECLIB_ERR(safec_rc);  \
+        }\
+}
 
 static inline int parseFormat(const char *dst, int max, const char *fmt, ...)
 {

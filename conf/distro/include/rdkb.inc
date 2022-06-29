@@ -8,6 +8,11 @@ PREFERRED_VERSION_libupnp = "1.6.22"
 PREFERRED_VERSION_jansson = "2.7"
 PREFERRED_VERSION_libnetfilter-conntrack_daisy = "1.0.2"
 
+# Preferred gtest version/provider
+PREFERRED_VERSION_googletest = "1.10.0"
+PREFERRED_PROVIDER_gtest = "googletest"
+PREFERRED_PROVIDER_gmock = "googletest"
+
 PREFERRED_VERSION_php ?= "7.2.%"
 PREFERRED_VERSION_php-native ?= "7.2.%"
 PREFERRED_VERSION_php_dunfell ?= "7.4.%"
@@ -46,10 +51,7 @@ PREFERRED_VERSION_libmtp = "1.1.5"
 PREFERRED_VERSION_mosquitto_dunfell = "1.6.%"
 PREFERRED_VERSION_gnupg_dunfell = "1.4.7"
 
-PREFERRED_PROVIDER_cpg-libs = "config-libs"
-PREFERRED_PROVIDER_cpgu = "config-service"
-PREFERRED_PROVIDER_cpgc = "config-files"
-
+DISTRO_FEATURES_append = " tigress"
 #Masking cedm multicall implementation in RDK-B
 BBMASK .= "|.cpgu-src|.cpgu-pbt|.cpgc-src|.cpgc-pbt"
 
@@ -103,6 +105,8 @@ FEATURE_WANMANAGER_IPOE_MASK ?= "|.meta-rdk-broadband/recipes-support/ipoe-healt
 BBMASK .= "${FEATURE_WANMANAGER_IPOE_MASK}"
 FEATURE_WANMANAGER_JSONHAL_MASK ?= "|.meta-rdk-broadband/recipes-support/json-hal/json-hal-lib.bb"
 BBMASK .= "${FEATURE_WANMANAGER_JSONHAL_MASK}"
+FEATURE_RDKB_LED_MANAGER ?= "|.meta-rdk-broadband/recipes-ccsp/ccsp/rdk-ledmanager.bb"
+BBMASK .= "${FEATURE_RDKB_LED_MANAGER}"
 
 HUBLINUX_MASK ?= "|.meta-rdk-soc-broadcom-broadband/meta-brcm-broadband/recipes-kernel/linux/hublinux_4.19.bb"
 BBMASK .= "${HUBLINUX_MASK}"
@@ -110,8 +114,13 @@ BBMASK .= "${HUBLINUX_MASK}"
 # add rdkversion_1.0.bb is not supported for broadband devices.
 BBMASK .= "|./meta-rdk/recipes-common/rdkversion/"
 
+DISTRO_FEATURES_append = " rdm-versioning"
 DISTRO_FEATURES_append = " telemetry2_0"
 DISTRO_FEATURES_append = " snmppa"
+
+# add new breakpad framework for RDKB
+DISTRO_FEATURES_append  = " logbacktrace"
+require conf/distro/include/rdkb_backtrace_log.inc
 
 DISTRO_FEATURES_append_dunfell = " heaptrack"
 
@@ -122,4 +131,6 @@ DISTRO_FEATURES_remove = "nfs"
 DISTRO_FEATURES_append = " safec"
 #DISTRO_FEATURES_append = " webui_php"
 DISTRO_FEATURES_append = " webui_jst"
+DISTRO_FEATURES_append = " gtestapp"
+DISTRO_FEATURES_append = " redrecovery"
 OPTIMIZE_DEFAULT = "-Os"

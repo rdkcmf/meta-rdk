@@ -15,6 +15,8 @@ PREFERRED_VERSION_openssl = "1.0.2o"
 PREFERRED_VERSION_openssl_dunfell = "1.1.1d"
 
 PREFERRED_VERSION_dnsmasq = "2.81"
+PREFERRED_VERSION_brotli = "1.0.7"
+PREFERRED_VERSION_brotli-native = "1.0.7"
 
 # Disabling Dunfell version of breakpad for timebeing due to DELIA-48240. Till issue is fixed morty version of breakpad will be used in dunfell builds.
 PREFERRED_VERSION_breakpad_dunfell = "svn"
@@ -48,7 +50,7 @@ DISTRO_FEATURES_append = " lxy"
 
 # Flags to control cedm builds
 DISTRO_FEATURES_append_rpi = " enable-cpg"
-#DISTRO_FEATURES_append_rpi = " use-cpg-source" 
+#DISTRO_FEATURES_append_rpi = " use-cpg-source"
 
 DISTRO_FEATURES_append  = " cpg-ecfs"
 DISTRO_FEATURES_remove_rpi = "cpg-ecfs"
@@ -56,10 +58,11 @@ DISTRO_FEATURES_remove_rpi = "cpg-ecfs"
 DISTRO_FEATURES_append  = " bind"
 DISTRO_FEATURES_append = " safec"
 
-PREFERRED_PROVIDER_cpgu = "cpg-pbt"
-PREFERRED_PROVIDER_cpgc = "cpg-pbt"
+DISTRO_FEATURES_append = " rdm-versioning"
+
 PREFERRED_VERSION_bluez5_dunfell ?= "5.54"
 
+DISTRO_FEATURES_append = " tigress"
 # Masking recipes for CEDM multicall implementation in RDK-V
 BBMASK .= "|.config-files|.config-service|.cpgu-src|.cpgu-pbt|.cpgc-src|.cpgc-pbt"
 
@@ -92,3 +95,6 @@ DISTRO_FEATURES_remove_rpi = "rdkssa"
 #State Red for RDK-V
 DISTRO_FEATURES_append  = " redrecovery"
 DISTRO_FEATURES_remove_rpi = " redrecovery"
+
+BBMASK .= "${@bb.utils.contains('DISTRO_FEATURES', 'ssl-1.1.1', '|.meta-rdk-ext/recipes-support/stunnel/stunnel_5.56.bbappend|.meta-rdk-video/recipes-support/curl/curl_7.69%.bbappend', '', d)}"
+BBMASK .= "${@bb.utils.contains('DISTRO_FEATURES', 'ssl-1.1.1', '|.meta-rdk-ext/recipes-connectivity/openssl/openssl-1.0.2o_1.0.2o.bb', '', d)}"
