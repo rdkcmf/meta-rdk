@@ -104,3 +104,5 @@ DISTRO_FEATURES_NATIVE_remove_daisy = " bpd_symbol_compression"
 
 BBMASK .= "${@bb.utils.contains('DISTRO_FEATURES', 'ssl-1.1.1', '|.meta-rdk-ext/recipes-support/stunnel/stunnel_5.56.bbappend|.meta-rdk-video/recipes-support/curl/curl_7.69%.bbappend', '', d)}"
 BBMASK .= "${@bb.utils.contains('DISTRO_FEATURES', 'ssl-1.1.1', '|.meta-rdk-ext/recipes-connectivity/openssl/openssl-1.0.2o_1.0.2o.bb', '', d)}"
+
+inherit ${@bb.utils.contains('DISTRO_FEATURES', 'sbom', 'create-spdx', '', d)}
