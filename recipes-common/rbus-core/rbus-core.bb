@@ -37,7 +37,6 @@ do_install_append_broadband() {
    install -m 0644 ${S}/conf/rbus_log.service ${D}${systemd_unitdir}/system
    install -m 0644 ${S}/conf/rbus_monitor.path ${D}${systemd_unitdir}/system
    install -m 0644 ${S}/conf/rbus_monitor.service ${D}${systemd_unitdir}/system
-   install -D -m 0644 ${S}/conf/rbus_rdkb.conf ${D}${systemd_unitdir}/system/rbus.service.d/rbus_rdkb.conf
 }
 
 do_install_append_hybrid() {
