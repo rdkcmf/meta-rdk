@@ -52,16 +52,18 @@ python chown_chmod_secap() {
                     bb.error("ROOTFS_CHOWN_SETCAP: invalid line, unknown option %s: %s" % (o, line))
 
             files = [d.getVar("IMAGE_ROOTFS", True) + f for f in files]
+            from os.path import exists as file_exists
             from subprocess import check_call
             for f in files:
                 if doMkdir:
                     check_call(["mkdir", "-p"] + [f])
                 if doTouch:
                     check_call(["touch"] + [f])
-                if doChown:
-                    check_call(["chown", "-R", doChown] + [f])
-                if doChmod:
-                    check_call(["chmod", "-R", doChmod] + [f])
-                if doSetcap:
-                    check_call(["setcap", doSetcap] + [f])
+                if file_exists(f):
+                    if doChown:
+                        check_call(["chown", "-R", doChown] + [f])
+                    if doChmod:
+                        check_call(["chmod", "-R", doChmod] + [f])
+                    if doSetcap:
+                        check_call(["setcap", doSetcap] + [f])
 }
