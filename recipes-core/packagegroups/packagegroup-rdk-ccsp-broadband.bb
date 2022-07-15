@@ -42,7 +42,6 @@ RDEPENDS_packagegroup-rdk-ccsp-broadband = "\
     rfc \
     test-and-diagnostic \
     test-and-diagnostic-ccsp \
-    ${GWPROVAPP} \
     ${WIFI_AGENT} \
     ccsp-hotspot \
     ccsp-hotspot-kmod \
@@ -92,6 +91,9 @@ RDEPENDS_packagegroup-rdk-ccsp-broadband += " ${@bb.utils.contains('DISTRO_FEATU
 
 #Remove support for TR-069 from XB8 (RDKB-32781)
 RDEPENDS_packagegroup-rdk-ccsp-broadband_remove_tchxb8 = " ccsp-tr069-pa ccsp-tr069-pa-ccsp"
+
+RDEPENDS_packagegroup-rdk-ccsp-broadband += " ${@bb.utils.contains('DISTRO_FEATURES', 'pm_lan_mgr', ' lanmanager ', ' ${GWPROVAPP} ', d)}"
+RDEPENDS_packagegroup-rdk-ccsp-broadband += " ${@bb.utils.contains('DISTRO_FEATURES', 'pm_lan_mgr', ' platformmanager ', ' ${GWPROVAPP} ', d)}"
 
 DEPENDS += " ccsp-common-library"
 
