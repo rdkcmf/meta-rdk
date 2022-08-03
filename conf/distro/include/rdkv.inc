@@ -58,6 +58,8 @@ DISTRO_FEATURES_remove_rpi = "cpg-ecfs"
 DISTRO_FEATURES_append  = " bind"
 DISTRO_FEATURES_append = " safec"
 
+DISTRO_FEATURES_append = " webconfig_bin"
+
 DISTRO_FEATURES_append = " rdm-versioning"
 
 PREFERRED_VERSION_bluez5_dunfell ?= "5.54"
