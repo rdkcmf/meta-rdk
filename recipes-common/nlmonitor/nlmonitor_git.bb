@@ -32,7 +32,7 @@ do_install_append () {
    install ${S}/checkDefaultRoute.sh ${D}/lib/rdk
    install ${S}/printaddress.sh ${D}/lib/rdk
    install ${S}/printroute.sh ${D}/lib/rdk
-   install ${S}/nlmon.service ${D}/${systemd_unitdir}/system
+   install -m 644 ${S}/nlmon.service ${D}/${systemd_unitdir}/system
    install ${S}/ipmodechange.sh ${D}/lib/rdk
 }
 
