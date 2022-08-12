@@ -22,21 +22,30 @@
 DOWNLOAD_APP_MODULE=$1
 APPLN_HOME_PATH=/tmp
 APP_MOUNT_PATH=/media/apps
+
 if [ "$DEVICE_TYPE" = "broadband" ]; then
      RDM_DL_INFO=/nvram/persistent/rdmDownloadInfo.txt
 else
      RDM_DL_INFO=/opt/persistent/rdmDownloadInfo.txt
 fi
-RDM_DOWNLOAD_SCRIPT=/etc/rdm/downloadMgr.sh
-
-PACKAGER_ENABLED="$(tr181 Device.DeviceInfo.X_RDKCENTRAL-COM_RFC.Feature.Packager.Enable 2>&1 > /dev/null)"
-if [ "x$PACKAGER_ENABLED" == "xtrue" ]; then
-    echo "Packager is enabled"
-    RDM_DOWNLOAD_SCRIPT=/etc/rdm/packagerMgr.sh
-fi
 
 DOWNLOAD_PKG_NAME=`/usr/bin/jsonquery -f /etc/rdm/rdm-manifest.json  --path=//packages/$DOWNLOAD_APP_MODULE/pkg_name`
 DOWNLOAD_APP_SIZE=`/usr/bin/jsonquery -f /etc/rdm/rdm-manifest.json  --path=//packages/$DOWNLOAD_APP_MODULE/app_size`
+
+if [ -f /tmp/.rdm-apps-data/${DOWNLOAD_APP_MODULE}.conf ]; then
+    source /tmp/.rdm-apps-data/${DOWNLOAD_APP_MODULE}.conf
+fi
+
+PACKAGER_ENABLED="$(tr181 Device.DeviceInfo.X_RDKCENTRAL-COM_RFC.Feature.Packager.Enable 2>&1 > /dev/null)"
+
+if [ "x$IS_VERSIONED" == "xtrue" ]; then
+    RDM_DOWNLOAD_SCRIPT=/etc/rdm/downloadVersionedApps.sh
+elif [ "x$PACKAGER_ENABLED" == "xtrue" ]; then
+    echo "Packager is enabled"
+    RDM_DOWNLOAD_SCRIPT=/etc/rdm/packagerMgr.sh
+else
+    RDM_DOWNLOAD_SCRIPT=/etc/rdm/downloadMgr.sh
+fi
 
 #Space reserved on app partition for firmware download(in MB)
 RDM_SCRATCHPAD_MAX_FW_SIZE=80
@@ -111,7 +120,13 @@ echo "HOME PATH for APP = $APPLN_HOME_PATH"
 
 # Download the Package. If package already present on download path then skip the download
 # and perform the signature validation
-time sh $RDM_DOWNLOAD_SCRIPT $DOWNLOAD_APP_MODULE $APPLN_HOME_PATH openssl ipk ""
+
+if [ "x$IS_VERSIONED" = "xtrue" ]; then
+    time sh $RDM_DOWNLOAD_SCRIPT $DOWNLOAD_APP_NAME "$DOWNLOAD_PKG_VERSION"
+else
+    time sh $RDM_DOWNLOAD_SCRIPT $DOWNLOAD_APP_MODULE $APPLN_HOME_PATH openssl ipk ""
+fi
+
 RDM_STATUS=$?
 if [ $RDM_STATUS -eq 3 ] && [ "$APPLN_HOME_PATH" == "$APP_MOUNT_PATH" ]; then
     #Signature validation failed. This could be due to corruption on previously downloaded pacakge.

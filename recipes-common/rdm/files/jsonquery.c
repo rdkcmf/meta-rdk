@@ -77,6 +77,8 @@ int main(int argc, char* argv[])
     int ret = 0;
     char const* file = NULL;
     char const* path = NULL;
+    int getlen = 0;
+
     cJSON* item = NULL;
 
     while (1)
@@ -86,10 +88,11 @@ int main(int argc, char* argv[])
         {
             {"file", required_argument, 0, 'f'},
             {"path", required_argument, 0, 'p'},
+	    {"getlen", no_argument, 0, 'l'},
             {0, 0, 0, 0}
         };
 
-        c = getopt_long(argc, argv, "f:p:", long_options, &option_index);
+        c = getopt_long(argc, argv, "f:p:l", long_options, &option_index);
         if (c == -1)
             break;
 
@@ -101,6 +104,10 @@ int main(int argc, char* argv[])
 
             case 'p':
                 path = optarg;
+		break;
+
+            case 'l':
+                getlen = 1;
             break;
         }
     }
@@ -120,29 +127,33 @@ int main(int argc, char* argv[])
     item = cJSON_SearchFile(file, path);
     if (item)
     {
-        char* s;
-        char* t;
-
-        ret = 0;
-        s = cJSON_Print(item);
-        t = NULL;
-
-        if (s)
+        if (getlen && item->type == cJSON_Array)
         {
-            size_t len = strlen(s);
-            if (len > 0)
-            {
-                t = s;    
-                if (t[len - 1] == '"')
-                    t[len - 1] = '\0';
-                if (t[0] == '"')
-                    t++;
-            }
+            printf("%d\n", cJSON_GetArraySize(item));
         }
+        else
+        {
+            char* s;
+            char* t;
+            ret = 0;
 
-        printf("%s\n", t);
-        free(s);
-
+            s = cJSON_Print(item);
+            t = NULL;
+            if (s)
+            {
+                size_t len = strlen(s);
+                if (len > 0)
+                {
+                    t = s;
+                    if (t[len - 1] == '"')
+                        t[len - 1] = '\0';
+                    if (t[0] == '"')
+                        t++;
+                }
+            }
+            printf("%s\n", t);
+            free(s);
+        }
         cJSON_Delete(item);
     }
     else
@@ -255,6 +266,7 @@ static cJSON* cJSON_Search(cJSON const* json, char const* path)
                     exit(1);
                 }
                 item = cJSON_GetArrayItem(item, index);
+#ifdef RDM_BACKWARD_COMPATIBLE
                 item = item->child;
             }
             else if (count == 1)
@@ -271,6 +283,7 @@ static cJSON* cJSON_Search(cJSON const* json, char const* path)
                         break;
                     }
                 }
+#endif
             }
             else
             {
