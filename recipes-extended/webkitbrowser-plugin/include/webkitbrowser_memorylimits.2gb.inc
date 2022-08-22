@@ -5,4 +5,4 @@ SEARCH_AND_DISCOVERY_APP_MEMORYPRESSURE = "databaseprocess:50m,networkprocess:50
 HTML_APP_MEMORYPRESSURE = "databaseprocess:50m,networkprocess:50m,webprocess:400m,rpcprocess:50m"
 LIGHTNING_APP_MEMORYPRESSURE = "databaseprocess:50m,networkprocess:50m,webprocess:400m,rpcprocess:50m"
 WEBKITBROWSER_MEMORYPROFILE = "1024m"
-WEBKITBROWSER_DISKCACHE = "128m"
+WEBKITBROWSER_DISKCACHE = "64m"
