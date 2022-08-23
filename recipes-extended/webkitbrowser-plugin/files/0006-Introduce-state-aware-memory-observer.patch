@@ -116,20 +116,18 @@ Index: git/WebKitBrowser/WebKitBrowser.cpp
                      ASSERT(_memory != nullptr);
                      if (connection != nullptr) {
                          connection->Release();
-@@ -117,8 +119,6 @@ namespace Plugin {
+@@ -117,7 +119,6 @@ namespace Plugin {
          // Make sure we get no longer get any notifications, we are deactivating..
          _service->Unregister(&_notification);
          _browser->Unregister(&_notification);
 -        _memory->Release();
--        _application->Release();
+         _application->Release();
          Exchange::JWebBrowser::Unregister(*this);
          UnregisterAll();
- 
-@@ -149,6 +149,8 @@ namespace Plugin {
+@@ -149,6 +150,7 @@ namespace Plugin {
              connection->Terminate();
              connection->Release();
          }
-+        _application->Release();
 +        _memory->Release();
  
          _service = nullptr;
