@@ -1,3 +1,14 @@
+#File needed to start the apps-rdm service
+if [ -f /opt/ptestDnldLocation ]; then
+    url=$(cat /opt/ptTestDnldLocation)
+    if [ ! -z "$url" ]; then
+         echo "$url" > /tmp/.xconfssrdownloadurl
+    else
+         echo "https://dac15cdlserver.ae.ccp.xcal.tv/Images" > /tmp/.xconfssrdownloadurl
+    fi
+else	
+    echo "https://dac15cdlserver.ae.ccp.xcal.tv/Images" > /tmp/.xconfssrdownloadurl
+fi
 
 # Add public dns servers to /etc/resolv.dnsmasq [ Ideally this would be set by DHCP clients ]
 RESOLV_CONF_FILE="/etc/resolv.dnsmasq"
