@@ -48,6 +48,7 @@ IMAGE_INSTALL +="${@bb.utils.contains("DISTRO_FEATURES", "benchmark_enable", "pa
                                                              perl-modules \
                                                              ptest-runner \
                                                              make \
+                                                             rdm \
                                                              rdk-ca-store","packagegroup-rdk-debug \
                                                                             packagegroup-rdk-debug-extra",d)}"
 
