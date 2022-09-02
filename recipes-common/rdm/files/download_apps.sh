@@ -71,8 +71,18 @@ echo "Downloading $DOWNLOAD_APP_MODULE..."
 # make sure that we have a rw filesystem mounted on cdl mount path
 if [ "$DEVICE_TYPE" != "broadband" ]; then
   tst_file=$APP_MOUNT_PATH/testfile
-  touch $tst_file
-  if [ -e $tst_file ]; then
+  diskcheck=1
+  #Write something in the test file to ensure disk is writable.
+  echo "Test write" > $tst_file
+  if [ $? -eq 0 ];then
+          #check we are able to remove the file as well. Sometimes, corrupted disk don't allow us to delete a file.
+	  rm -f $tst_file
+	  if [ $? -eq 0 ];then
+		  echo "$APP_MOUNT_PATH is in working condition"
+                  diskcheck=0
+	  fi
+  fi
+  if [ $diskcheck -eq 0 ]; then
     # Verify if package already present on cdl mount path.
     pkg_present=`find $APP_MOUNT_PATH -iname $DOWNLOAD_PKG_NAME | wc -l`
     if [ $pkg_present -ne 0 ]; then
@@ -112,7 +122,8 @@ if [ "$DEVICE_TYPE" != "broadband" ]; then
             echo "Not enough space available for App download on $APP_MOUNT_PATH. Downloading the App on tmp dir."
         fi
     fi
-    rm $tst_file
+  else
+    echo "$APP_MOUNT_PATH is not in working condition."
   fi
 fi
 
