@@ -1,23 +1,22 @@
-
+#!/bin/sh
 
 RW_DISK_LOCATION="/opt"
 LOG_PATH="/opt/logs"
 STRESS_NG_LOG_PATH="$LOG_PATH/stress-ng_logs"
-LOG_FILE="$STRESS_NG_LOG_PATH/rdk-oss-perf-stats.log"
+LOG_FILE="$STRESS_NG_LOG_PATH/rdk-oss-perf-stats.yaml"
 STRESS_NG_WORKSPACE="$RW_DISK_LOCATION/stress-ng"_
 
+if [ ! -z "$2" ]; then
+STRESS_NG_LOG_PATH=$2
+fi
 
 setLogFile(){
-   LOG_FILE="$STRESS_NG_LOG_PATH/$1_proc_stats.log"
+   LOG_FILE="$STRESS_NG_LOG_PATH/$1_proc_stats.yaml"
    rm -f $LOG_FILE
 }
 
-log(){
-    echo $* >> $LOG_FILE
-}
-
 getEthMac(){
-    ifconfig eth0 | grep "HWaddr" | tr -s " " | rev | cut -d ' ' -f2
+    ifconfig eth0 | grep "HWaddr" | tr -s " " | cut -d ' ' -f5
 }
 
 getCpuModel(){
@@ -26,53 +25,69 @@ getCpuModel(){
 
 populateSystemInfo()
 {
-      log "---"
-      log "system-info:"
-      log "imagename: " TX061AEI_stable2_20220427091414OSS
-      log "ethernet_MAC: `getEthMac`"
-      log "date-yyyy-mm-dd: `date +'%Y:%m:%d'`"
-      log "time-hh-mm-ss: `date +'%H:%M:%S'`"
-      log "epoch-secs: `date +%s`"
-      log "hostname: `hostname`"
-      log "release: `uname -r`"
-      log "machine: `getCpuModel`"
-      log "uptime: `uptime`"
-      log "gcc-version : `sed -e "s/.*gcc version //g" /proc/version | cut -d " " -f1`"
-      log ""
-      log "metrics:"
+      echo "---" >> $LOG_FILE
+      echo "system-info:" >> $LOG_FILE
+      echo "    imagename: `cat /version.txt | head -n 1 | cut -d ":" -f2`" >> $LOG_FILE
+      echo "    ethernet_MAC: `getEthMac`" >> $LOG_FILE
+      echo "    date-yyyy-mm-dd: `date +'%Y:%m:%d'`" >> $LOG_FILE
+      echo "    time-hh-mm-ss: `date +'%H:%M:%S'`" >> $LOG_FILE
+      echo "    epoch-secs: `date +%s`" >> $LOG_FILE
+      echo "    hostname: `hostname`" >> $LOG_FILE
+      echo "    release: `uname -r`" >> $LOG_FILE
+      echo "    machine: `getCpuModel`" >> $LOG_FILE
+      echo "    uptime: `cat /proc/uptime | cut -d " " -f1`" >> $LOG_FILE
+      echo "    gcc-version : `sed -e "s/.*gcc version //g" /proc/version | cut -d " " -f1`" >> $LOG_FILE
+      if [ -d /opt/logs/openssl_logs ]; then
+      echo "    Openssl-version: `openssl version | cut -d " " -f2`" >> $LOG_FILE
+      fi
+      echo "" >> $LOG_FILE
+      echo "metrics:" >> $LOG_FILE
 }
 
 populateSysMemInfo(){
 
-    log "- class: mem"
-    log "`grep 'MemTotal:' /proc/meminfo`"
-    log "`grep 'MemFree:' /proc/meminfo`"
-    log "`grep 'MemAvailable:' /proc/meminfo`"
-    log "`grep 'Shmem:' /proc/meminfo`"
-    log "`grep 'Buffers:' /proc/meminfo`"
-    log "`grep 'Dirty:' /proc/meminfo`"
-    grep -i 'cached' /proc/meminfo >> $LOG_FILE
-    grep -i 'active' /proc/meminfo >> $LOG_FILE
-    grep -i 'commit' /proc/meminfo >> $LOG_FILE
-    log ""
+    echo "  - class: mem" >> $LOG_FILE
+    echo "    `grep 'MemTotal:' /proc/meminfo`" >> $LOG_FILE
+    echo "    `grep 'MemFree:' /proc/meminfo`" >> $LOG_FILE
+    echo "    `grep 'MemAvailable:' /proc/meminfo`" >> $LOG_FILE
+    echo "    `grep 'Shmem:' /proc/meminfo`" >> $LOG_FILE
+    echo "    `grep 'Buffers:' /proc/meminfo`" >> $LOG_FILE
+    echo "    `grep 'Dirty:' /proc/meminfo`" >> $LOG_FILE
+    grep -i 'cached' /proc/meminfo | awk '{print "    " $0}' >> $LOG_FILE
+    grep -i 'active' /proc/meminfo | awk '{print "    " $0}' >> $LOG_FILE
+    grep -i 'commit' /proc/meminfo | awk '{print "    " $0}' >> $LOG_FILE
+    echo "" >> $LOG_FILE
 
 }
 
 populateSysCPUInfo(){
 
-    log "- class: cpu"
-    log "Context_sitches : `grep 'ctxt' /proc/stat | tr -s " " | cut -d " " -f2`"
-    grep "cpu" /proc/stat | tr -s " " | cut -d " " -f1,2 | sed -e "s/cpu/User_Time_cpu/g" | sed -e "s/ / : /g" >> $LOG_FILE
-    grep "cpu" /proc/stat | tr -s " " | cut -d " " -f1,4 | sed -e "s/cpu/System_Time_cpu/g" | sed -e "s/ / : /g" >> $LOG_FILE
-    grep "cpu" /proc/stat | tr -s " " | cut -d " " -f1,5 | sed -e "s/cpu/Idle_cpu/g" | sed -e "s/ / : /g" >> $LOG_FILE
-    grep "cpu" /proc/stat | tr -s " " | cut -d " " -f1,8 | sed -e "s/cpu/Irq_cpu/g" | sed -e "s/ / : /g" >> $LOG_FILE
-     
+    echo "  - class: cpu" >> $LOG_FILE
+    echo "    context_sitches : `grep 'ctxt' /proc/stat | tr -s " " | cut -d " " -f2`" >> $LOG_FILE
+    grep "cpu" /proc/stat | tr -s " " | cut -d " " -f1,2 | sed -e "s/cpu/User_Time_cpu/g" | sed -e "s/ / : /g" | awk '{print "    " $0}' >> $LOG_FILE
+    grep "cpu" /proc/stat | tr -s " " | cut -d " " -f1,4 | sed -e "s/cpu/System_Time_cpu/g" | sed -e "s/ / : /g" | awk '{print "    " $0}'  >> $LOG_FILE
+    grep "cpu" /proc/stat | tr -s " " | cut -d " " -f1,5 | sed -e "s/cpu/Idle_cpu/g" | sed -e "s/ / : /g" | awk '{print "    " $0}' >> $LOG_FILE
+    grep "cpu" /proc/stat | tr -s " " | cut -d " " -f1,8 | sed -e "s/cpu/Irq_cpu/g" | sed -e "s/ / : /g" | awk '{print "    " $0}' >> $LOG_FILE
+
 }
 
 
-# Start 
+calc_bogo_ops() {
+TimeDiff=` echo $2 $1 | awk '{print $1 - $2}'`
+bogoOpsPerSec_us=`echo $3 $TimeDiff | awk '{print $1 / $2}'`
+echo "    NoOfIterations   : $3" >> $LOG_FILE
+echo "    RealTime         : `echo $4 1000 | awk '{print $1 * $2}'`" >> $LOG_FILE
+echo "    BogoOpsPerSec_us : $bogoOpsPerSec_us"
+echo "    BogoOpsPerSec_us : $bogoOpsPerSec_us" >> $LOG_FILE
+
+bogoOpsPerSec_rl=`echo $3 $4 | awk '{print $1 / $2}'`
+echo "    BogoOpsPerSec_rl : $bogoOpsPerSec_rl"
+echo "    BogoOpsPerSec_rl : $bogoOpsPerSec_rl" >> $LOG_FILE
+}
+
+# Start
 fileNameSuffix=$1
-if [ -z "${fileNameSuffix}" ]; then 
+if [ -z "${fileNameSuffix}" ]; then
     echo "Please enter a file name sufix "
     echo "${0} start"
     exit 0
@@ -86,4 +101,14 @@ populateSysMemInfo
 
 populateSysCPUInfo
 
-log "..."
+noOfItr=$3
+pre_Exec=$4
+post_Exec=$5
+real_time=$6
+if [ ! -z "${noOfItr}" ]; then
+calc_bogo_ops $pre_Exec $post_Exec $noOfItr $real_time
+fi
+
+
+echo "..." >> $LOG_FILE
+

@@ -5,6 +5,9 @@ SRC_URI += "file://stress-ng-tests.sh \
             file://capture-proc-metrics.sh \
             file://rdk_oss_uploadSTBLogs.sh \
             file://stress-test.service \
+            file://openssl-ptest-stress.sh \
+            file://openssl-ptest-perf_stats.sh \
+            file://openssl-stress.service \
             file://vmstat.patch \
             file://child_detail.patch \
             file://fwversion_mac.patch \
@@ -18,11 +21,17 @@ do_install_append() {
     install -d ${D}${systemd_unitdir}/system
     install -m 0755 ${WORKDIR}/capture-proc-metrics.sh ${D}/lib/rdk
     install -m 0755 ${WORKDIR}/stress-ng-tests.sh ${D}/lib/rdk
+    install -m 0755 ${WORKDIR}/openssl-ptest-stress.sh ${D}/lib/rdk
+    install -m 0755 ${WORKDIR}/openssl-ptest-perf_stats.sh ${D}/lib/rdk
     install -m 0755 ${WORKDIR}/rdk_oss_uploadSTBLogs.sh ${D}/lib/rdk
     install -m 0644 ${WORKDIR}/stress-test.service ${D}${systemd_unitdir}/system
+    install -m 0644 ${WORKDIR}/openssl-stress.service ${D}${systemd_unitdir}/system
 }
 
 FILES_${PN} += " /lib/rdk/capture-proc-metrics.sh " 
 FILES_${PN} += " /lib/rdk/stress-ng-tests.sh " 
-FILES_${PN} += " /lib/rdk/rdk_oss_uploadSTBLogs.sh" 
+FILES_${PN} += " /lib/rdk/rdk_oss_uploadSTBLogs.sh"
+FILES_${PN} += " /lib/rdk/openssl-ptest-stress.sh " 
+FILES_${PN} += " /lib/rdk/openssl-ptest-perf_stats.sh " 
 FILES_${PN} += "${systemd_unitdir}/system/stress-test.service"
+FILES_${PN} += "${systemd_unitdir}/system/openssl-stress.service"

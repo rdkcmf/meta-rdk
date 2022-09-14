@@ -30,6 +30,8 @@ PACKAGE_TYPE = "OSS"
 # for now, let's add 'debug stuff' in our images, we can revisit that later
 # and create release vs debug builds.
 
+DEPENDS += " jq jq-native"
+
 IMAGE_INSTALL +="${@bb.utils.contains("DISTRO_FEATURES", "benchmark_enable", "packagegroup-rdk-debug-extra \
                                                              network-zero-conf \
                                                              network-hotplug \

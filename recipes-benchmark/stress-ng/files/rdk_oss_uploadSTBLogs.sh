@@ -41,6 +41,7 @@ TFTP_SERVER=$1
 UploadProtocol=$2
 UploadHttpLink=$3
 NUM_UPLOAD_ATTEMPTS=3
+OPENSSL_LOG_PATH=$4
 
 # initialize the variables
 MAC=`ifconfig eth0 | grep eth0 | tr -s ' ' | cut -d ' ' -f5`
@@ -176,7 +177,12 @@ uploadLogOnReboot()
     uploadLog "Sleeping for seven minutes"
         sleep 330
     uploadLog "Done sleeping"
-    cd $STRESS_NG_LOG_PATH
+    if [ ! -z $OPENSSL_LOG_PATH ]; then
+        cd  $OPENSSL_LOG_PATH 
+    else
+        cd $STRESS_NG_LOG_PATH  
+    fi
+
    if [ $uploadLog == "true" ]; then
         uploadLog "Uploading Logs with DCM"
         tar -zcvf $LOG_FILE * >> $LOG_PATH/dcmscript.log  2>&1
@@ -192,8 +198,11 @@ uploadLogOnReboot()
         uploadLog "Not Uploading Logs with DCM"
     fi
     sleep 5
-    uploadLog "Deleting from /opt/logs/stress-ng_logs  Folder "
-    if [ -d $STRESS_NG_LOG_PATH ]; then
+    if [ ! -z $OPENSSL_LOG_PATH ]; then
+        uploadLog "Deleting from $OPENSSL_LOG_PATH  Folder "
+        rm -rf $OPENSSL_LOG_PATH
+    else
+        uploadLog " Deleting from $STRESS_NG_LOG_PATH Folder"
         rm -rf $STRESS_NG_LOG_PATH
     fi
 }
