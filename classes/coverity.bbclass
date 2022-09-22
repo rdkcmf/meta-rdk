@@ -82,6 +82,7 @@ python do_generate_coverity_build()  {
 
      if d.getVar('COVERITYFLAG_${PN}','1') == '1':
            d.setVar('MAKE','/opt/covClient/bin/cov-build --verbose 4 --tmpdir COVERITY_TMPDIR --config ${WORKDIR}/config/coverity_config.xml --dir ${TOPDIR}/../build-images/${COVERITY_DIR} make ')
+           d.setVar('CMAKE_VERBOSE','/opt/covClient/bin/cov-build --verbose 4 --tmpdir COVERITY_TMPDIR --config ${WORKDIR}/config/coverity_config.xml --dir ${TOPDIR}/../build-images/${COVERITY_DIR}  ')
      else:
            d.setVar('MAKE','make')
 }
