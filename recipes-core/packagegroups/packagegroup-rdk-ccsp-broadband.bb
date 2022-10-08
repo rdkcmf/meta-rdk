@@ -88,6 +88,7 @@ RDEPENDS_packagegroup-rdk-ccsp-broadband += " ${@bb.utils.contains("DISTRO_FEATU
 
 RDEPENDS_packagegroup-rdk-ccsp-broadband += " ${@bb.utils.contains("DISTRO_FEATURES", "rdkb_cellular_manager", "rdk-cellularmanager", "", d)}"
 RDEPENDS_packagegroup-rdk-ccsp-broadband += " ${@bb.utils.contains("DISTRO_FEATURES", "rdkb_inter_device_manager", "rdk-interdevicemanager", "", d)}"
+RDEPENDS_packagegroup-rdk-ccsp-broadband += " ${@bb.utils.contains("DISTRO_FEATURES", "rdkb_thermal_manager", "rdk-thermalmanager", "", d)}"
 
 RDEPENDS_packagegroup-rdk-ccsp-broadband += " ${@bb.utils.contains('DISTRO_FEATURES', 'gateway_manager', ' gatewaymanager ', '', d)}"
 
