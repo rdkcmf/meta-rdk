@@ -160,7 +160,7 @@ fi
 # Keeps the meta-data about the Apps in following format in /opt/persistent/rdmDownloadInfo.txt
 # Meta data contains App Name, Package Name, App Home path, App Size, Download Status
 if [ -f $RDM_DL_INFO ]; then
-    sed -i "/${DOWNLOAD_APP_MODULE}/d" $RDM_DL_INFO
+    sed -i "/^${DOWNLOAD_APP_MODULE}/d" $RDM_DL_INFO
 fi
 #To redirect output persistent folder should be present
 
