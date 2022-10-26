@@ -7,7 +7,7 @@ PV = "3.0+git${SRCPV}"
 
 S = "${WORKDIR}/git/WebKitBrowser"
 
-SRC_URI = "git://github.com/simi-mathew/rdkservices.git;protocol=git;branch=main-loadfailed\
+SRC_URI = "git://github.com/rdkcentral/rdkservices.git;protocol=git;branch=main\
   file://0001-RDKTV-177-Configure-wpeframework-plugin-startup-orde.patch;patchdir=../ \
   file://0002-Use-SYSLOG-instead-of-TRACE.patch;patchdir=../ \
   file://0003-Increase-browser-creation-timeout.patch;patchdir=../ \
@@ -19,7 +19,7 @@ SRC_URI = "git://github.com/simi-mathew/rdkservices.git;protocol=git;branch=main
 "
 
 # Tip of the main at Oct 14, 2022
-SRCREV = "96e6587e46dde7222da0771f040c4458b3530719"
+SRCREV = "4d08233a0c94dd578fe2cc5d943b6949c9f1f74e"
 
 inherit cmake pkgconfig python3native
 
