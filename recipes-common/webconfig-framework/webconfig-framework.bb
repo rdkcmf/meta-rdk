@@ -3,7 +3,7 @@ SUMMARY = "libwebconfig_framework component"
 LICENSE = "Apache-2.0"
 LIC_FILES_CHKSUM = "file://LICENSE;md5=bc21fa26f9718980827123b8b80c0ded"
 
-DEPENDS = "rbus rbus-core"
+DEPENDS = "rbus"
 DEPENDS_append = " ${@bb.utils.contains('DISTRO_FEATURES', 'safec', ' safec', " ", d)}"
 DEPENDS_class-native = ""
 
@@ -34,7 +34,7 @@ CFLAGS_append_dunfell = " -Wno-restrict -Wno-format-truncation -Wno-format-overf
 CFLAGS_append = " ${@bb.utils.contains('DISTRO_FEATURES', 'webconfig_bin', '-DWEBCONFIG_BIN_SUPPORT', '', d)}"
 
 LDFLAGS += " \
-    -lrbus-core \
+    -lrbuscore \
     -lrtMessage \
     -lrbus \
     "
