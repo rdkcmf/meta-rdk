@@ -17,7 +17,6 @@ RDEPENDS_packagegroup-wpe-webkit = "\
 
 # Additional OSS packages etc, which are only needed for WPE based images.
 RDEPENDS_packagegroup-wpe-webkit += "\
-    udev \
     xkeyboard-config \
     shared-mime-info \
 "
