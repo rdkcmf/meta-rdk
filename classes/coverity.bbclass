@@ -101,4 +101,4 @@ COVERITY_BLACKLIST_PATH += "bbu-kdriver | docsis-headers | docsis | broadcom-ref
 # Ignore problematic components
 COVERITY_BLACKLIST_PATH += "avro-c | graphite2 | zilker | wdmp-c | ctrlm-testapp | pxcore-libnode | wpeframework  | mkimage"
 COVERITY_BLACKLIST_PATH += "netflix-src | dtcpmgr | qtbase | syslog-helper | linux-meson | mediarite | quilt-native"
-COVERITY_BLACKLIST_PATH += "wave-api | meta-wave"
+COVERITY_BLACKLIST_PATH += "wave-api | meta-wave | meta-sky-qt5"
