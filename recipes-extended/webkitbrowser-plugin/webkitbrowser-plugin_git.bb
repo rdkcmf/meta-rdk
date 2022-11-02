@@ -18,8 +18,8 @@ SRC_URI = "git://github.com/rdkcentral/rdkservices.git;protocol=git;branch=main\
   file://0008-Redirect-JSPP-logs.patch;patchdir=../ \
 "
 
-# Tip of the main at Oct 14, 2022
-SRCREV = "4d08233a0c94dd578fe2cc5d943b6949c9f1f74e"
+# Tip of the main at Nov 1, 2022
+SRCREV = "371c31539371b3f510605849eda4de07347645ad"
 
 inherit cmake pkgconfig python3native
 
