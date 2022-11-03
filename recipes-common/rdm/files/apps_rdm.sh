@@ -20,6 +20,14 @@
 
 . /etc/device.properties
 
+if [ -f /etc/rdm/rdmBundleUtils.sh ]; then
+    source /etc/rdm/rdmBundleUtils.sh
+fi
+
+if [ -f /etc/rdm/rdmIarmEvents.sh ]; then
+        source /etc/rdm/rdmIarmEvents.sh
+fi
+
 if [ ! -f /etc/os-release ]; then
     IARM_EVENT_BINARY_LOCATION=/usr/local/bin
 else
@@ -71,16 +79,14 @@ fi
 if [ "$#" -eq  "0" ]; then
     # To download all the apps mentioned in rdm-manifest.json file
     idx=0
+    packageList=""
     while :
     do
 
-        if [ -n "$RDM_CLOUD_MANIFEST" -a "$RDM_CLOUD_MANIFEST" = "true" -a -f "$RDM_PKGS_DATA" ]; then
-            JQ_CMD="/usr/bin/jsonquery -f $RDM_PKGS_DATA -p /$idx"
-        else
-            JQ_CMD="/usr/bin/jsonquery -f $RDM_MANIFEST --path=//packages/$idx"
-        fi
+        JQ_CMD="/usr/bin/jsonquery -f $RDM_MANIFEST --path=//packages/$idx"
         DOWNLOAD_APP_NAME=`$JQ_CMD/app_name`
         if [ $? -eq 0 ]; then
+                packageList="$DOWNLOAD_APP_NAME $packageList"
 		DOWNLOAD_APP_ONDEMAND=`$JQ_CMD/dwld_on_demand`
 		if [ "x$DOWNLOAD_APP_ONDEMAND" = "xyes" ]; then
 			echo "dwld_on_demand set to yes!!! Check RFC value of the APP to be downloaded"
@@ -124,10 +130,50 @@ else
     fi
 fi
 
+updatePkgStatus()
+{
+        APP_INST_STATUS="$1"
+        APP_VERSION=""
+        APP_HOME_DIR=""
+        pkg_info="pkg_name:$pkg\npkg_version:$APP_VERSION\npkg_inst_status:$APP_INST_STATUS\npkg_inst_path:$APP_HOME_DIR"
+        broadcastRDMPkgStatus "$pkg_info"
+}
+
+uninstallPackages()
+{
+    echo "Uninstall the packages which are not available in manifest"
+    pkg_manifest=$(echo $packageList | xargs)
+    echo "Packages listed in manifest: $pkg_manifest"
+
+    # Uninstall the packages that were not listed in manifest
+    installedPkgs=$(getInstalledPackages)
+    echo "Installed packages in cpe: $installedPkgs"
+    for package in $pkg_manifest; do
+        installedPkgs=${installedPkgs//${package}/}
+    done
+
+    uninstall_pkg_list=$(echo $installedPkgs | xargs)
+
+    if [ ! -z "$uninstall_pkg_list" -a "$uninstall_pkg_list" != " " ]; then
+        echo "Packages that are not available in manifest but present in device are $uninstall_pkg_list"
+
+        for pkg in $uninstall_pkg_list; do
+            rm -rf "$RDM_APP_PATH/$pkg"
+            if [ $? -eq 0 ]; then
+                echo "Uninstalled ${pkg} from $RDM_APP_PATH"
+                updatePkgStatus "$RDM_PKG_UNINSTALL"
+            fi
+        done
+    else
+        echo "CPE contains only the packages that are listed in manifest. No old packages were found to uninstall"
+    fi
+}
+
 # Send notification about download status as 1 for success and 0 for failure of all the components present on rdm-manifest.json
 if [ -s $RDM_DL_INFO ]; then
     if [ "$APP_DL_STATUS" -eq 0 ]; then 
         echo "App download success, sending status as $APP_DL_STATUS"
+        uninstallPackages
     else
         echo "App download failed, sending status as $APP_DL_STATUS"
     fi
