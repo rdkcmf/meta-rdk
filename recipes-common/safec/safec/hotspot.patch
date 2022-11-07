@@ -2,7 +2,6 @@ Date: Sat, 07 Feb 2022 17:06:56 +0000
 From: Gururaaja ESR <gururaja_erodesriranganramlingham@comcast.com>
 Subject: [PATCH] RDKB-39976 - Unable to set Hotspot Config through Webconfig Via RBUS
 Source: COMCAST
-License: MIT
 Upstream-Status: Pending
 Signed-off-by: Gururaaja ESR <gururaja_erodesriranganramlingham@comcast.com>
 

@@ -3,7 +3,6 @@ From: skakko494 <Shibu_KV@cable.comcast.com>
 Date: Thu, 21 Apr 2022 02:34:13 +0000
 Subject: [PATCH] RDK-36342 : Include CPU idle time to perf metrics
 Source: COMCAST
-License: GPLV2
 Upstream-Status: Pending
 Reason for change: Include CPU idle time to perf metrics
 Test Procedure: Run stress NG cpu stressor with perf options

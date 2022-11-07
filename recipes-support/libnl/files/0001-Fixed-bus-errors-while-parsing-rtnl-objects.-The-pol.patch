@@ -9,7 +9,6 @@ Subject: [PATCH] Fixed bus errors while parsing rtnl objects. The policy added
  completely for link, addr and route objects.
 
 Source: COMCAST
-License: GPLV2
 Upstream-Status: Pending
 
 Signed-off-by: Balaji Punnuru <balaji_punnuru@cable.comcast.com>

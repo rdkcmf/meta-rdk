@@ -2,7 +2,6 @@ Date: Mon, 16 Aug 2021 18:53:41 +0000
 From: 0ca5225942bc473cc9d917de66802d4e69dbb008 Mon Sep 17 00:00:00 2001
 Subject: Introduce state aware memory observer
 Source: COMCAST
-License: GPLV2
 Upstream-Status: N/A
 Signed-off-by: Eugene Mutavchi <Ievgen_Mutavchi@comcast.com>
 

@@ -3,7 +3,6 @@ From: Tony Paul <Tony_Paul@comcast.com>
 Date: Wed, 2 Dec 2020 14:52:14 +0000
 Subject: [PATCH] RDKTV-177:Configure wpeframework plugin startup order
 Source: Comcast
-License: GPLV2
 Upstream-Status: Inappropriate [Comcast specific]
 Signed-off-by: Tony Paul <Tony_Paul@comcast.com>
 Signed-off-by: Eugene Mutavchi <Ievgen_Mutavchi@comcast.com>
