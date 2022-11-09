@@ -17,8 +17,8 @@ inherit pkgconfig cmake systemd
 EXTRA_OECMAKE =  " -DCMAKE_BUILD_TYPE=Debug -DBUILD_REFERENCE=${SRCREV}"
 
 # Enable plugins
-# Logging, networking, ipc, storage, minidump enabled by default for all builds
-PACKAGECONFIG ?= "logging networking ipc storage minidump"
+# Logging, networking, ipc, storage, minidump, oomcrash enabled by default for all builds
+PACKAGECONFIG ?= "logging networking ipc storage minidump oomcrash"
 
 # Options for plugins
 # -------------------------------------
@@ -28,6 +28,7 @@ PACKAGECONFIG[networking]   = "-DPLUGIN_NETWORKING=ON,-DPLUGIN_NETWORKING=OFF,"
 PACKAGECONFIG[ipc]          = "-DPLUGIN_IPC=ON,-DPLUGIN_IPC=OFF,"
 PACKAGECONFIG[storage]      = "-DPLUGIN_STORAGE=ON,-DPLUGIN_STORAGE=OFF,"
 PACKAGECONFIG[minidump]     = "-DPLUGIN_MINIDUMP=ON,-DPLUGIN_MINIDUMP=OFF,"
+PACKAGECONFIG[oomcrash]     = "-DPLUGIN_OOMCRASH=ON,-DPLUGIN_OOMCRASH=OFF,"
 PACKAGECONFIG[testplugin]   = "-DPLUGIN_TESTPLUGIN=ON,-DPLUGIN_TESTPLUGIN=OFF,"
 PACKAGECONFIG[gpu]          = "-DPLUGIN_GPU=ON,-DPLUGIN_GPU=OFF,"
 PACKAGECONFIG[localtime]    = "-DPLUGIN_LOCALTIME=ON,-DPLUGIN_LOCALTIME=OFF,"

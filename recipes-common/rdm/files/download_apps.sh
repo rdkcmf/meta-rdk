@@ -22,21 +22,30 @@
 DOWNLOAD_APP_MODULE=$1
 APPLN_HOME_PATH=/tmp
 APP_MOUNT_PATH=/media/apps
+
 if [ "$DEVICE_TYPE" = "broadband" ]; then
      RDM_DL_INFO=/nvram/persistent/rdmDownloadInfo.txt
 else
      RDM_DL_INFO=/opt/persistent/rdmDownloadInfo.txt
 fi
-RDM_DOWNLOAD_SCRIPT=/etc/rdm/downloadMgr.sh
-
-PACKAGER_ENABLED="$(tr181 Device.DeviceInfo.X_RDKCENTRAL-COM_RFC.Feature.Packager.Enable 2>&1 > /dev/null)"
-if [ "x$PACKAGER_ENABLED" == "xtrue" ]; then
-    echo "Packager is enabled"
-    RDM_DOWNLOAD_SCRIPT=/etc/rdm/packagerMgr.sh
-fi
 
 DOWNLOAD_PKG_NAME=`/usr/bin/jsonquery -f /etc/rdm/rdm-manifest.json  --path=//packages/$DOWNLOAD_APP_MODULE/pkg_name`
 DOWNLOAD_APP_SIZE=`/usr/bin/jsonquery -f /etc/rdm/rdm-manifest.json  --path=//packages/$DOWNLOAD_APP_MODULE/app_size`
+
+if [ -f /tmp/.rdm-apps-data/${DOWNLOAD_APP_MODULE}.conf ]; then
+    source /tmp/.rdm-apps-data/${DOWNLOAD_APP_MODULE}.conf
+fi
+
+PACKAGER_ENABLED="$(tr181 Device.DeviceInfo.X_RDKCENTRAL-COM_RFC.Feature.Packager.Enable 2>&1 > /dev/null)"
+
+if [ "x$IS_VERSIONED" == "xtrue" ]; then
+    RDM_DOWNLOAD_SCRIPT=/etc/rdm/downloadVersionedApps.sh
+elif [ "x$PACKAGER_ENABLED" == "xtrue" ]; then
+    echo "Packager is enabled"
+    RDM_DOWNLOAD_SCRIPT=/etc/rdm/packagerMgr.sh
+else
+    RDM_DOWNLOAD_SCRIPT=/etc/rdm/downloadMgr.sh
+fi
 
 #Space reserved on app partition for firmware download(in MB)
 RDM_SCRATCHPAD_MAX_FW_SIZE=80
@@ -62,8 +71,18 @@ echo "Downloading $DOWNLOAD_APP_MODULE..."
 # make sure that we have a rw filesystem mounted on cdl mount path
 if [ "$DEVICE_TYPE" != "broadband" ]; then
   tst_file=$APP_MOUNT_PATH/testfile
-  touch $tst_file
-  if [ -e $tst_file ]; then
+  diskcheck=1
+  #Write something in the test file to ensure disk is writable.
+  echo "Test write" > $tst_file
+  if [ $? -eq 0 ];then
+          #check we are able to remove the file as well. Sometimes, corrupted disk don't allow us to delete a file.
+	  rm -f $tst_file
+	  if [ $? -eq 0 ];then
+		  echo "$APP_MOUNT_PATH is in working condition"
+                  diskcheck=0
+	  fi
+  fi
+  if [ $diskcheck -eq 0 ]; then
     # Verify if package already present on cdl mount path.
     pkg_present=`find $APP_MOUNT_PATH -iname $DOWNLOAD_PKG_NAME | wc -l`
     if [ $pkg_present -ne 0 ]; then
@@ -103,7 +122,8 @@ if [ "$DEVICE_TYPE" != "broadband" ]; then
             echo "Not enough space available for App download on $APP_MOUNT_PATH. Downloading the App on tmp dir."
         fi
     fi
-    rm $tst_file
+  else
+    echo "$APP_MOUNT_PATH is not in working condition."
   fi
 fi
 
@@ -111,7 +131,13 @@ echo "HOME PATH for APP = $APPLN_HOME_PATH"
 
 # Download the Package. If package already present on download path then skip the download
 # and perform the signature validation
-time sh $RDM_DOWNLOAD_SCRIPT $DOWNLOAD_APP_MODULE $APPLN_HOME_PATH openssl ipk ""
+
+if [ "x$IS_VERSIONED" = "xtrue" ]; then
+    time sh $RDM_DOWNLOAD_SCRIPT $DOWNLOAD_APP_NAME "$DOWNLOAD_PKG_VERSION"
+else
+    time sh $RDM_DOWNLOAD_SCRIPT $DOWNLOAD_APP_MODULE $APPLN_HOME_PATH openssl ipk ""
+fi
+
 RDM_STATUS=$?
 if [ $RDM_STATUS -eq 3 ] && [ "$APPLN_HOME_PATH" == "$APP_MOUNT_PATH" ]; then
     #Signature validation failed. This could be due to corruption on previously downloaded pacakge.
@@ -134,7 +160,7 @@ fi
 # Keeps the meta-data about the Apps in following format in /opt/persistent/rdmDownloadInfo.txt
 # Meta data contains App Name, Package Name, App Home path, App Size, Download Status
 if [ -f $RDM_DL_INFO ]; then
-    sed -i "/${DOWNLOAD_APP_MODULE}/d" $RDM_DL_INFO
+    sed -i "/^${DOWNLOAD_APP_MODULE}/d" $RDM_DL_INFO
 fi
 #To redirect output persistent folder should be present
 

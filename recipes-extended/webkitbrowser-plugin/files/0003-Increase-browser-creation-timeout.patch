@@ -11,7 +11,7 @@ Index: git/WebKitBrowser/WebKitBrowser.cpp
 ===================================================================
 --- git.orig/WebKitBrowser/WebKitBrowser.cpp
 +++ git/WebKitBrowser/WebKitBrowser.cpp
-@@ -48,7 +48,7 @@ namespace Plugin {
+@@ -47,7 +47,7 @@ namespace Plugin {
          // change to "register" the sink for these events !!! So do it ahead of instantiation.
          _service->Register(&_notification);
  

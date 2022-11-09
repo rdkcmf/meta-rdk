@@ -12,12 +12,13 @@ PACKAGES = "\
 # Generic RDK components
 RDEPENDS_packagegroup-rdk-generic-mediaclient = "\
     dnsmasq \
-    ${@bb.utils.contains("WEBBACKENDS", "rdkbrowser", "rdkbrowser rdkbrowser-webserver", "", d)} \
+    ${@bb.utils.contains("WEBBACKENDS", "rdkbrowser", "rdkbrowser-webserver", "", d)} \
     tr69agent \
     tr69hostif \
     tenablehdcp \
     netsrvmgr \
     util-linux-sfdisk \
+    ${WEBBACKENDS} \
     "
 
 # since we compile RDK component within qtwebkit (mediaplayersink) it

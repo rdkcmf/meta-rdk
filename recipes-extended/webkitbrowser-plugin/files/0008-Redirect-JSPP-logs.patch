@@ -1,0 +1,176 @@
+From 888cfee4d2e0caddc3454b3d25277ebbe233b93d Mon Sep 17 00:00:00 2001
+From: Eugene Mutavchi <Ievgen_Mutavchi@comcast.com>
+Date: Mon, 10 Oct 2022 14:58:59 +0000
+Subject: [PATCH] Redirect JSPP logs
+
+---
+ WebKitBrowser/CMakeLists.txt           |   1 +
+ WebKitBrowser/JSPPLogging.cpp          | 103 +++++++++++++++++++++++++
+ WebKitBrowser/JSPPLogging.h            |   9 +++
+ WebKitBrowser/WebKitImplementation.cpp |   8 ++
+ 4 files changed, 121 insertions(+)
+ create mode 100644 WebKitBrowser/JSPPLogging.cpp
+ create mode 100644 WebKitBrowser/JSPPLogging.h
+
+diff --git a/WebKitBrowser/CMakeLists.txt b/WebKitBrowser/CMakeLists.txt
+index f61c05a3..9d23962d 100644
+--- a/WebKitBrowser/CMakeLists.txt
++++ b/WebKitBrowser/CMakeLists.txt
+@@ -178,6 +178,7 @@ add_library(${PLUGIN_WEBKITBROWSER_IMPLEMENTATION} SHARED
+     Module.cpp
+     WebKitImplementation.cpp
+     Tags.cpp
++    JSPPLogging.cpp
+     )
+ 
+ if(NOT WEBKIT_GLIB_API)
+diff --git a/WebKitBrowser/JSPPLogging.cpp b/WebKitBrowser/JSPPLogging.cpp
+new file mode 100644
+index 00000000..c4fa3bed
+--- /dev/null
++++ b/WebKitBrowser/JSPPLogging.cpp
+@@ -0,0 +1,100 @@
++#include <errno.h>
++#include <fcntl.h>
++#include <stddef.h>
++#include <sys/socket.h>
++#include <sys/un.h>
++#include <unistd.h>
++#include <syslog.h>
++#include <signal.h>
++#include <glib.h>
++
++#include "Module.h"
++
++namespace WPEFramework {
++namespace Plugin {
++
++bool RedirectJSPPLog()
++{
++  // Move to sky-jssp systemd unit
++  const char kJSPPSystemdSlicePath[] = "/sys/fs/cgroup/systemd/system.slice/sky-jspp.service/tasks";
++  if (g_file_test(kJSPPSystemdSlicePath, G_FILE_TEST_EXISTS)) {
++    WPEFramework::Core::Directory taskDir("/proc/self/task");
++    while (taskDir.Next() == true) {
++      if (taskDir.Name() == "." || taskDir.Name() == "..")
++        continue;
++      FILE* f = fopen(kJSPPSystemdSlicePath, "a");
++      if (f) {
++        fprintf(f, "%s", taskDir.Name().c_str());
++        fclose(f);
++      } else {
++        fprintf(stderr, "RedirectJSPPLog: cannot move %s thread to '%s': %s\n",
++                taskDir.Name().c_str(), kJSPPSystemdSlicePath, strerror(errno));
++      }
++    }
++  } else {
++    fprintf(stderr, "RedirectJSPPLog: sky-jspp unit cgroup doesn't exist\n");
++    return false;
++  }
++
++  // Redirect stdout / stderr
++  sockaddr_un sa;
++  memset (&sa, 0, sizeof (sa));
++  sa.sun_family = AF_UNIX;
++  g_strlcpy (sa.sun_path, "/run/systemd/journal/stdout", sizeof(sa.sun_path));
++
++  int fd = -1;
++  fd = socket(AF_UNIX, SOCK_STREAM, 0);
++  if (fd < 0) {
++    perror("RedirectJSPPLog: socket() failed");
++    return false;
++  }
++
++  int r = connect(fd, (const sockaddr*)&sa, sizeof(sa));
++  if (r < 0) {
++    perror("RedirectJSPPLog: couldn't connect");
++    close(fd);
++    return false;
++  }
++
++  shutdown(fd, SHUT_RD);
++
++  int value = (8*1024*1024);
++  setsockopt(fd, SOL_SOCKET, SO_SNDBUF, &value, sizeof(value));
++
++  char* header = g_strdup_printf("%s\n%s\n%i\n%i\n0\n0\n0\n", "sky-jspp", "sky-jspp.service", (LOG_DAEMON|LOG_INFO), 1);
++  char *p = header;
++  size_t nbytes = strlen(header);
++
++  do {
++    ssize_t k;
++    k = write(fd, p, nbytes);
++    if (k < 0) {
++      if (errno == EINTR)
++        continue;
++      perror("RedirectJSPPLog: write() failed");
++      break;
++    }
++    p += k;
++    nbytes -= k;
++  }
++  while (nbytes > 0);
++  g_free(header);
++
++  if (nbytes != 0) {
++    close(fd);
++    return false;
++  }
++
++#ifdef SIGPIPE
++  signal (SIGPIPE, SIG_IGN);
++#endif
++
++  dup3(fd, STDOUT_FILENO, 0);
++  dup3(fd, STDERR_FILENO, 0);
++
++  close(fd);
++  return true;
++}
++
++}
++}
+diff --git a/WebKitBrowser/JSPPLogging.h b/WebKitBrowser/JSPPLogging.h
+new file mode 100644
+index 00000000..0e96da6c
+--- /dev/null
++++ b/WebKitBrowser/JSPPLogging.h
+@@ -0,0 +1,9 @@
++#pragma once
++
++namespace WPEFramework {
++namespace Plugin {
++
++bool RedirectJSPPLog();
++
++}
++}
+diff --git a/WebKitBrowser/WebKitImplementation.cpp b/WebKitBrowser/WebKitImplementation.cpp
+index 01e4a9e1..d22feac8 100644
+--- a/WebKitBrowser/WebKitImplementation.cpp
++++ b/WebKitBrowser/WebKitImplementation.cpp
+@@ -74,6 +74,8 @@ WK_EXPORT void WKPreferencesSetPageCacheEnabled(WKPreferencesRef preferences, bo
+ #include <libsoup/soup.h>
+ #endif
+ 
++#include "JSPPLogging.h"
++
+ namespace WPEFramework {
+ namespace Plugin {
+ 
+@@ -2095,6 +2097,12 @@ static GSourceFuncs _handlerIntervention =
+ 
+         uint32_t Configure(PluginHost::IShell* service) override
+         {
++            if (service->Callsign().find("JSPP") != std::string::npos)
++            {
++              if (!RedirectJSPPLog())
++                SYSLOG(Logging::Error, ("Could not redirect JSPP logs..."));
++            }
++
+             #ifndef WEBKIT_GLIB_API
+             _consoleLogPrefix = service->Callsign();
+             #endif
+-- 
+2.25.1
+

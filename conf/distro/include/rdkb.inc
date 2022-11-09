@@ -13,6 +13,10 @@ PREFERRED_VERSION_googletest = "1.10.0"
 PREFERRED_PROVIDER_gtest = "googletest"
 PREFERRED_PROVIDER_gmock = "googletest"
 
+DISTRO_FEATURES_append = " bluetooth"
+DISTRO_FEATURES_append = " bluez5"
+PREFERRED_VERSION_bluez5_dunfell ?= "5.54"
+
 PREFERRED_VERSION_php ?= "7.2.%"
 PREFERRED_VERSION_php-native ?= "7.2.%"
 PREFERRED_VERSION_php_dunfell ?= "7.4.%"
@@ -50,6 +54,7 @@ PREFERRED_PROVIDER_hal-firewall ?= "hal-firewall-generic"
 PREFERRED_VERSION_libmtp = "1.1.5"
 PREFERRED_VERSION_mosquitto_dunfell = "1.6.%"
 PREFERRED_VERSION_gnupg_dunfell = "1.4.7"
+DISTRO_FEATURES_append_dunfell = " logendpoints"
 
 DISTRO_FEATURES_append = " tigress"
 #Masking cedm multicall implementation in RDK-B
@@ -70,7 +75,7 @@ BBMASK .= "|.meta-rdk/recipes-core/images/rdk-oss-image.bb|meta-rdk/recipes-core
 BBMASK .= "|.*recipes-extended/mediaframework|.*recipes-qt"
 BBMASK .= "|.meta-rdk-comcast/recipes-support/crypt-utils/*|.meta-rdk-comcast/recipes-extended/whitebox|.meta-rdk/recipes-oem/mfrlib"
 BBMASK .= "|.meta-rdk-comcast/recipes-common/sec-pks-client/sec-pks-client.bb"
-BBMASK .= "|.meta-rdk-comcast/recipes-common/tdk-cpc|.meta-rdk/recipes-connectivity/bluetooth"
+BBMASK .= "|.meta-rdk-comcast/recipes-common/tdk-cpc"
 BBMASK .= "|.meta-rdk/recipes-extended/wifi-hal-headers|.meta-rdk-comcast/recipes-extended/acscerts"
 BBMASK .= "|.meta-rdk/recipes-common/nlmonitor"
 BBMASK .= "|.meta-rdk-comcast/recipes-common/cgrouputils"
@@ -107,8 +112,14 @@ FEATURE_WANMANAGER_JSONHAL_MASK ?= "|.meta-rdk-broadband/recipes-support/json-ha
 BBMASK .= "${FEATURE_WANMANAGER_JSONHAL_MASK}"
 FEATURE_RDKB_LED_MANAGER ?= "|.meta-rdk-broadband/recipes-ccsp/ccsp/rdk-ledmanager.bb"
 BBMASK .= "${FEATURE_RDKB_LED_MANAGER}"
+FEATURE_CELLULAR_MANAGER_MASK ?= "|.meta-rdk-broadband/recipes-ccsp/ccsp/rdk-cellularmanager.bb"
+BBMASK .= "${FEATURE_CELLULAR_MANAGER_MASK}"
+FEATURE_RDKB_INTER_DEVICE_MANAGER ?= "|.meta-rdk-broadband/recipes-ccsp/ccsp/rdk-interdevicemanager.bb"
+BBMASK .= "${FEATURE_RDKB_INTER_DEVICE_MANAGER}"
+FEATURE_RDKB_THERMAL_MANAGER ?= "|.meta-rdk-broadband/recipes-ccsp/ccsp/rdk-thermalmanager.bb"
+BBMASK .= "${FEATURE_RDKB_THERMAL_MANAGER}"
 
-HUBLINUX_MASK ?= "|.meta-rdk-soc-broadcom-broadband/meta-brcm-broadband/recipes-kernel/linux/hublinux_4.19.bb"
+HUBLINUX_MASK ?= "|.meta-rdk-soc-broadcom-broadband/meta-brcm-broadband/recipes-kernel/linux/bcalinux_4.19.bb"
 BBMASK .= "${HUBLINUX_MASK}"
 
 # add rdkversion_1.0.bb is not supported for broadband devices.

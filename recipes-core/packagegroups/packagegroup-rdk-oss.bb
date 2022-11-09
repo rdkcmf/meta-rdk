@@ -20,10 +20,6 @@ RDEPENDS_packagegroup-rdk-oss = "\
     glib-2.0 \
     gnutls \
     gssdp \
-    gst-fluendo-mpegdemux \
-    gst-meta-audio \
-    gst-meta-base \
-    gst-meta-video \
     gupnp \
     iksemel \
     jansson \
@@ -44,8 +40,5 @@ RDEPENDS_packagegroup-rdk-oss = "\
     yajl \
     libtinyxml \
     gupnp-av \
-    gst-ffmpeg \
-    gst-plugins-base \
-    gst-plugins-good \
     perl \
     "

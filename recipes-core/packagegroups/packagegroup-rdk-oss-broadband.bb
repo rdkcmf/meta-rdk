@@ -65,8 +65,10 @@ RDEPENDS_packagegroup-rdk-oss-broadband = "\
     smcroute \
     libsyswrapper \
     ${@bb.utils.contains("DISTRO_FEATURES", "safec", "safec", "" , d)} \
+    ${@bb.utils.contains("DISTRO_FEATURES", "rdkb_cellular_manager", "libqmi", "" , d)} \
     "
 DEPENDS += " libsyswrapper"
 
 RDEPENDS_packagegroup-rdk-oss-broadband += " ${@bb.utils.contains('DISTRO_FEATURES', 'snmppa', 'net-snmp-client net-snmp-server net-snmp-mibs net-snmp-server-snmpd', '', d)}"
 RDEPENDS_packagegroup-rdk-oss-broadband += " ${@bb.utils.contains('DISTRO_FEATURES', 'rdk-oss-ssa', 'rdk-oss-ssa ecryptfs-utils', '', d)}"
+RDEPENDS_packagegroup-rdk-oss-broadband += " ${@bb.utils.contains('DISTRO_FEATURES', 'gateway_manager', ' rsync ', '', d)}"

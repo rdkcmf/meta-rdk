@@ -10,7 +10,7 @@ PV = "2.x+git${SRCPV}"
 S = "${WORKDIR}/git"
 
 SRC_URI = "git://github.com/rdkcentral/rtRemote;branch=release"
-SRCREV = "9c5eeba06521b158f287057759076ab5ac15353d"
+SRCREV = "7e29a873d9e1a9b0102a71d812ff40a31bac10e0"
 
 inherit cmake
 
@@ -49,8 +49,8 @@ do_configure_prepend() {
 }
 
 do_install () {
-   install -d ${D}/usr/lib
-   cp -a ${S}/librtRemote* ${D}/usr/lib
+   install -d ${D}/${libdir}
+   cp -a ${S}/librtRemote* ${D}/${libdir}
 
    mkdir -p ${D}${includedir}/pxcore
    install -m 0644 ${S}/include/rtRemote.h ${D}${includedir}/pxcore/

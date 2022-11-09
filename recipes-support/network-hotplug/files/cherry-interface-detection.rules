@@ -1,2 +1,0 @@
-ACTION=="add", SUBSYSTEM=="net", SUBSYSTEMS=="usb", ATTRS{idVendor}=="05c6", ATTRS{idProduct}=="908c", RUN+="/bin/sh -c 'mkdir -p /tmp/cherry && touch /tmp/cherry/cherry_interface_detected'"
-ACTION=="remove", SUBSYSTEM=="net", SUBSYSTEMS=="usb", ATTRS{idVendor}=="05c6", ATTRS{idProduct}=="908c", RUN+="/bin/sh -c 'rm /tmp/cherry/cherry_interface_detected'"

@@ -6,7 +6,7 @@ LIC_FILES_CHKSUM = "file://LICENSE;md5=175792518e4ac015ab6696d16c4f607e"
 
 SRC_URI = "${RDK_GENERIC_ROOT_GIT}/telemetry/generic;protocol=${RDK_GIT_PROTOCOL};branch=${RDK_GIT_BRANCH}"
 
-DEPENDS += "curl cjson glib-2.0 breakpad-wrapper rbus libsyswrapper"
+DEPENDS += "curl cjson glib-2.0 breakpad-wrapper rbus libsyswrapper libunpriv"
 DEPENDS += "rdk-logger"
 
 RDEPENDS_${PN} += "curl cjson glib-2.0 rbus"
@@ -20,12 +20,17 @@ CFLAGS += " -Wall -Werror -Wextra -Wno-unused-parameter -Wno-pointer-sign -Wno-s
 
 inherit pkgconfig autotools systemd pythonnative breakpad-logmapper
 
+CFLAGS += " -DDROP_ROOT_PRIV "
+
 LDFLAGS_append = " \
         -lbreakpadwrapper \
         -lpthread \
         -lstdc++ \
         -lsecure_wrapper \
         "
+LDFLAGS_append = " \
+        -lprivilege \
+      "
 
 CXXFLAGS += "-DINCLUDE_BREAKPAD"
 
@@ -35,7 +40,7 @@ do_install_append () {
     install -d ${D}${systemd_unitdir}/system
     install -m 644 ${S}/include/telemetry_busmessage_sender.h ${D}/usr/include/
     install -m 644 ${S}/include/telemetry2_0.h ${D}/usr/include/
-    install -m 0755 ${S}/source/commonlib/t2Shared_api.sh ${D}${base_libdir}/rdk
+    install -m 0755 ${S}/source/commonlib/t2Shared_api.sh ${D}/lib/rdk
     rm -fr ${D}/usr/lib/libtelemetry_msgsender.la 
 }
 
@@ -46,7 +51,7 @@ FILES_${PN} = "\
     ${systemd_unitdir}/system \
 "
 FILES_${PN} += "${libdir}/*.so*"
-FILES_${PN} += "${base_libdir}/rdk/*"
+FILES_${PN} += "/lib/rdk/*"
 
 FILES_SOLIBSDEV = ""
 INSANE_SKIP_${PN} += "dev-so"

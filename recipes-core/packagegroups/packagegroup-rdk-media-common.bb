@@ -49,6 +49,8 @@ RDEPENDS_packagegroup-rdk-media-common = "\
     rbus \
     rbus-core \
     telemetry \
+    webconfig-framework \
+    webcfg \
     "
 RDEPENDS_packagegroup-rdk-media-common_append_qemuall = " sysint "
 RDEPENDS_packagegroup-rdk-media-common_append_qemuall = " sysint-conf "

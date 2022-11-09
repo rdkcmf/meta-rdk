@@ -68,6 +68,7 @@ RDEPENDS_packagegroup-rdk-ccsp-broadband = "\
     dca \
     telemetry \
     webconfig-framework \
+    ${@bb.utils.contains("DISTRO_FEATURES", "wifimotion", "wifimotion", "", d)} \
     \
 "
 RDEPENDS_packagegroup-rdk-ccsp-broadband += "\
@@ -85,11 +86,17 @@ RDEPENDS_packagegroup-rdk-ccsp-broadband += " ${@bb.utils.contains('DISTRO_FEATU
 RDEPENDS_packagegroup-rdk-ccsp-broadband += " ${@bb.utils.contains("DISTRO_FEATURES", "heaptrack", "heaptrack", "", d)}"
 RDEPENDS_packagegroup-rdk-ccsp-broadband += " ${@bb.utils.contains("DISTRO_FEATURES", "gtestapp", "gtest-apps", "", d)}"
 
+RDEPENDS_packagegroup-rdk-ccsp-broadband += " ${@bb.utils.contains("DISTRO_FEATURES", "rdkb_cellular_manager", "rdk-cellularmanager", "", d)}"
+RDEPENDS_packagegroup-rdk-ccsp-broadband += " ${@bb.utils.contains("DISTRO_FEATURES", "rdkb_inter_device_manager", "rdk-interdevicemanager", "", d)}"
+RDEPENDS_packagegroup-rdk-ccsp-broadband += " ${@bb.utils.contains("DISTRO_FEATURES", "rdkb_thermal_manager", "rdk-thermalmanager", "", d)}"
+
+RDEPENDS_packagegroup-rdk-ccsp-broadband += " ${@bb.utils.contains('DISTRO_FEATURES', 'gateway_manager', ' gatewaymanager ', '', d)}"
+
 #Remove support for TR-069 from XB8 (RDKB-32781)
 RDEPENDS_packagegroup-rdk-ccsp-broadband_remove_tchxb8 = " ccsp-tr069-pa ccsp-tr069-pa-ccsp"
 
 DEPENDS += " ccsp-common-library"
 
-WIFI_AGENT ?= "ccsp-wifi-agent"
+WIFI_AGENT ?= "${@bb.utils.contains("DISTRO_FEATURES", "OneWifi", "ccsp-one-wifi", "ccsp-wifi-agent", d)}"
 GWPROVAPP ?= "ccsp-gwprovapp ccsp-gwprovapp-ccsp"
 CM_AGENT ?= "ccsp-cm-agent ccsp-cm-agent-ccsp"

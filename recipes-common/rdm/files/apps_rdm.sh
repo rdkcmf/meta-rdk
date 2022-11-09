@@ -33,6 +33,7 @@ else
 fi
 RDM_APP_PATH="/media/apps"
 APP_DL_STATUS=0
+RDM_MANIFEST="/etc/rdm/rdm-manifest.json"
 
 #Verify apps downloaded in /media/apps
 checkAppDownload()
@@ -63,18 +64,27 @@ sendNotification()
     fi
 }
 
+if [ -n "$RDM_CLOUD_MANIFEST" -a "$RDM_CLOUD_MANIFEST" = "true" ]; then
+    source /etc/rdm/rdmCatalogueMgr.sh
+fi
 
 if [ "$#" -eq  "0" ]; then
     # To download all the apps mentioned in rdm-manifest.json file
     idx=0
     while :
     do
-        DOWNLOAD_APP_NAME=`/usr/bin/jsonquery -f /etc/rdm/rdm-manifest.json  --path=//packages/$idx/app_name`
+
+        if [ -n "$RDM_CLOUD_MANIFEST" -a "$RDM_CLOUD_MANIFEST" = "true" -a -f "$RDM_PKGS_DATA" ]; then
+            JQ_CMD="/usr/bin/jsonquery -f $RDM_PKGS_DATA -p /$idx"
+        else
+            JQ_CMD="/usr/bin/jsonquery -f $RDM_MANIFEST --path=//packages/$idx"
+        fi
+        DOWNLOAD_APP_NAME=`$JQ_CMD/app_name`
         if [ $? -eq 0 ]; then
-		DOWNLOAD_APP_ONDEMAND=`/usr/bin/jsonquery -f /etc/rdm/rdm-manifest.json  --path=//packages/$idx/dwld_on_demand`
+		DOWNLOAD_APP_ONDEMAND=`$JQ_CMD/dwld_on_demand`
 		if [ "x$DOWNLOAD_APP_ONDEMAND" = "xyes" ]; then
 			echo "dwld_on_demand set to yes!!! Check RFC value of the APP to be downloaded"
-			DOWNLOAD_METHOD_CONTROLLER=`/usr/bin/jsonquery -f /etc/rdm/rdm-manifest.json  --path=//packages/$idx/dwld_method_controller`
+			DOWNLOAD_METHOD_CONTROLLER=`$JQ_CMD/dwld_method_controller`
             		if [ "x$DOWNLOAD_METHOD_CONTROLLER" = "xRFC" ]; then
 	        		/usr/bin/rdm_apps_rfc_check.sh $DOWNLOAD_APP_NAME
 				APP_RFC_STATUS=$?
