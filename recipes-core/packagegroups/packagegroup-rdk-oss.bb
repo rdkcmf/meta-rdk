@@ -21,12 +21,14 @@ RDEPENDS_packagegroup-rdk-oss = "\
     gnutls \
     gssdp \
     gupnp \
+    gupnp-av \
     iksemel \
     jansson \
     libgcrypt \
     libgpg-error \
     libpcre \
     libsoup-2.4 \
+    libtinyxml \
     libxml2 \
     lighttpd \
     log4c \
@@ -34,13 +36,11 @@ RDEPENDS_packagegroup-rdk-oss = "\
     mtd-utils-ubifs \
     mongoose \
     neon \
+    perl \
     popt \
     smartmontools \
     spawn-fcgi \
     yajl \
-    libtinyxml \
-    gupnp-av \
-    perl \
     "
 GST_ALSA = "${@bb.utils.contains('COMBINED_FEATURES', 'alsa', 'gstreamer1.0-plugins-base-alsa', '',d)}"
 
@@ -49,7 +49,6 @@ RDEPENDS_packagegroup-rdk-oss += "${@bb.utils.contains('DISTRO_FEATURES', 'bench
     gstreamer1.0-plugins-base \ 
     gstreamer1.0-plugins-good \
     gstreamer1.0-plugins-bad \
-    gstreamer1.0-libav \
     gstreamer1.0-plugins-bad-debugutilsbad  \
     gstreamer1.0-plugins-bad-fbdevsink  \
     gstreamer1.0-plugins-bad-mpegtsdemux  \
@@ -62,4 +61,6 @@ RDEPENDS_packagegroup-rdk-oss += "${@bb.utils.contains('DISTRO_FEATURES', 'bench
     gstreamer1.0-plugins-good-isomp4  \
     gstreamer1.0-plugins-good-autodetect  \
     gstreamer1.0-plugins-good-audioparsers \
+    westeros \
+    westeros-sink \
 ', '', d)}"
