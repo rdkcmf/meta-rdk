@@ -107,3 +107,6 @@ BBMASK .= "${@bb.utils.contains('DISTRO_FEATURES', 'ssl-1.1.1', '|.meta-rdk-ext/
 BBMASK .= "${@bb.utils.contains('DISTRO_FEATURES', 'ssl-1.1.1', '|.meta-rdk-ext/recipes-connectivity/openssl/openssl-1.0.2o_1.0.2o.bb', '', d)}"
 
 inherit ${@bb.utils.contains('DISTRO_FEATURES', 'sbom', 'create-spdx', '', d)}
+
+PREFERRED_VERSION_libcobalt ?= "22.lts.stable"
+PREFERRED_VERSION_libcobalt_morty = "21.lts.stable"
