@@ -3,9 +3,9 @@ SUMMARY = "rbus library component"
 LICENSE = "Apache-2.0"
 LIC_FILES_CHKSUM = "file://LICENSE;md5=ed63516ecab9f06e324238dd2b259549"
 
-SRC_URI = "git://github.com/rdkcentral/rbus.git;branch=main"
+SRC_URI = "git://github.com/rdkcentral/rbus.git;branch=rbus-2.0"
 
-SRCREV = "${AUTOREV}"
+SRCREV = "v2.0.2"
 SRCREV_FORMAT = "base"
 
 S = "${WORKDIR}/git"
