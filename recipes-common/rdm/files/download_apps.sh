@@ -31,6 +31,7 @@ fi
 
 DOWNLOAD_PKG_NAME=`/usr/bin/jsonquery -f /etc/rdm/rdm-manifest.json  --path=//packages/$DOWNLOAD_APP_MODULE/pkg_name`
 DOWNLOAD_APP_SIZE=`/usr/bin/jsonquery -f /etc/rdm/rdm-manifest.json  --path=//packages/$DOWNLOAD_APP_MODULE/app_size`
+DOWNLOAD_PKG_TYPE=`/usr/bin/jsonquery -f /etc/rdm/rdm-manifest.json  --path=//packages/$DOWNLOAD_APP_MODULE/pkg_type`
 
 if [ -f /tmp/.rdm-apps-data/${DOWNLOAD_APP_MODULE}.conf ]; then
     source /tmp/.rdm-apps-data/${DOWNLOAD_APP_MODULE}.conf
@@ -40,8 +41,8 @@ PACKAGER_ENABLED="$(tr181 Device.DeviceInfo.X_RDKCENTRAL-COM_RFC.Feature.Package
 
 if [ "x$IS_VERSIONED" == "xtrue" ]; then
     RDM_DOWNLOAD_SCRIPT=/etc/rdm/downloadVersionedApps.sh
-elif [ "x$PACKAGER_ENABLED" == "xtrue" ]; then
-    echo "Packager is enabled"
+elif [ "$DOWNLOAD_PKG_TYPE" == "plugin" ]; then
+    echo "Installing $DOWNLOAD_APP_MODULE via Packager"
     RDM_DOWNLOAD_SCRIPT=/etc/rdm/packagerMgr.sh
 else
     RDM_DOWNLOAD_SCRIPT=/etc/rdm/downloadMgr.sh
