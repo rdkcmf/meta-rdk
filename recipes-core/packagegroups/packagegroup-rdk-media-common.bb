@@ -47,7 +47,6 @@ RDEPENDS_packagegroup-rdk-media-common = "\
     ${@bb.utils.contains("DISTRO_FEATURES", "ledmgr", "ledmgr", "" , d)} \
     ${@bb.utils.contains("DISTRO_FEATURES", "safec", "safec", "" , d)} \
     rbus \
-    rbus-core \
     telemetry \
     webconfig-framework \
     webcfg \

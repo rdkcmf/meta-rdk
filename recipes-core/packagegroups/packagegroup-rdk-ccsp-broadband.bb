@@ -11,7 +11,6 @@ PACKAGES = "\
 
 # CCSP components used in RDK-B
 RDEPENDS_packagegroup-rdk-ccsp-broadband = "\
-    rbus-core \
     rbus \ 
     ccsp-common-library \
     ccsp-common-startup \
