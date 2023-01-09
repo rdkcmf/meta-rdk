@@ -116,6 +116,10 @@ FEATURE_CELLULAR_MANAGER_MASK ?= "|.meta-rdk-broadband/recipes-ccsp/ccsp/rdk-cel
 BBMASK .= "${FEATURE_CELLULAR_MANAGER_MASK}"
 FEATURE_RDKB_INTER_DEVICE_MANAGER ?= "|.meta-rdk-broadband/recipes-ccsp/ccsp/rdk-interdevicemanager.bb"
 BBMASK .= "${FEATURE_RDKB_INTER_DEVICE_MANAGER}"
+FEATURE_RDKB_LAN_MANAGER ?= "|.meta-rdk-broadband/recipes-ccsp/ccsp/lanmanager.bb"
+BBMASK .= "${FEATURE_RDKB_LAN_MANAGER}"
+FEATURE_RDKB_PLATFORM_MANAGER ?= "|.meta-rdk-broadband/recipes-ccsp/ccsp/platformmanager.bb"
+BBMASK .= "${FEATURE_RDKB_PLATFORM_MANAGER}"
 
 HUBLINUX_MASK ?= "|.meta-rdk-soc-broadcom-broadband/meta-brcm-broadband/recipes-kernel/linux/bcalinux_4.19.bb"
 BBMASK .= "${HUBLINUX_MASK}"
