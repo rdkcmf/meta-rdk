@@ -42,6 +42,7 @@ RDEPENDS_packagegroup-rdk-oss = "\
     gupnp-av \
     perl \
     "
+GST_ALSA = "${@bb.utils.contains('COMBINED_FEATURES', 'alsa', 'gstreamer1.0-plugins-base-alsa', '',d)}"
 
 RDEPENDS_packagegroup-rdk-oss += "${@bb.utils.contains('DISTRO_FEATURES', 'benchmark_enable', ' \
     gstreamer1.0 \
@@ -56,7 +57,7 @@ RDEPENDS_packagegroup-rdk-oss += "${@bb.utils.contains('DISTRO_FEATURES', 'bench
     gstreamer1.0-plugins-base-videoconvert  \
     gstreamer1.0-plugins-base-videotestsrc   \
     gstreamer1.0-plugins-base-playback   \
-    gstreamer1.0-plugins-base-alsa   \
+    ${GST_ALSA} \
     gstreamer1.0-plugins-base-videoscale   \
     gstreamer1.0-plugins-good-isomp4  \
     gstreamer1.0-plugins-good-autodetect  \
