@@ -5,7 +5,7 @@ LIC_FILES_CHKSUM = "file://LICENSE;md5=ed63516ecab9f06e324238dd2b259549"
 
 SRC_URI = "git://github.com/rdkcentral/rbus.git;branch=rbus-2.0"
 
-SRCREV = "v2.0.2"
+SRCREV = "v2.0.2.1"
 SRCREV_FORMAT = "base"
 
 S = "${WORKDIR}/git"
